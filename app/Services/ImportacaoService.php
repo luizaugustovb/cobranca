@@ -12,25 +12,29 @@ class ImportacaoService
 {
     /**
      * Processar um arquivo importado
+     *
+     * @return array [importados, erros, erroDetalhe]
      */
-    public function process(Importacao $importacao)
+    public function process(Importacao $importacao): array
     {
         try {
             $importacao->update(['status' => 'processando']);
-            
-            // Aqui chamamos o import
-            Excel::import(new CobrancaImport($importacao->tenant_id, $importacao->user_id), $importacao->arquivo);
-            
+
+            $importer = new CobrancaImport($importacao->tenant_id, $importacao->user_id);
+
+            Excel::import($importer, storage_path('app/' . $importacao->arquivo));
+
             $importacao->update([
-                'status' => 'concluido',
-                'processados' => $importacao->total, // Exemplo simplificado
+                'status'       => $importer->erros > 0 && $importer->importados === 0 ? 'erro' : 'concluido',
+                'processados'  => $importer->importados,
             ]);
 
-            return true;
+            return [$importer->importados, $importer->erros, $importer->erroDetalhe];
+
         } catch (\Exception $e) {
             $importacao->update(['status' => 'erro']);
             \Log::error("Erro na importacao [ID: {$importacao->id}]: " . $e->getMessage());
-            return false;
+            return [0, 1, [$e->getMessage()]];
         }
     }
 

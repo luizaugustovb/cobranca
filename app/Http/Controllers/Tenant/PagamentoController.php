@@ -22,7 +22,7 @@ class PagamentoController extends Controller
     public function create()
     {
         // Registro manual de pagamento (ex: dinheiro ou pix direto)
-        $acordos = Acordo::where('status', 'ativo')->with('devedor')->get();
+        $acordos = Acordo::where('status', 'ativo')->with(['devedor', 'acordoParcelas'])->get();
         return view('tenant.pagamentos.create', compact('acordos'));
     }
 

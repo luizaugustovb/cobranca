@@ -77,7 +77,7 @@ class TenantController extends Controller
         ]);
 
         // Criar o usuário administrador do escritório com senha padrão
-        $password = 'Luiz2012@';
+        $password = 'Admin@123';
         $user = \App\Models\User::withoutGlobalScopes()->create([
             'tenant_id' => $tenant->id,
             'name' => 'Admin - ' . $tenant->name,

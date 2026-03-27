@@ -46,8 +46,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pagamentos', [\App\Http\Controllers\Tenant\PagamentoController::class, 'index'])->name('pagamentos');
         Route::get('/pagamentos/create', [\App\Http\Controllers\Tenant\PagamentoController::class, 'create'])->name('pagamentos.create');
         Route::post('/pagamentos', [\App\Http\Controllers\Tenant\PagamentoController::class, 'store'])->name('pagamentos.store');
+        // Conversor PDF → XLSX
+        Route::get('/pdf-conversao', [\App\Http\Controllers\Tenant\PdfConversaoController::class, 'create'])->name('pdf-conversao.create');
+        Route::post('/pdf-conversao', [\App\Http\Controllers\Tenant\PdfConversaoController::class, 'store'])->name('pdf-conversao.store');
+
         // Importações (Lotes)
         Route::get('/importacoes', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'index'])->name('importacoes');
+        Route::get('/importacoes/template', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'template'])->name('importacoes.template');
         Route::get('/importacoes/create', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'create'])->name('importacoes.create');
         Route::post('/importacoes', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'store'])->name('importacoes.store');
         Route::get('/importacoes/{importacao}', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'show'])->name('importacoes.show');

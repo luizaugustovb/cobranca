@@ -36,6 +36,10 @@ class TituloController extends Controller
             'valor_original' => 'required|numeric|min:0.01',
             'vencimento' => 'required|date',
             'status' => 'required|string|in:aberto,pago,cancelado',
+            'juros' => 'nullable|numeric|min:0',
+            'multa' => 'nullable|numeric|min:0',
+            'desconto' => 'nullable|numeric|min:0',
+            'honorarios' => 'nullable|numeric|min:0',
         ]);
 
         Titulo::create($validated);
@@ -57,6 +61,10 @@ class TituloController extends Controller
             'valor_original' => 'required|numeric|min:0.01',
             'vencimento' => 'required|date',
             'status' => 'required|string|in:aberto,pago,cancelado',
+            'juros' => 'nullable|numeric|min:0',
+            'multa' => 'nullable|numeric|min:0',
+            'desconto' => 'nullable|numeric|min:0',
+            'honorarios' => 'nullable|numeric|min:0',
         ]);
 
         $titulo->update($validated);

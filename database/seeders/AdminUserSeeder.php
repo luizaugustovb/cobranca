@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
         $admin = User::create([
             'name' => 'Admin Geral',
             'email' => 'contato@luizaugusto.me',
-            'password' => Hash::make('Luiz2012@'),
+            'password' => Hash::make('Admin@123'),
             'is_admin' => true,
             'tenant_id' => null, // Admin Geral não pertence a nenhum tenant específico
         ]);

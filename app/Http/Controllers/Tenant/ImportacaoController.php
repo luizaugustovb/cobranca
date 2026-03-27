@@ -31,24 +31,50 @@ class ImportacaoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'arquivo' => 'required|file|mimes:xlsx,csv,txt|max:10240',
-            'tipo' => 'required|string|in:devedores,titulos,contratos',
+            'arquivo' => 'required|file|mimes:xlsx,xls,csv|max:10240',
         ]);
 
         $path = $request->file('arquivo')->store('imports');
 
         $importacao = $this->importService->create([
             'tenant_id' => auth()->user()->tenant_id,
-            'user_id' => auth()->id(),
-            'arquivo' => $path,
-            'tipo' => $request->tipo,
+            'user_id'   => auth()->id(),
+            'arquivo'   => $path,
+            'tipo'      => 'cobrancas',
         ]);
 
-        // Em um sistema real, isso iria para uma fila (Queue)
-        // Por agora, processamos de forma síncrona para demonstração
-        $this->importService->process($importacao);
+        [$importados, $erros, $erroDetalhe] = $this->importService->process($importacao);
 
-        return redirect()->route('tenant.importacoes')->with('success', 'Arquivo enviado e processado com sucesso!');
+        $msg = "Importação concluída: {$importados} título(s) processado(s)";
+        if ($erros) {
+            $msg .= " | {$erros} linha(s) com erro.";
+        }
+
+        return redirect()->route('tenant.importacoes')->with('success', $msg);
+    }
+
+    public function template()
+    {
+        $headers = [
+            'responsavel', 'cpf', 'contato', 'email',
+            'rua', 'numero_end', 'cep',
+            'aluno', 'matricula', 'servico',
+            'numero_titulo', 'vencimento', 'valor', 'multa', 'juros', 'honorarios',
+        ];
+
+        $exemplo = [
+            'João da Silva', '123.456.789-09', '(11) 91234-5678', 'joao@email.com',
+            'Rua das Flores', '123', '01310-100',
+            'Maria da Silva', 'MAT001', 'Mensalidade Escolar',
+            'TIT-2024-001', '31/12/2024', '1500,00', '2,00', '1,00', '10,00',
+        ];
+
+        $csv = implode(';', $headers) . "\n" . implode(';', $exemplo) . "\n";
+
+        return response($csv, 200, [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename=modelo_importacao_cobrancas.csv',
+        ]);
     }
 
     public function show(Importacao $importacao)

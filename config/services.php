@@ -44,4 +44,8 @@ return [
     'bot' => [
         'api_token' => env('BOT_API_TOKEN'),
     ],
+
+    'cloudconvert' => [
+        'api_key' => env('CLOUDCONVERT_API_KEY'),
+    ],
 ];

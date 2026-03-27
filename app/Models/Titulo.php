@@ -14,10 +14,12 @@ class Titulo extends Model
         'tenant_id',
         'devedor_id',
         'numero',
+        'descricao',
         'valor_original',
         'juros',
         'multa',
         'desconto',
+        'honorarios',
         'vencimento',
         'status'
     ];
@@ -28,6 +30,7 @@ class Titulo extends Model
         'juros' => 'decimal:2',
         'multa' => 'decimal:2',
         'desconto' => 'decimal:2',
+        'honorarios' => 'decimal:2',
     ];
 
     public function devedor()
