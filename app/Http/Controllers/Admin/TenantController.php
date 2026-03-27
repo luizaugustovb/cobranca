@@ -86,6 +86,25 @@ class TenantController extends Controller
             'must_change_password' => true,
         ]);
 
+        // Disparar WhatsApp com credenciais de acesso
+        try {
+            $phone = preg_replace('/[^0-9]/', '', $request->phone ?? '');
+            if ($phone) {
+                $link = config('app.url');
+                $mensagem = "✅ *Bem-vindo ao CobrançaPro!*\n\n"
+                    . "Seu escritório *{$tenant->name}* foi cadastrado com sucesso na plataforma.\n\n"
+                    . "📧 *Login:* {$tenant->email}\n"
+                    . "🔑 *Senha:* {$password}\n"
+                    . "🔗 *Acesso:* {$link}\n\n"
+                    . "⚠️ No primeiro acesso você será solicitado a criar uma senha pessoal.\n\n"
+                    . "_CobrançaPro — Desenvolvido por LAVB Tecnologias_";
+
+                (new \App\Services\WhatsAppService())->sendMessage($phone, $mensagem);
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Erro ao enviar WhatsApp de boas-vindas: " . $e->getMessage());
+        }
+
         return redirect()->route('admin.tenants')->with('success', "Escritório '{$tenant->name}' registrado com sucesso! | Login: {$tenant->email} | Senha padrão: {$password} (o gestor será obrigado a trocar no primeiro acesso)");
     }
 
@@ -118,8 +137,28 @@ class TenantController extends Controller
             return redirect()->back()->with('error', 'Apenas escritórios inativos podem ser excluídos.');
         }
 
+        // Remove todos os registros dependentes antes de excluir o tenant
+        \DB::table('saas_cobrancas')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('audit_logs')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('settings')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('status_cobranca')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('historico_contatos')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('anexos')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('pagamentos')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('acordo_parcelas')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('acordos')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('importacoes')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('titulos')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('devedores')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('clientes')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('alunos')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('users')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('tenant_integrations')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('api_request_logs')->where('tenant_id', $tenant->id)->delete();
+        \DB::table('webhook_logs')->where('tenant_id', $tenant->id)->delete();
+
         $tenant->delete();
 
-        return redirect()->route('admin.tenants')->with('success', 'Escritório removido permanentemente.');
+        return redirect()->route('admin.tenants')->with('success', 'Escritório e todos os seus dados foram removidos permanentemente.');
     }
 }
