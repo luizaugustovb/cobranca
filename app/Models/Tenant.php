@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Tenant extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'document',
+        'email',
+        'phone',
+        'logo',
+        'status',
+        'plan',
+        'settings'
+    ];
+
+    protected $casts = [
+        'settings' => 'array',
+    ];
+
+    /**
+     * Relacionamento com usuários
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+}
