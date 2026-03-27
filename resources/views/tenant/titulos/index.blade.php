@@ -15,7 +15,7 @@
                     <a href="{{ route('tenant.titulos', ['status' => 'pago']) }}" class="px-4 py-2 rounded-lg text-xs font-black uppercase transition {{ $status == 'pago' ? 'bg-white shadow text-emerald-600' : 'text-gray-400 hover:text-gray-600' }}">Pagos</a>
                     <a href="{{ route('tenant.titulos', ['status' => 'cancelado']) }}" class="px-4 py-2 rounded-lg text-xs font-black uppercase transition {{ $status == 'cancelado' ? 'bg-white shadow text-emerald-600' : 'text-gray-400 hover:text-gray-600' }}">Cancelados</a>
                 </div>
-                <a href="{{ route('tenant.titulos.create') }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-emerald-700 shadow-lg shadow-emerald-500/20">
+                <a href="{{ route('tenant.titulos.create') }}" class="inline-flex items-center px-6 py-3 bg-slate-900 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-black transition shadow-lg">
                     Gerar Título
                 </a>
             </div>
