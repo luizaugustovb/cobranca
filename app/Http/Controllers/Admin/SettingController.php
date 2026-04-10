@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Plan;
 use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -20,7 +21,9 @@ class SettingController extends Controller
             'asas_mode'             => $this->readEnv('ASAS_MODE', 'sandbox'),
         ];
 
-        return view('admin.settings', compact('settings'));
+        $plans = Plan::orderBy('valor')->get()->keyBy('slug');
+
+        return view('admin.settings', compact('settings', 'plans'));
     }
 
     public function store(Request $request)

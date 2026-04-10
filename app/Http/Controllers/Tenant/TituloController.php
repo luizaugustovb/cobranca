@@ -12,14 +12,23 @@ class TituloController extends Controller
     public function index(Request $request)
     {
         $status = $request->get('status', 'aberto');
-        
-        $titulos = Titulo::with('devedor')
-            ->when($status, function($query) use ($status) {
-                return $query->where('status', $status);
-            })
+        $allowedStatuses = ['aberto', 'negociado', 'pago', 'cancelado'];
+
+        if (!in_array($status, $allowedStatuses)) {
+            $status = 'aberto';
+        }
+
+        $titulos = Titulo::with(['devedor', 'acordo'])
+            ->where('status', $status)
+            ->orderByDesc('created_at')
             ->paginate(15);
-            
-        return view('tenant.titulos.index', compact('titulos', 'status'));
+
+        // Contadores para as tabs
+        $counts = Titulo::selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        return view('tenant.titulos.index', compact('titulos', 'status', 'counts'));
     }
 
     public function create()
@@ -35,7 +44,7 @@ class TituloController extends Controller
             'numero' => 'required|string|max:50',
             'valor_original' => 'required|numeric|min:0.01',
             'vencimento' => 'required|date',
-            'status' => 'required|string|in:aberto,pago,cancelado',
+            'status' => 'required|string|in:aberto,pago,cancelado,negociado',
             'juros' => 'nullable|numeric|min:0',
             'multa' => 'nullable|numeric|min:0',
             'desconto' => 'nullable|numeric|min:0',
@@ -60,7 +69,7 @@ class TituloController extends Controller
             'numero' => 'required|string|max:50',
             'valor_original' => 'required|numeric|min:0.01',
             'vencimento' => 'required|date',
-            'status' => 'required|string|in:aberto,pago,cancelado',
+            'status' => 'required|string|in:aberto,pago,cancelado,negociado',
             'juros' => 'nullable|numeric|min:0',
             'multa' => 'nullable|numeric|min:0',
             'desconto' => 'nullable|numeric|min:0',
@@ -70,5 +79,24 @@ class TituloController extends Controller
         $titulo->update($validated);
 
         return redirect()->route('tenant.titulos')->with('success', 'Título atualizado com sucesso!');
+    }
+
+    /**
+     * Cancela um título com motivo — requer confirmação no front-end antes de chamar.
+     */
+    public function cancel(Titulo $titulo)
+    {
+        // Não permite cancelar título já negociado (precisa cancelar o acordo primeiro)
+        if ($titulo->status === 'negociado') {
+            return back()->with('error', 'Este título está vinculado a um acordo ativo. Cancele o acordo antes de cancelar o título.');
+        }
+
+        if ($titulo->status === 'cancelado') {
+            return back()->with('error', 'Este título já está cancelado.');
+        }
+
+        $titulo->update(['status' => 'cancelado']);
+
+        return back()->with('success', "Título #{$titulo->numero} cancelado com sucesso.");
     }
 }

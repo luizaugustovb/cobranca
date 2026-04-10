@@ -92,8 +92,9 @@
                     <div>
                         <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status *</label>
                         <select name="status" required class="w-full border border-slate-200 rounded-2xl py-3 px-4 text-sm font-medium text-slate-700 bg-slate-50 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition @error('status') border-red-400 @enderror">
-                            <option value="aberto" {{ old('status', $titulo->status) == 'aberto' ? 'selected' : '' }}>Aberto</option>
-                            <option value="pago" {{ old('status', $titulo->status) == 'pago' ? 'selected' : '' }}>Pago</option>
+                            <option value="aberto"    {{ old('status', $titulo->status) == 'aberto'    ? 'selected' : '' }}>Aberto</option>
+                            <option value="negociado" {{ old('status', $titulo->status) == 'negociado' ? 'selected' : '' }}>Negociado</option>
+                            <option value="pago"      {{ old('status', $titulo->status) == 'pago'      ? 'selected' : '' }}>Pago</option>
                             <option value="cancelado" {{ old('status', $titulo->status) == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
                         </select>
                         @error('status')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror

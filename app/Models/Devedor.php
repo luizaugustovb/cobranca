@@ -18,7 +18,8 @@ class Devedor extends Model
         'nome',
         'cpf_cnpj',
         'email',
-        'telefone'
+        'telefone',
+        'asaas_customer_id',
     ];
 
     /**

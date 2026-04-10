@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/titulos', [\App\Http\Controllers\Tenant\TituloController::class, 'store'])->name('titulos.store');
         Route::get('/titulos/{titulo}/edit', [\App\Http\Controllers\Tenant\TituloController::class, 'edit'])->name('titulos.edit');
         Route::put('/titulos/{titulo}', [\App\Http\Controllers\Tenant\TituloController::class, 'update'])->name('titulos.update');
+        Route::post('/titulos/{titulo}/cancelar', [\App\Http\Controllers\Tenant\TituloController::class, 'cancel'])->name('titulos.cancel');
         // Negociações (Acordos)
         Route::get('/acordos', [\App\Http\Controllers\Tenant\AcordoController::class, 'index'])->name('acordos');
         Route::get('/acordos/create', [\App\Http\Controllers\Tenant\AcordoController::class, 'create'])->name('acordos.create');
@@ -91,6 +92,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/configuracoes', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings');
         Route::post('/configuracoes', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');
         Route::post('/configuracoes/teste-whatsapp', [\App\Http\Controllers\Admin\SettingController::class, 'testWhatsApp'])->name('settings.test-whatsapp');
+
+        // Planos & Preços
+        Route::get('/planos', [\App\Http\Controllers\Admin\PlanController::class, 'index'])->name('planos');
+        Route::put('/planos', [\App\Http\Controllers\Admin\PlanController::class, 'update'])->name('planos.update');
     });
 });
 

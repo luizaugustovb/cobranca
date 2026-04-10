@@ -45,14 +45,11 @@
                                 </div>
                                 Notificações WhatsApp (Viicio)
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
                                 <div>
                                     <x-input-label for="viicio_token" :value="__('App Token')" class="text-xs font-bold uppercase tracking-widest text-gray-500"/>
                                     <x-text-input id="viicio_token" name="viicio_token" type="password" class="w-full rounded-xl border-gray-100 dark:bg-gray-700 bg-gray-50 py-3" :value="$settings['viicio_token'] ?? ''" />
-                                </div>
-                                <div>
-                                    <x-input-label for="viicio_instance" :value="__('Instance ID')" class="text-xs font-bold uppercase tracking-widest text-gray-500"/>
-                                    <x-text-input id="viicio_instance" name="viicio_instance" type="text" class="w-full rounded-xl border-gray-100 dark:bg-gray-700 bg-gray-50 py-3" :value="$settings['viicio_instance'] ?? ''" />
+                                    <p class="text-[10px] text-gray-400 font-medium italic mt-1">Token de autenticação da sua conta Viicio para disparar notificações aos devedores.</p>
                                 </div>
                             </div>
                         </div>

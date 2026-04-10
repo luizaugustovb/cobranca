@@ -49,7 +49,7 @@
                             </h3>
                             <div class="text-white text-right">
                                 <p class="text-xs uppercase font-thin leading-tight">Total em Aberto</p>
-                                <p class="text-2xl font-black">R$ {{ number_format($devedor->titulos->where('status', 'aberto')->sum('valor_original'), 2, ',', '.') }}</p>
+                                <p class="text-2xl font-black">R$ {{ number_format($devedor->titulos->where('status', 'aberto')->sum(fn($t) => $t->valor_total), 2, ',', '.') }}</p>
                             </div>
                         </div>
                         <div class="p-0">
@@ -67,7 +67,7 @@
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-700 dark:text-white uppercase">{{ $titulo->numero }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $titulo->vencimento->format('d/m/Y') }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-slate-800 dark:text-white">R$ {{ number_format($titulo->valor_original, 2, ',', '.') }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-slate-800 dark:text-white">R$ {{ number_format($titulo->valor_total, 2, ',', '.') }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right">
                                                 <span class="px-3 py-1 text-xs font-black uppercase rounded-full {{ $titulo->status === 'aberto' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
                                                     {{ $titulo->status }}
@@ -106,8 +106,7 @@
                                         <p class="text-xs text-gray-500 font-medium">Em {{ $acordo->parcelas }}x parcelas</p>
                                     </div>
                                     <div class="flex space-x-2">
-                                        <a href="#" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-500 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs uppercase hover:bg-gray-50 transition shadow-sm">Ver Detalhes</a>
-                                        <a href="#" class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-xl font-bold text-xs uppercase hover:bg-indigo-600 hover:text-white transition shadow-sm">Recibo</a>
+                                        <a href="{{ route('tenant.acordos.show', $acordo) }}" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-500 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs uppercase hover:bg-gray-50 transition shadow-sm">Ver Detalhes</a>
                                     </div>
                                 </div>
                             @empty

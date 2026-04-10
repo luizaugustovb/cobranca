@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-black text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase">
@@ -9,78 +9,258 @@
                 </div>
                 CENTRAL DE COBRANÇA
             </h2>
-            <div class="flex space-x-3">
-                 <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
-                    <a href="{{ route('tenant.titulos', ['status' => 'aberto']) }}" class="px-4 py-2 rounded-lg text-xs font-black uppercase transition {{ $status == 'aberto' ? 'bg-white shadow text-emerald-600' : 'text-gray-400 hover:text-gray-600' }}">Abertos</a>
-                    <a href="{{ route('tenant.titulos', ['status' => 'pago']) }}" class="px-4 py-2 rounded-lg text-xs font-black uppercase transition {{ $status == 'pago' ? 'bg-white shadow text-emerald-600' : 'text-gray-400 hover:text-gray-600' }}">Pagos</a>
-                    <a href="{{ route('tenant.titulos', ['status' => 'cancelado']) }}" class="px-4 py-2 rounded-lg text-xs font-black uppercase transition {{ $status == 'cancelado' ? 'bg-white shadow text-emerald-600' : 'text-gray-400 hover:text-gray-600' }}">Cancelados</a>
+            <div class="flex items-center gap-3">
+                {{-- Tabs de status com contadores --}}
+                <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-xl gap-0.5">
+                    @php
+                        $tabs = [
+                            'aberto'    => ['label' => 'Abertos',    'activeClass' => 'text-amber-600'],
+                            'negociado' => ['label' => 'Negociados', 'activeClass' => 'text-indigo-600'],
+                            'pago'      => ['label' => 'Pagos',      'activeClass' => 'text-emerald-600'],
+                            'cancelado' => ['label' => 'Cancelados', 'activeClass' => 'text-red-500'],
+                        ];
+                    @endphp
+                    @foreach($tabs as $tabStatus => $tab)
+                        <a href="{{ route('tenant.titulos', ['status' => $tabStatus]) }}"
+                           class="relative px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition whitespace-nowrap
+                               {{ $status === $tabStatus
+                                   ? 'bg-white dark:bg-gray-700 shadow ' . $tab['activeClass']
+                                   : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300' }}">
+                            {{ $tab['label'] }}
+                            @if(isset($counts[$tabStatus]) && $counts[$tabStatus] > 0)
+                                <span class="ml-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] rounded-full text-[9px] font-black
+                                    {{ $status === $tabStatus ? 'bg-current/10' : 'bg-gray-200 dark:bg-gray-600 text-gray-500' }}
+                                    px-1">{{ $counts[$tabStatus] }}</span>
+                            @endif
+                        </a>
+                    @endforeach
                 </div>
-                <a href="{{ route('tenant.titulos.create') }}" class="inline-flex items-center px-6 py-3 bg-slate-900 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-black transition shadow-lg">
+                <a href="{{ route('tenant.titulos.create') }}"
+                   class="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-black transition shadow-lg text-xs">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     Gerar Título
                 </a>
             </div>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-2xl sm:rounded-3xl border border-gray-100 dark:border-gray-700">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead class="bg-gray-50 dark:bg-gray-700/50">
-                            <tr>
-                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Nº Título</th>
-                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Devedor</th>
-                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Vencimento</th>
-                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Valor Original</th>
-                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Encargos</th>
-                                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            @forelse ($titulos as $titulo)
-                                <tr class="hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-black text-emerald-800 dark:text-emerald-400 uppercase tracking-tighter">#{{ $titulo->numero }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-tighter">{{ $titulo->devedor->nome }}</div>
-                                        <div class="text-[10px] text-gray-400 font-bold tracking-widest">{{ $titulo->devedor->cpf_cnpj }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm {{ $titulo->vencimento->isPast() && $titulo->status == 'aberto' ? 'text-red-500 font-black animate-pulse' : 'text-gray-600 dark:text-gray-300' }}">
-                                            {{ $titulo->vencimento->format('d/m/Y') }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-md font-black text-slate-900 dark:text-white">R$ {{ number_format($titulo->valor_original, 2, ',', '.') }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-xs text-red-400 font-medium">J+M: R$ {{ number_format(($titulo->juros + $titulo->multa), 2, ',', '.') }}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div class="flex justify-end space-x-2">
-                                            <a href="{{ route('tenant.devedores.show', $titulo->devedor_id) }}" title="Ir para Devedor" class="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-500 hover:text-white transition shadow-sm">
-                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6"/></svg>
-                                            </a>
-                                            <a href="{{ route('tenant.titulos.edit', $titulo) }}" class="p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-500 hover:text-white transition">
-                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="px-6 py-16 text-center text-gray-400 font-medium">
-                                        Nenhum título localizado com o status selecionado.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+    {{-- Modal de confirmação de cancelamento (Alpine.js) --}}
+    <div x-data="{
+            showModal: false,
+            tituloId: null,
+            tituloNumero: '',
+            confirmar(id, numero) {
+                this.tituloId = id;
+                this.tituloNumero = numero;
+                this.showModal = true;
+            }
+        }">
+
+        {{-- Overlay do modal --}}
+        <div x-show="showModal" x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+             @keydown.escape.window="showModal = false">
+            <div @click.stop
+                 x-show="showModal"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 max-w-md w-full mx-4 border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center gap-4 mb-5">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-2xl bg-red-100 shrink-0">
+                        <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-slate-800 dark:text-white text-lg tracking-tight">Cancelar Título</h3>
+                        <p class="text-sm text-gray-500 mt-0.5">Esta ação não pode ser desfeita facilmente.</p>
+                    </div>
                 </div>
-                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
-                    {{ $titulos->links() }}
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                    Você está prestes a cancelar o título <strong x-text="'#' + tituloNumero" class="text-slate-800 dark:text-white"></strong>.
+                    O título não será deletado, mas passará para o status <strong>Cancelado</strong> e sairá da cobrança ativa.
+                </p>
+                <div class="flex gap-3">
+                    <button @click="showModal = false"
+                            class="flex-1 px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300 rounded-xl font-bold text-sm uppercase tracking-widest transition">
+                        Voltar
+                    </button>
+                    {{-- Form de cancelamento que usa o tituloId dinamicamente --}}
+                    <form :action="'/tenant/titulos/' + tituloId + '/cancelar'" method="POST" class="flex-1">
+                        @csrf
+                        <button type="submit"
+                                class="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-black text-sm uppercase tracking-widest transition shadow-lg shadow-red-500/30">
+                            Confirmar Cancelamento
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+                @if(session('success'))
+                    <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-xl shadow-sm flex items-center gap-3">
+                        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <p class="font-semibold">{{ session('success') }}</p>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-r-xl shadow-sm flex items-center gap-3">
+                        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        <p class="font-semibold">{{ session('error') }}</p>
+                    </div>
+                @endif
+
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-2xl sm:rounded-3xl border border-gray-100 dark:border-gray-700">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700/50">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Nº Título</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Devedor</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Vencimento</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Valor Original</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Encargos</th>
+                                    <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Status</th>
+                                    <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                                @forelse ($titulos as $titulo)
+                                    @php
+                                        $rowBg = match($titulo->status) {
+                                            'negociado' => 'bg-indigo-50/40 dark:bg-indigo-900/10',
+                                            'pago'      => 'bg-emerald-50/30 dark:bg-emerald-900/10',
+                                            'cancelado' => 'bg-gray-50/60 dark:bg-gray-700/20',
+                                            default     => '',
+                                        };
+                                    @endphp
+                                    <tr class="{{ $rowBg }} hover:opacity-90 transition-colors">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-black text-emerald-800 dark:text-emerald-400 uppercase tracking-tighter">#{{ $titulo->numero }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <a href="{{ route('tenant.devedores.show', $titulo->devedor_id) }}"
+                                               class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-tighter hover:text-indigo-600 transition">
+                                                {{ $titulo->devedor->nome }}
+                                            </a>
+                                            <div class="text-[10px] text-gray-400 font-bold tracking-widest">{{ $titulo->devedor->cpf_cnpj }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm {{ $titulo->vencimento->isPast() && $titulo->status === 'aberto' ? 'text-red-500 font-black' : 'text-gray-600 dark:text-gray-300' }}">
+                                                {{ $titulo->vencimento->format('d/m/Y') }}
+                                                @if($titulo->vencimento->isPast() && $titulo->status === 'aberto')
+                                                    <span class="ml-1.5 text-[9px] bg-red-100 text-red-600 font-black uppercase px-1.5 py-0.5 rounded-full">Vencido</span>
+                                                @endif
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-base font-black text-slate-900 dark:text-white">R$ {{ number_format($titulo->valor_original, 2, ',', '.') }}</div>
+                                            @if($titulo->status === 'aberto' || $titulo->status === 'negociado')
+                                                <div class="text-xs text-gray-400 font-medium">Total: R$ {{ number_format($titulo->valor_total, 2, ',', '.') }}</div>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            @if(($titulo->juros + $titulo->multa + $titulo->honorarios) > 0)
+                                                <div class="text-xs text-red-400 font-medium">J+M: R$ {{ number_format(($titulo->juros + $titulo->multa), 2, ',', '.') }}</div>
+                                                @if($titulo->honorarios > 0)
+                                                    <div class="text-xs text-amber-500 font-medium">Hon: R$ {{ number_format($titulo->honorarios, 2, ',', '.') }}</div>
+                                                @endif
+                                            @else
+                                                <span class="text-gray-300 text-sm">—</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            @php
+                                                $badgeClass = match($titulo->status) {
+                                                    'aberto'    => 'bg-amber-100 text-amber-700',
+                                                    'negociado' => 'bg-indigo-100 text-indigo-700',
+                                                    'pago'      => 'bg-emerald-100 text-emerald-700',
+                                                    'cancelado' => 'bg-red-100 text-red-600',
+                                                    default     => 'bg-gray-100 text-gray-600',
+                                                };
+                                                $badgeLabel = match($titulo->status) {
+                                                    'aberto'    => 'Aberto',
+                                                    'negociado' => '⚖️ Negociado',
+                                                    'pago'      => 'Pago',
+                                                    'cancelado' => 'Cancelado',
+                                                    default     => ucfirst($titulo->status),
+                                                };
+                                            @endphp
+                                            <span class="px-2.5 py-1 text-xs font-black uppercase rounded-full tracking-wide {{ $badgeClass }}">
+                                                {{ $badgeLabel }}
+                                            </span>
+                                            @if($titulo->status === 'negociado' && $titulo->acordo)
+                                                <div class="mt-1">
+                                                    <a href="{{ route('tenant.acordos.show', $titulo->acordo_id) }}"
+                                                       class="text-[10px] text-indigo-500 hover:text-indigo-700 font-black uppercase tracking-widest underline">
+                                                        Ver Acordo #{{ $titulo->acordo_id }}
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right">
+                                            <div class="flex justify-end items-center gap-2">
+                                                {{-- Ir para devedor --}}
+                                                <a href="{{ route('tenant.devedores.show', $titulo->devedor_id) }}"
+                                                   title="Ver Devedor"
+                                                   class="p-2 bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-500 hover:text-white transition shadow-sm">
+                                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                                </a>
+
+                                                @if($titulo->status === 'negociado')
+                                                    {{-- Negociado: só mostra link para o acordo --}}
+                                                    <a href="{{ route('tenant.acordos.show', $titulo->acordo_id) }}"
+                                                       title="Ver Acordo"
+                                                       class="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-500 hover:text-white transition shadow-sm">
+                                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                    </a>
+                                                @elseif($titulo->status === 'aberto')
+                                                    {{-- Aberto: editar + cancelar --}}
+                                                    <a href="{{ route('tenant.titulos.edit', $titulo) }}"
+                                                       title="Editar"
+                                                       class="p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-500 hover:text-white transition">
+                                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                                    </a>
+                                                    <button @click="confirmar({{ $titulo->id }}, '{{ addslashes($titulo->numero) }}')"
+                                                            title="Cancelar Título"
+                                                            class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition">
+                                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                                    </button>
+                                                @else
+                                                    {{-- Pago / Cancelado: só editar --}}
+                                                    <a href="{{ route('tenant.titulos.edit', $titulo) }}"
+                                                       title="Editar"
+                                                       class="p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-500 hover:text-white transition">
+                                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="px-6 py-16 text-center text-gray-400">
+                                            <div class="flex flex-col items-center gap-3">
+                                                <svg class="w-10 h-10 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                                <p class="text-sm font-bold uppercase tracking-widest">Nenhum título com este status.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
+                        {{ $titulos->appends(['status' => $status])->links() }}
+                    </div>
                 </div>
             </div>
         </div>

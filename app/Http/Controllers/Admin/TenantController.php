@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Plan;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,8 @@ class TenantController extends Controller
 
     public function create()
     {
-        return view('admin.tenants.create');
+        $plans = Plan::where('ativo', true)->orderBy('valor')->get();
+        return view('admin.tenants.create', compact('plans'));
     }
 
     public function store(Request $request)
@@ -47,7 +49,7 @@ class TenantController extends Controller
                     'phone' => preg_replace('/[^0-9]/', '', $request->phone ?? ''),
                     'password' => \Illuminate\Support\Str::random(12),
                     'status' => 'true',
-                    'planId' => ($tenant->plan === 'pro') ? 2 : 1,
+                    'planId' => Plan::where('slug', $tenant->plan)->value('viicio_plan_id') ?? 1,
                     'dueDate' => now()->addMonth()->format('Y-m-d'),
                     'recurrence' => 'mensal',
                     'document' => preg_replace('/[^0-9]/', '', $tenant->document),
@@ -68,9 +70,10 @@ class TenantController extends Controller
         }
 
         // Criar automaticamente uma cobrança inicial para o tenant
+        $valorPlano = Plan::where('slug', $validated['plan'])->value('valor') ?? 0;
         \App\Models\SaasCobranca::create([
             'tenant_id' => $tenant->id,
-            'valor' => ($validated['plan'] === 'pro') ? 499.90 : 299.90,
+            'valor' => $valorPlano,
             'vencimento' => now()->addDays(7),
             'status' => 'pendente',
             'asaas_id' => 'sim_'.uniqid(), // Simulando ID do Asaas para o sistema do admin
@@ -110,7 +113,8 @@ class TenantController extends Controller
 
     public function edit(Tenant $tenant)
     {
-        return view('admin.tenants.edit', compact('tenant'));
+        $plans = Plan::where('ativo', true)->orderBy('valor')->get();
+        return view('admin.tenants.edit', compact('tenant', 'plans'));
     }
 
     public function update(Request $request, Tenant $tenant)

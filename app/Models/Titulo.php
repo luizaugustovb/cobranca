@@ -13,6 +13,7 @@ class Titulo extends Model
     protected $fillable = [
         'tenant_id',
         'devedor_id',
+        'acordo_id',
         'numero',
         'descricao',
         'valor_original',
@@ -33,9 +34,26 @@ class Titulo extends Model
         'honorarios' => 'decimal:2',
     ];
 
+    /**
+     * Valor total = original + juros + multa + honorarios - desconto
+     */
+    public function getValorTotalAttribute(): float
+    {
+        return (float) $this->valor_original
+            + (float) $this->juros
+            + (float) $this->multa
+            + (float) $this->honorarios
+            - (float) $this->desconto;
+    }
+
     public function devedor()
     {
         return $this->belongsTo(Devedor::class);
+    }
+
+    public function acordo()
+    {
+        return $this->belongsTo(\App\Models\Acordo::class);
     }
 
     public function historicoStatus()

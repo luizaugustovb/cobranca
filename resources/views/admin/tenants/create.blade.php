@@ -47,9 +47,9 @@
                             <div class="flex-1">
                                 <x-input-label for="plan" :value="__('Plano do SaaS')" class="text-xs font-black uppercase tracking-widest text-gray-400 mb-2" />
                                 <select id="plan" name="plan" class="w-full bg-indigo-50 border-none rounded-2xl py-4 font-black uppercase text-xs tracking-widest text-indigo-700">
-                                    <option value="basic">Plano Básico (Mensal)</option>
-                                    <option value="pro" selected>Plano Premium Pro (Mensal)</option>
-                                    <option value="enterprise">Enterprise (Customizado)</option>
+                                    @foreach($plans as $plan)
+                                        <option value="{{ $plan->slug }}">{{ $plan->nome }} — R$ {{ number_format($plan->valor, 2, ',', '.') }}/mês</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="flex-1">

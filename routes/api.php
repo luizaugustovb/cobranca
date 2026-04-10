@@ -8,5 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Rota de Consulta do Robô WhatsApp (Viicio)
-Route::post('/bot/consultar-cpf', [BotController::class, 'consultarCpf']);
+// Rotas do Robô WhatsApp (Viicio) — aceita CPF e CNPJ
+Route::post('/bot/consultar-documento', [BotController::class, 'consultarDocumento']);
+Route::post('/bot/consultar-cpf',       [BotController::class, 'consultarCpf']); // alias retrocompatível

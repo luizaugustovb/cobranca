@@ -81,6 +81,9 @@
                             </div>
                             <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Configuração de Planos & Módulos Liberados</h3>
                         </div>
+                        <a href="{{ route('admin.planos') }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition shadow-md shadow-indigo-500/20">
+                            Editar Valores
+                        </a>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -96,9 +99,9 @@
                             <tbody class="divide-y divide-slate-50 text-sm">
                                 <tr class="bg-indigo-50/10">
                                     <td class="px-8 py-5 font-black text-indigo-600 uppercase text-[10px] tracking-tight">💰 Valor da Assinatura (Mensal)</td>
-                                    <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ 199,00</td>
-                                    <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ 399,00</td>
-                                    <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ 899,00</td>
+                                    <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ {{ isset($plans['basic']) ? number_format($plans['basic']->valor, 2, ',', '.') : '—' }}</td>
+                                    <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ {{ isset($plans['gold']) ? number_format($plans['gold']->valor, 2, ',', '.') : '—' }}</td>
+                                    <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ {{ isset($plans['platinum']) ? number_format($plans['platinum']->valor, 2, ',', '.') : '—' }}</td>
                                 </tr>
                                 <tr class="hover:bg-slate-50/50 transition">
                                     <td class="px-8 py-5 font-bold text-slate-700 uppercase text-[10px] tracking-tight">📲 Automação WhatsApp (Disparos API)</td>

@@ -60,9 +60,9 @@
                             <div class="space-y-2">
                                 <x-input-label for="plan" value="Plano de Assinatura" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
                                 <select name="plan" id="plan" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 text-sm font-bold text-slate-700 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                                    <option value="basic" {{ $tenant->plan == 'basic' ? 'selected' : '' }}>Plano Basic (Bronze)</option>
-                                    <option value="gold" {{ $tenant->plan == 'gold' ? 'selected' : '' }}>Plano Gold (Prata)</option>
-                                    <option value="platinum" {{ $tenant->plan == 'platinum' ? 'selected' : '' }}>Plano Platinum (Diamante)</option>
+                                    @foreach($plans as $plan)
+                                        <option value="{{ $plan->slug }}" {{ $tenant->plan == $plan->slug ? 'selected' : '' }}>{{ $plan->nome }} — R$ {{ number_format($plan->valor, 2, ',', '.') }}/mês</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="space-y-2">

@@ -18,7 +18,9 @@ class Acordo extends Model
         'valor_acordo',
         'entrada',
         'parcelas',
-        'status'
+        'status',
+        'forma_pagamento',
+        'asaas_link',
     ];
 
     protected $casts = [
@@ -50,5 +52,13 @@ class Acordo extends Model
     public function pagamentos()
     {
         return $this->hasMany(Pagamento::class);
+    }
+
+    /**
+     * Títulos originais que foram negociados neste acordo
+     */
+    public function titulos()
+    {
+        return $this->hasMany(Titulo::class);
     }
 }

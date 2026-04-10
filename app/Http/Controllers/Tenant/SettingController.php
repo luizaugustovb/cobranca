@@ -19,7 +19,6 @@ class SettingController extends Controller
         $validated = $request->validate([
             'asaas_token' => 'nullable|string',
             'viicio_token' => 'nullable|string',
-            'viicio_instance' => 'nullable|string',
             'company_name' => 'nullable|string',
             'logo' => 'nullable|image|max:2048',
         ]);

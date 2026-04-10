@@ -9,51 +9,88 @@ use Illuminate\Http\Request;
 class BotController extends Controller
 {
     /**
-     * Consulta os dados de um devedor pelo CPF/CNPJ para o Robô da Viicio.
+     * Consulta os dados de um devedor pelo CPF ou CNPJ para o Robô da Viicio.
+     * Aceita os campos: cpf, cnpj ou documento (qualquer um contendo apenas dígitos).
      */
-    public function consultarCpf(Request $request)
+    public function consultarDocumento(Request $request)
     {
-        // Segurança: Verifica se o Token é válido
-        $tokenSistemas = config('services.bot.api_token');
+        // Segurança: verifica token de API
+        $tokenSistema  = config('services.bot.api_token');
         $tokenRecebido = $request->header('Authorization');
 
-        if (!$tokenSistemas || "Bearer {$tokenSistemas}" !== $tokenRecebido) {
+        if (!$tokenSistema || "Bearer {$tokenSistema}" !== $tokenRecebido) {
             return response()->json(['success' => false, 'message' => 'Token de API inválido ou não autorizado.'], 403);
         }
 
-        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        // Aceita campo "cpf", "cnpj" ou "documento" — remove qualquer não-dígito
+        $raw      = $request->input('documento') ?? $request->input('cpf') ?? $request->input('cnpj') ?? '';
+        $documento = preg_replace('/[^0-9]/', '', $raw);
 
-        if (empty($cpf)) {
-            return response()->json(['success' => false, 'message' => 'CPF não informado ou inválido.'], 400);
+        if (empty($documento)) {
+            return response()->json(['success' => false, 'message' => 'CPF ou CNPJ não informado.'], 400);
         }
 
-        // Busca o devedor (pode haver mais de um em tenants diferentes, pegamos o primeiro por simplicidade ou identificamos o tenant)
-        $devedor = Devedor::where('cpf_cnpj', 'LIKE', "%{$cpf}%")->with(['titulos' => function($q) {
-            $q->where('status', 'pendente');
-        }])->first();
+        // Detecta o tipo pelo número de dígitos
+        $tipo = match(strlen($documento)) {
+            11 => 'CPF',
+            14 => 'CNPJ',
+            default => null,
+        };
+
+        if ($tipo === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Documento inválido. Informe um CPF (11 dígitos) ou CNPJ (14 dígitos).'
+            ], 400);
+        }
+
+        // Busca o devedor ignorando formatação (pontos, traços, barras)
+        $devedor = Devedor::where(function ($q) use ($documento) {
+                $q->where('cpf_cnpj', $documento)
+                  ->orWhere('cpf_cnpj', 'LIKE', "%{$documento}%");
+            })
+            ->with(['titulos' => function ($q) {
+                $q->where('status', 'aberto');
+            }])
+            ->first();
 
         if (!$devedor) {
             return response()->json([
                 'success' => false,
-                'found' => false,
-                'message' => 'Nenhum registro encontrado para este CPF.'
+                'found'   => false,
+                'tipo'    => $tipo,
+                'message' => "Nenhum registro encontrado para este {$tipo}.",
             ]);
         }
 
-        // Calcula débitos em aberto
-        $totalDebito = $devedor->titulos->sum('valor');
-        $qtdTitulos = $devedor->titulos->count();
+        // Usa o accessor valor_total (principal + juros + multa + honorários - desconto)
+        $totalDebito = $devedor->titulos->sum(fn ($t) => $t->valor_total);
+        $qtdTitulos  = $devedor->titulos->count();
+
+        $mensagem = $qtdTitulos > 0
+            ? "Olá *{$devedor->nome}*, identificamos *{$qtdTitulos} título(s)* em aberto totalizando *R\$ "
+              . number_format($totalDebito, 2, ',', '.') . "*. Entre em contato para negociar suas dívidas."
+            : "Olá *{$devedor->nome}*, não encontramos débitos em aberto em seu cadastro. 🎉";
 
         return response()->json([
-            'success' => true,
-            'found' => true,
-            'nome' => $devedor->nome,
-            'total_titulos' => $qtdTitulos,
-            'valor_total' => $totalDebito,
-            'valor_formatado' => 'R$ ' . number_format($totalDebito, 2, ',', '.'),
-            'status' => ($totalDebito > 0) ? 'Inadimplente' : 'Regular',
-            'whatsapp' => $devedor->telefone,
-            'message' => "Olá {$devedor->nome}, detectamos {$qtdTitulos} débitos em aberto no total de R$ " . number_format($totalDebito, 2, ',', '.')
+            'success'          => true,
+            'found'            => true,
+            'tipo'             => $tipo,
+            'nome'             => $devedor->nome,
+            'total_titulos'    => $qtdTitulos,
+            'valor_total'      => round($totalDebito, 2),
+            'valor_formatado'  => 'R$ ' . number_format($totalDebito, 2, ',', '.'),
+            'status'           => $totalDebito > 0 ? 'Inadimplente' : 'Regular',
+            'whatsapp'         => $devedor->telefone,
+            'message'          => $mensagem,
         ]);
+    }
+
+    /**
+     * Alias mantido por compatibilidade (redireciona para consultarDocumento).
+     */
+    public function consultarCpf(Request $request)
+    {
+        return $this->consultarDocumento($request);
     }
 }
