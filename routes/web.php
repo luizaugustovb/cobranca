@@ -60,6 +60,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/importacoes/{importacao}/download', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'download'])->name('importacoes.download');
         
         Route::get('/relatorios', [\App\Http\Controllers\Tenant\RelatorioController::class, 'index'])->name('relatorios');
+        Route::get('/relatorios/fluxo-caixa', [\App\Http\Controllers\Tenant\RelatorioController::class, 'fluxoCaixa'])->name('relatorios.fluxo-caixa');
+        Route::get('/relatorios/eficiencia', [\App\Http\Controllers\Tenant\RelatorioController::class, 'eficiencia'])->name('relatorios.eficiencia');
+        Route::get('/relatorios/auditoria', [\App\Http\Controllers\Tenant\RelatorioController::class, 'auditoria'])->name('relatorios.auditoria');
         
         // Configurações
         Route::get('/configuracoes', [\App\Http\Controllers\Tenant\SettingController::class, 'index'])->name('settings');

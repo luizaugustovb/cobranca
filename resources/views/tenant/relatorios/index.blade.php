@@ -24,7 +24,7 @@
                         </div>
                         <h3 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter uppercase mb-2">Fluxo de Caixa</h3>
                         <p class="text-sm text-gray-400 font-medium mb-8">Analise recebimentos mensais, previsões e baixas em tempo real.</p>
-                        <a href="#" class="inline-flex items-center text-emerald-600 font-black uppercase text-xs tracking-widest hover:underline">Acessar Relatório →</a>
+                        <a href="{{ route('tenant.relatorios.fluxo-caixa') }}" class="inline-flex items-center text-emerald-600 font-black uppercase text-xs tracking-widest hover:underline">Acessar Relatório →</a>
                     </div>
                 </div>
 
@@ -38,7 +38,7 @@
                         </div>
                         <h3 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter uppercase mb-2">Eficiência Operacional</h3>
                         <p class="text-sm text-gray-400 font-medium mb-8">Conversão de títulos em acordos e taxa de inadimplência residual.</p>
-                        <a href="#" class="inline-flex items-center text-blue-600 font-black uppercase text-xs tracking-widest hover:underline">Acessar Relatório →</a>
+                        <a href="{{ route('tenant.relatorios.eficiencia') }}" class="inline-flex items-center text-blue-600 font-black uppercase text-xs tracking-widest hover:underline">Acessar Relatório →</a>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                         </div>
                         <h3 class="text-xl font-black text-slate-800 dark:text-white tracking-tighter uppercase mb-2">Logs de Auditoria</h3>
                         <p class="text-sm text-gray-400 font-medium mb-8">Rastro completo de quem visualizou ou alterou cada dado no tenant.</p>
-                        <a href="#" class="inline-flex items-center text-indigo-600 font-black uppercase text-xs tracking-widest hover:underline">Acessar Relatório →</a>
+                        <a href="{{ route('tenant.relatorios.auditoria') }}" class="inline-flex items-center text-indigo-600 font-black uppercase text-xs tracking-widest hover:underline">Acessar Relatório →</a>
                     </div>
                 </div>
 
