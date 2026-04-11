@@ -137,23 +137,29 @@ class TenantController extends Controller
             ->orderBy('id')
             ->first();
 
-        if ($user) {
-            // Reseta a senha do usuário existente
-            $user->password = \Illuminate\Support\Facades\Hash::make($newPassword);
-            $user->must_change_password = true;
-            $user->save();
-        } else {
-            // Cria o usuário admin se não existir (caso tenha falhado no cadastro original)
-            \App\Models\User::withoutGlobalScopes()->create([
-                'tenant_id' => $tenant->id,
-                'name'      => 'Admin - ' . $tenant->name,
-                'email'     => $tenant->email,
-                'password'  => \Illuminate\Support\Facades\Hash::make($newPassword),
-                'must_change_password' => true,
-            ]);
+        if (!$user) {
+            // Fallback: busca pelo e-mail (pode estar associado a outro tenant_id por falha anterior)
+            $user = \App\Models\User::withoutGlobalScopes()
+                ->where('email', $tenant->email)
+                ->first();
+
+            if ($user) {
+                // Corrige o tenant_id caso esteja errado
+                $user->tenant_id = $tenant->id;
+            } else {
+                // Cria o usuário do zero
+                $user = new \App\Models\User();
+                $user->tenant_id = $tenant->id;
+                $user->name      = 'Admin - ' . $tenant->name;
+                $user->email     = $tenant->email;
+            }
         }
 
-        $loginEmail = $user ? $user->email : $tenant->email;
+        $user->password           = \Illuminate\Support\Facades\Hash::make($newPassword);
+        $user->must_change_password = true;
+        $user->save();
+
+        $loginEmail = $user->email;
 
         // Disparar WhatsApp com nova senha
         $whatsappEnviado = false;
