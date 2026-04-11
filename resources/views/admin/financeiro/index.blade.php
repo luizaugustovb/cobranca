@@ -15,7 +15,7 @@
         <div class="max-w-7xl mx-auto">
             
             <!-- Grid de Stats Financeiros (Novo Estilo) -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
+            <div class="grid grid-cols-3 gap-6 mb-16">
                 <!-- Recebido -->
                 <div class="bg-emerald-500 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl relative overflow-hidden group">
                     <div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full group-hover:scale-110 transition-transform"></div>
