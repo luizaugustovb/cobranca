@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-black text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase">
+        <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase">
             {{ isset($devedor) ? 'Editar Devedor' : 'Novo Devedor' }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-5 sm:p-8 border border-gray-100 dark:border-gray-700">
                 <form action="{{ isset($devedor) ? route('tenant.devedores.update', $devedor) : route('tenant.devedores.store') }}" method="POST">
                     @csrf
                     @if(isset($devedor)) @method('PUT') @endif

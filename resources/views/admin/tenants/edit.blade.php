@@ -4,16 +4,16 @@
             <a href="{{ route('admin.tenants') }}" class="p-2 bg-white border border-slate-100 rounded-xl text-slate-400 hover:text-indigo-600 transition shadow-sm">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             </a>
-            <h2 class="font-black text-2xl text-slate-900 tracking-tighter uppercase leading-none">
+            <h2 class="font-black text-lg sm:text-2xl text-slate-900 tracking-tighter uppercase leading-none">
                 Editar Escritório: <span class="text-indigo-600">{{ $tenant->name }}</span>
             </h2>
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-6 sm:py-10">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-                <form action="{{ route('admin.tenants.update', $tenant) }}" method="POST" class="p-10 space-y-8">
+                <form action="{{ route('admin.tenants.update', $tenant) }}" method="POST" class="p-6 sm:p-10 space-y-8">
                     @csrf
                     @method('PUT')
 

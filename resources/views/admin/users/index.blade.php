@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <h2 class="font-black text-2xl text-slate-900 tracking-tighter uppercase leading-none">
+            <h2 class="font-black text-lg sm:text-2xl text-slate-900 tracking-tighter uppercase leading-none">
                 Gestão Mestra de <span class="text-emerald-600">Usuários</span>
             </h2>
             <a href="{{ route('admin.users.create') }}" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-lg shadow-emerald-500/20 font-black uppercase text-[10px] tracking-widest text-white transition flex items-center">
@@ -11,7 +11,7 @@
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-6 sm:py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
                 <div class="p-8 border-b border-slate-50 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-6">

@@ -10,7 +10,7 @@
         </div>
     </x-slot>
 
-    <div class="py-10 bg-slate-50 min-h-screen">
+    <div class="py-6 sm:py-10 bg-slate-50 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
             <!-- Grid de Indicadores Principais -->

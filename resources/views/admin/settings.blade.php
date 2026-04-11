@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col">
-            <h2 class="font-black text-2xl text-slate-900 leading-none uppercase tracking-tighter">
+            <h2 class="font-black text-lg sm:text-2xl text-slate-900 leading-none uppercase tracking-tighter">
                 Configurações da Plataforma
             </h2>
             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-1">Gestão de Infraestrutura e Planos SaaS</p>
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-6 sm:py-10">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-8">
             
             <form action="{{ route('admin.settings.test-whatsapp') }}" method="POST" id="test-whatsapp-form" class="hidden">

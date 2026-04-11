@@ -1,21 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-black text-2xl text-slate-900 flex items-center tracking-tighter uppercase leading-none">
-                <div class="p-2 bg-indigo-600 rounded-lg mr-3 shadow-lg shadow-indigo-500/20 text-white">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <h2 class="font-black text-lg sm:text-2xl text-slate-900 flex items-center tracking-tighter uppercase leading-none">
+                <div class="p-2 bg-indigo-600 rounded-lg mr-3 shadow-lg shadow-indigo-500/20 text-white shrink-0">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                 </div>
                 GESTÃO DE ESCRITÓRIOS
             </h2>
-            <a href="{{ route('admin.tenants.create') }}" class="inline-flex items-center px-6 py-3 bg-slate-900 border border-transparent rounded-xl font-black text-white uppercase text-[10px] tracking-widest hover:bg-black transition shadow-xl shadow-black/10">
+            <a href="{{ route('admin.tenants.create') }}" class="inline-flex items-center justify-center px-5 py-3 bg-slate-900 border border-transparent rounded-xl font-black text-white uppercase text-[10px] tracking-widest hover:bg-black transition shadow-xl shadow-black/10">
                 Novo Escritório
             </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
                 <div class="overflow-x-auto">
@@ -23,7 +23,7 @@
                         <thead class="bg-slate-50">
                             <tr>
                                 <th scope="col" class="px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Escritório / Slug</th>
-                                <th scope="col" class="px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">CNPJ / Plano</th>
+                                <th scope="col" class="hidden sm:table-cell px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">CNPJ / Plano</th>
                                 <th scope="col" class="px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Status</th>
                                 <th scope="col" class="px-8 py-5 text-right text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Ações</th>
                             </tr>
@@ -35,7 +35,7 @@
                                         <div class="text-sm font-black text-slate-800 uppercase tracking-tighter">{{ $tenant->name }}</div>
                                         <div class="text-[10px] text-indigo-500 font-bold tracking-widest">{{ $tenant->slug }}</div>
                                     </td>
-                                    <td class="px-8 py-6">
+                                    <td class="hidden sm:table-cell px-8 py-6">
                                         <div class="text-xs font-bold text-slate-500">{{ $tenant->document }}</div>
                                         <div class="text-[10px] text-slate-400 font-black uppercase">{{ $tenant->plan }}</div>
                                     </td>

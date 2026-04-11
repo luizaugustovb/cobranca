@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
          <div class="flex flex-col">
-            <h2 class="font-black text-4xl text-slate-800 leading-none uppercase tracking-tighter">
+            <h2 class="font-black text-2xl sm:text-4xl text-slate-800 leading-none uppercase tracking-tighter">
                 Receitas do SaaS
             </h2>
             <div class="flex items-center mt-2">
@@ -11,38 +11,38 @@
         </div>
     </x-slot>
 
-    <div class="py-12 px-6">
+    <div class="py-6 sm:py-12 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             
             <!-- Grid de Stats Financeiros (Novo Estilo) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
                 <!-- Recebido -->
-                <div class="bg-emerald-500 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden group">
+                <div class="bg-emerald-500 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl relative overflow-hidden group">
                     <div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full group-hover:scale-110 transition-transform"></div>
                     <p class="text-[10px] font-black text-white/50 uppercase tracking-[0.2em] mb-2">Faturamento Recebido</p>
-                    <p class="text-4xl font-black text-white tracking-tighter">R$ {{ number_format($totais['recebido'], 2, ',', '.') }}</p>
+                    <p class="text-2xl sm:text-4xl font-black text-white tracking-tighter">R$ {{ number_format($totais['recebido'], 2, ',', '.') }}</p>
                 </div>
                 
                 <!-- Pendente -->
-                <div class="bg-white rounded-[2.5rem] p-10 shadow-xl border border-slate-100 flex flex-col justify-between">
+                <div class="bg-white rounded-[2.5rem] p-6 sm:p-10 shadow-xl border border-slate-100 flex flex-col justify-between">
                     <div>
                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">A Receber (Mês)</p>
-                        <p class="text-4xl font-black text-slate-900 tracking-tighter">R$ {{ number_format($totais['pendente'], 2, ',', '.') }}</p>
+                        <p class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tighter">R$ {{ number_format($totais['pendente'], 2, ',', '.') }}</p>
                     </div>
                 </div>
 
                 <!-- Inadimplência -->
-                <div class="bg-rose-50 rounded-[2.5rem] p-10 shadow-xl border border-rose-100 flex flex-col justify-between">
+                <div class="bg-rose-50 rounded-[2.5rem] p-6 sm:p-10 shadow-xl border border-rose-100 flex flex-col justify-between">
                     <div>
                         <p class="text-[10px] font-black text-rose-400 uppercase tracking-[0.2em] mb-2">Inadimplência Tenants</p>
-                        <p class="text-4xl font-black text-rose-900 tracking-tighter">R$ {{ number_format($totais['vencido'], 2, ',', '.') }}</p>
+                        <p class="text-2xl sm:text-4xl font-black text-rose-900 tracking-tighter">R$ {{ number_format($totais['vencido'], 2, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- Tabela Refinada -->
             <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100">
-                <div class="px-10 py-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/20">
+                <div class="px-6 sm:px-10 py-6 sm:py-8 border-b border-slate-50 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-slate-50/20">
                     <h3 class="font-black text-lg text-slate-800 uppercase tracking-tighter">Histórico de Cobranças (Assinaturas)</h3>
                     <div class="px-4 py-2 bg-white rounded-xl border border-slate-100 text-[10px] font-black uppercase text-indigo-500 shadow-sm flex items-center">
                         <svg class="w-3 h-3 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>

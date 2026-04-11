@@ -20,7 +20,7 @@
 
         <!-- Password -->
         <div class="space-y-2">
-            <div class="flex justify-between items-center px-1">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 px-1">
                 <x-input-label for="password" value="Sua Senha" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
                 @if (Route::has('password.request'))
                     <a class="text-[10px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-700 transition underline decoration-dotted capitalize" href="{{ route('password.request') }}">

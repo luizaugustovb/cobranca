@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-black text-3xl text-slate-800 dark:text-white uppercase tracking-tighter">
+        <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white uppercase tracking-tighter">
             Segurança: Autenticação em Duas Etapas (2FA)
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-10 border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-5 sm:p-10 border border-gray-100 dark:border-gray-700">
                 <div class="flex flex-col md:flex-row items-center gap-10">
                     
                     <!-- QR Code Placeholder (System should pass URI) -->

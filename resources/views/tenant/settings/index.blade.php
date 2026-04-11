@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-black text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
+        <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
             Configurações do Escritório
         </h2>
         <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Gerencie suas integrações e identidade visual.</p>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             
             @if(session('success'))

@@ -15,15 +15,22 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-900">
-        <div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: true }">
+        <div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
             <!-- Sidebar (Dark Theme remains for Sidebar ONLY for contrast) -->
             @include('layouts.sidebar')
+
+            <!-- Mobile Sidebar Backdrop -->
+            <div x-show="sidebarOpen"
+                 x-cloak
+                 @click="sidebarOpen = false"
+                 class="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden">
+            </div>
 
             <!-- Main Content Area -->
             <div class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden">
                 <!-- Impersonation Banner -->
                 @if(session()->has('impersonating_tenant_id'))
-                    <div class="bg-indigo-600 px-4 py-2 text-white text-center text-xs font-black uppercase tracking-widest flex justify-between items-center shadow-lg sticky top-0 z-50">
+                    <div class="bg-indigo-600 px-4 py-2 text-white text-center text-xs font-black uppercase tracking-widest flex flex-wrap justify-between items-center gap-2 shadow-lg sticky top-0 z-50">
                         <span class="flex items-center">
                             <svg class="w-4 h-4 mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                             VISUALIZANDO COMO: {{ \App\Models\Tenant::find(session('impersonating_tenant_id'))->name }}
@@ -82,13 +89,13 @@
 
                 <!-- Header de Seção (Optional) -->
                 @isset($header)
-                    <div class="bg-gray-50 border-b border-slate-100 px-6 py-8">
+                    <div class="bg-gray-50 border-b border-slate-100 px-4 sm:px-6 py-4 sm:py-8">
                         {{ $header }}
                     </div>
                 @endisset
 
                 <!-- Main Section -->
-                <main class="p-6 lg:p-10">
+                <main class="p-4 sm:p-6 lg:p-10">
                     {{ $slot }}
                 </main>
 

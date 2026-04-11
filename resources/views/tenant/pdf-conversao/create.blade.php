@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-black text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
+        <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
             Conversor PDF → XLSX
         </h2>
         <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Converta sua planilha em PDF para XLSX e depois importe as cobranças.</p>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
             {{-- Card principal --}}
-            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-10 border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-5 sm:p-10 border border-gray-100 dark:border-gray-700">
 
                 {{-- Fluxo visual --}}
                 <div class="flex items-center justify-center gap-3 mb-8">
@@ -73,7 +73,7 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-between items-center pt-2 gap-4">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-2 gap-4">
                             <p class="text-xs text-gray-400">
                                 O download do XLSX iniciará automaticamente.
                             </p>

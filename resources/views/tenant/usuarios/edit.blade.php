@@ -4,11 +4,11 @@
             <a href="{{ route('tenant.usuarios') }}" class="mr-4 p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             </a>
-            <h2 class="font-black text-2xl text-slate-800 uppercase tracking-tighter">Editar Usuário</h2>
+            <h2 class="font-black text-lg sm:text-2xl text-slate-800 uppercase tracking-tighter">Editar Usuário</h2>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-8">
 

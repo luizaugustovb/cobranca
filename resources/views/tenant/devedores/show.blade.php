@@ -13,7 +13,7 @@
                         </li>
                     </ol>
                 </nav>
-                <h2 class="font-black text-4xl text-slate-900 dark:text-white flex items-center tracking-tighter uppercase">
+                <h2 class="font-black text-2xl sm:text-4xl text-slate-900 dark:text-white flex items-center tracking-tighter uppercase">
                     {{ $devedor->nome }}
                 </h2>
                 <div class="mt-2 flex items-center space-x-4">
@@ -33,7 +33,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
@@ -42,7 +42,7 @@
                     
                     <!-- Card de Dívidas -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
-                        <div class="bg-indigo-600 px-8 py-6 flex justify-between items-center">
+                        <div class="bg-indigo-600 px-8 py-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <h3 class="text-white font-black text-xl tracking-tighter flex items-center">
                                 <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                 DÍVIDAS ATIVAS
@@ -52,7 +52,7 @@
                                 <p class="text-2xl font-black">R$ {{ number_format($devedor->titulos->where('status', 'aberto')->sum(fn($t) => $t->valor_total), 2, ',', '.') }}</p>
                             </div>
                         </div>
-                        <div class="p-0">
+                        <div class="p-0 overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700/30">
                                     <tr>
@@ -93,7 +93,7 @@
 
                     <!-- Acordos Recentes -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-                        <div class="px-8 py-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                        <div class="px-8 py-6 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <h3 class="font-black text-xl text-slate-800 dark:text-white tracking-tighter uppercase">Acordos / Negociações</h3>
                             <svg class="h-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
@@ -122,7 +122,7 @@
                 <div class="space-y-8">
                     
                     <!-- Dados de Contato -->
-                    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 transition hover:shadow-2xl">
+                    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-5 sm:p-8 border border-gray-100 dark:border-gray-700 transition hover:shadow-2xl">
                         <h3 class="font-black text-lg text-slate-800 dark:text-white tracking-tighter uppercase mb-6 flex items-center">
                             <svg class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                             Contato Direto
@@ -146,7 +146,7 @@
 
                     <!-- Histórico de Interações -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
-                        <div class="p-8 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                        <div class="p-8 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <h3 class="font-black text-lg text-slate-800 dark:text-white tracking-tighter uppercase">LINHA DO TEMPO</h3>
                             <button class="p-2 bg-indigo-50 text-indigo-600 rounded-lg"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg></button>
                         </div>

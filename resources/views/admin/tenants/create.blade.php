@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-black text-2xl text-slate-900 uppercase tracking-tighter leading-tight flex items-center">
+        <h2 class="font-black text-lg sm:text-2xl text-slate-900 uppercase tracking-tighter leading-tight flex items-center">
              <div class="p-2 bg-indigo-600 rounded-lg mr-3 shadow-lg shadow-indigo-500/20 text-white leading-none">
                 <svg class="w-6 h-6 leading-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
@@ -8,9 +8,9 @@
         </h2>
     </x-slot>
 
-    <div class="py-12 px-6">
+    <div class="py-6 sm:py-12 px-4 sm:px-6">
         <div class="max-w-4xl mx-auto">
-            <div class="bg-white rounded-[2.5rem] shadow-xl p-10 border border-slate-100">
+            <div class="bg-white rounded-[2.5rem] shadow-xl p-6 sm:p-10 border border-slate-100">
                 <form action="{{ route('admin.tenants.store') }}" method="POST">
                     @csrf
                     

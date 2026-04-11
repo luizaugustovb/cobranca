@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col">
-            <h2 class="font-black text-2xl text-slate-900 leading-none uppercase tracking-tighter">
+            <h2 class="font-black text-lg sm:text-2xl text-slate-900 leading-none uppercase tracking-tighter">
                 Planos & Preços
             </h2>
             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-1">Gerencie os valores e configurações dos planos SaaS</p>
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-6 sm:py-10">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
             @if(session('success'))

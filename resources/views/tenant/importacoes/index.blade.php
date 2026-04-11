@@ -1,22 +1,22 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-black text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase">
-                <div class="p-2 bg-slate-100 rounded-lg mr-3">
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase">
+                <div class="p-2 bg-slate-100 rounded-lg mr-3 shrink-0">
                     <svg class="w-8 h-8 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                 </div>
                 IMPORTAÇÕES EM LOTE
             </h2>
-            <a href="{{ route('tenant.importacoes.create') }}" class="inline-flex items-center px-6 py-3 bg-slate-800 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-slate-900 transition shadow-xl">
-                <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <a href="{{ route('tenant.importacoes.create') }}" class="inline-flex items-center justify-center px-5 py-3 bg-slate-800 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-slate-900 transition shadow-xl text-sm">
+                <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Nova Importação
             </a>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-2xl sm:rounded-3xl border border-gray-100 dark:border-gray-700">
                 <div class="overflow-x-auto">
@@ -26,7 +26,7 @@
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Arquivo / Data</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Tipo</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Status</th>
-                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Resultado</th>
+                                <th scope="col" class="hidden md:table-cell px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Resultado</th>
                                 <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Ações</th>
                             </tr>
                         </thead>
@@ -51,7 +51,7 @@
                                             <span class="px-3 py-1 text-xs font-black uppercase rounded-full bg-gray-100 text-gray-600">Pendente</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">
                                         <div class="text-xs font-bold text-gray-600">
                                             <span class="text-green-600">✓ {{ $import->processados }}</span> / <span class="text-red-400">✗ {{ $import->erros }}</span> (Total: {{ $import->total }})
                                         </div>

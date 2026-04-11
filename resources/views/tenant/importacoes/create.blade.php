@@ -1,10 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-black text-3xl text-slate-800 dark:text-white">Nova Importacao de Cobrancas</h2>
+        <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white">Nova Importacao de Cobrancas</h2>
     </x-slot>
-    <div class="py-12">
+    <div class="py-6 sm:py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-8">
-            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-10 border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-5 sm:p-10 border border-gray-100 dark:border-gray-700">
                 <form action="{{ route('tenant.importacoes.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="space-y-8">
@@ -36,7 +36,7 @@
                     </div>
                 </form>
             </div>
-            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow p-8 border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl shadow p-5 sm:p-8 border border-gray-100 dark:border-gray-700">
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h3 class="font-black text-lg uppercase tracking-widest text-slate-800 dark:text-white">Estrutura Esperada da Planilha</h3>
