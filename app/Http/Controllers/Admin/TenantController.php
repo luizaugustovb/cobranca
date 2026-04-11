@@ -129,19 +129,31 @@ class TenantController extends Controller
 
     public function resetPassword(Tenant $tenant)
     {
+        $newPassword = 'Admin@123';
+
+        // Busca o usuário admin pelo tenant (qualquer usuário do tenant)
         $user = \App\Models\User::withoutGlobalScopes()
             ->where('tenant_id', $tenant->id)
-            ->where('email', $tenant->email)
+            ->orderBy('id')
             ->first();
 
-        if (!$user) {
-            return redirect()->back()->with('error', 'Usuário administrador do escritório não encontrado.');
+        if ($user) {
+            // Reseta a senha do usuário existente
+            $user->password = \Illuminate\Support\Facades\Hash::make($newPassword);
+            $user->must_change_password = true;
+            $user->save();
+        } else {
+            // Cria o usuário admin se não existir (caso tenha falhado no cadastro original)
+            \App\Models\User::withoutGlobalScopes()->create([
+                'tenant_id' => $tenant->id,
+                'name'      => 'Admin - ' . $tenant->name,
+                'email'     => $tenant->email,
+                'password'  => \Illuminate\Support\Facades\Hash::make($newPassword),
+                'must_change_password' => true,
+            ]);
         }
 
-        $newPassword = 'Admin@123';
-        $user->password = \Illuminate\Support\Facades\Hash::make($newPassword);
-        $user->must_change_password = true;
-        $user->save();
+        $loginEmail = $user ? $user->email : $tenant->email;
 
         // Disparar WhatsApp com nova senha
         $whatsappEnviado = false;
@@ -151,7 +163,7 @@ class TenantController extends Controller
                 $link = config('app.url');
                 $mensagem = "🔑 *Redefinição de Senha — CobrançaPro*\n\n"
                     . "Olá! A senha da sua conta foi redefinida pelo administrador do sistema.\n\n"
-                    . "📧 *Login:* {$tenant->email}\n"
+                    . "📧 *Login:* {$loginEmail}\n"
                     . "🔑 *Nova Senha:* {$newPassword}\n"
                     . "🔗 *Acesso:* {$link}\n\n"
                     . "⚠️ No próximo acesso você será solicitado a criar uma nova senha pessoal.\n\n"
@@ -169,7 +181,7 @@ class TenantController extends Controller
             : ' ⚠️ WhatsApp NÃO enviado (verifique o Token Viicio).';
 
         return redirect()->back()->with('success',
-            "Senha de '{$tenant->name}' redefinida para: {$newPassword} |{$whatsappStatus}"
+            "Senha de '{$tenant->name}' redefinida! Login: {$loginEmail} | Senha: {$newPassword} |{$whatsappStatus}"
         );
     }
 
