@@ -1,8 +1,8 @@
 <x-guest-layout>
     <!-- Logo & Title -->
     <div class="mb-10 text-center">
-        <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Entrar no <span class="text-indigo-600">CobranÃ§aPro</span></h2>
-        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2">Portal de RecuperaÃ§Ã£o de Ativos</p>
+        <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Entrar no <span class="text-indigo-600">CobrançaPro</span></h2>
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2">Portal de Recuperação de Ativos</p>
     </div>
 
     <!-- Session Status -->
@@ -35,7 +35,7 @@
                                 x-bind:type="showPassword ? 'text' : 'password'"
                                 name="password"
                                 required autocomplete="current-password" 
-                                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
+                                placeholder="••••••••" />
                 
                 <button type="button" @click="showPassword = !showPassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-indigo-600 focus:outline-none transition">
                     <template x-if="!showPassword">

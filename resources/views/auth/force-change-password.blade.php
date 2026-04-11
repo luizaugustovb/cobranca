@@ -6,7 +6,7 @@
             </svg>
         </div>
         <h2 class="text-xl font-black text-slate-800 uppercase tracking-tight">Defina sua Nova Senha</h2>
-        <p class="text-sm text-slate-500 mt-1">Por seguranÃ§a, vocÃª precisa criar uma senha pessoal antes de continuar.</p>
+        <p class="text-sm text-slate-500 mt-1">Por segurança, você precisa criar uma senha pessoal antes de continuar.</p>
     </div>
 
     <form method="POST" action="{{ route('password.force-change.update') }}">

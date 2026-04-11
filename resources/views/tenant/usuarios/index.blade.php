@@ -7,11 +7,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                     </svg>
                 </div>
-                UsuÃ¡rios do EscritÃ³rio
+                Usuários do Escritório
             </h2>
             <a href="{{ route('tenant.usuarios.create') }}" class="inline-flex items-center justify-center px-5 py-3 bg-slate-900 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-black transition shadow-lg text-sm">
                 <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-                Novo UsuÃ¡rio
+                Novo Usuário
             </a>
         </div>
     </x-slot>
@@ -31,11 +31,11 @@
                     <table class="min-w-full divide-y divide-slate-100">
                         <thead class="bg-slate-50">
                             <tr>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">UsuÃ¡rio</th>
+                                <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Usuário</th>
                                 <th class="hidden sm:table-cell px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Contato</th>
-                                <th class="hidden md:table-cell px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Ãšltimo Acesso</th>
+                                <th class="hidden md:table-cell px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Último Acesso</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
-                                <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">AÃ§Ãµes</th>
+                                <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">Ações</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-slate-100">
@@ -63,7 +63,7 @@
                                             {{ $usuario->status === 'active' ? 'Ativo' : 'Inativo' }}
                                         </span>
                                         @if($usuario->id === auth()->id())
-                                            <span class="ml-1 px-2 py-1 text-xs font-bold rounded-full bg-indigo-50 text-indigo-600 uppercase">VocÃª</span>
+                                            <span class="ml-1 px-2 py-1 text-xs font-bold rounded-full bg-indigo-50 text-indigo-600 uppercase">Você</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">
@@ -72,7 +72,7 @@
                                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                             </a>
                                             @if($usuario->id !== auth()->id())
-                                                <form action="{{ route('tenant.usuarios.destroy', $usuario) }}" method="POST" onsubmit="return confirm('Excluir este usuÃ¡rio?')">
+                                                <form action="{{ route('tenant.usuarios.destroy', $usuario) }}" method="POST" onsubmit="return confirm('Excluir este usuário?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-500 hover:text-white transition duration-200">
@@ -88,7 +88,7 @@
                                     <td colspan="5" class="px-6 py-16 text-center">
                                         <div class="flex flex-col items-center text-slate-400">
                                             <svg class="w-12 h-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                                            <p class="text-sm font-bold uppercase tracking-widest">Nenhum usuÃ¡rio cadastrado.</p>
+                                            <p class="text-sm font-bold uppercase tracking-widest">Nenhum usuário cadastrado.</p>
                                         </div>
                                     </td>
                                 </tr>

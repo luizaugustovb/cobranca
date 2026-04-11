@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
-            Conversor PDF â†’ XLSX
+            Conversor PDF → XLSX
         </h2>
-        <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Converta sua planilha em PDF para XLSX e depois importe as cobranÃ§as.</p>
+        <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Converta sua planilha em PDF para XLSX e depois importe as cobranças.</p>
     </x-slot>
 
     <div class="py-6 sm:py-12">
@@ -51,7 +51,7 @@
                                     <p class="text-sm text-gray-500 dark:text-gray-400 font-semibold">
                                         <span class="text-red-500 font-black">Clique para selecionar</span> ou arraste o PDF
                                     </p>
-                                    <p class="text-xs text-gray-400 mt-1">Apenas PDF â€” mÃ¡x. 20 MB</p>
+                                    <p class="text-xs text-gray-400 mt-1">Apenas PDF — máx. 20 MB</p>
                                     <p id="file-name" class="text-xs text-red-600 font-bold mt-2 hidden"></p>
                                 </div>
                                 <input id="arquivo" name="arquivo" type="file" accept=".pdf" class="hidden" required
@@ -75,7 +75,7 @@
 
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-2 gap-4">
                             <p class="text-xs text-gray-400">
-                                O download do XLSX iniciarÃ¡ automaticamente.
+                                O download do XLSX iniciará automaticamente.
                             </p>
                             <button type="submit" id="btn-converter"
                                 class="inline-flex items-center gap-2 px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition transform hover:scale-105 active:scale-95">
@@ -89,7 +89,7 @@
                 </form>
             </div>
 
-            {{-- Dica prÃ³ximo passo --}}
+            {{-- Dica próximo passo --}}
             <div class="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-700 rounded-3xl p-6 flex items-start gap-4">
                 <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-800 rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,9 +97,9 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm font-black text-indigo-700 dark:text-indigo-300 uppercase tracking-widest mb-1">PrÃ³ximo passo</p>
+                    <p class="text-sm font-black text-indigo-700 dark:text-indigo-300 uppercase tracking-widest mb-1">Próximo passo</p>
                     <p class="text-xs text-indigo-600 dark:text-indigo-400">
-                        ApÃ³s baixar o XLSX, ajuste as colunas conforme o modelo de importaÃ§Ã£o e
+                        Após baixar o XLSX, ajuste as colunas conforme o modelo de importação e
                         <a href="{{ route('tenant.importacoes.create') }}" class="font-black underline hover:no-underline">importe o arquivo aqui</a>.
                     </p>
                 </div>

@@ -10,7 +10,7 @@
                 Logs de Auditoria
             </h2>
             <a href="{{ route('tenant.relatorios') }}" class="inline-flex items-center text-xs font-black text-slate-400 hover:text-slate-700 uppercase tracking-widest transition shrink-0">
-                â† Voltar aos RelatÃ³rios
+                ← Voltar aos Relatórios
             </a>
         </div>
     </x-slot>
@@ -22,7 +22,7 @@
             <form method="GET" action="{{ route('tenant.relatorios.auditoria') }}" class="bg-white rounded-3xl shadow-xl border border-slate-100 p-5 sm:p-8">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">AÃ§Ã£o</label>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Ação</label>
                         <select name="acao" class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Todas</option>
                             @foreach($acoes as $acao)
@@ -31,8 +31,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">UsuÃ¡rio</label>
-                        <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Nome do usuÃ¡rio..."
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Usuário</label>
+                        <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Nome do usuário..."
                             class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <div>
@@ -41,7 +41,7 @@
                             class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">AtÃ©</label>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Até</label>
                         <input type="date" name="data_fim" value="{{ request('data_fim') }}"
                             class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
@@ -68,8 +68,8 @@
                     <table class="min-w-full divide-y divide-slate-50">
                         <thead class="bg-slate-50/50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-[10px] font-black uppercase tracking-widest text-slate-400">UsuÃ¡rio</th>
-                                <th class="px-6 py-3 text-left text-[10px] font-black uppercase tracking-widest text-slate-400">AÃ§Ã£o</th>
+                                <th class="px-6 py-3 text-left text-[10px] font-black uppercase tracking-widest text-slate-400">Usuário</th>
+                                <th class="px-6 py-3 text-left text-[10px] font-black uppercase tracking-widest text-slate-400">Ação</th>
                                 <th class="px-6 py-3 text-left text-[10px] font-black uppercase tracking-widest text-slate-400 hidden md:table-cell">Registro</th>
                                 <th class="px-6 py-3 text-right text-[10px] font-black uppercase tracking-widest text-slate-400">Data / Hora</th>
                             </tr>
@@ -86,7 +86,7 @@
                                     'logout'  => 'bg-slate-100 text-slate-600',
                                 ];
                                 $corAcao = $acaoCores[$log->action] ?? 'bg-slate-100 text-slate-600';
-                                $modelo = $log->auditable_type ? class_basename($log->auditable_type) : 'â€”';
+                                $modelo = $log->auditable_type ? class_basename($log->auditable_type) : '—';
                             @endphp
                             <tr class="hover:bg-slate-50/50 transition">
                                 <td class="px-6 py-4 text-sm font-bold text-slate-800">

@@ -10,7 +10,7 @@
                 Fluxo de Caixa
             </h2>
             <a href="{{ route('tenant.relatorios') }}" class="inline-flex items-center text-xs font-black text-slate-400 hover:text-slate-700 uppercase tracking-widest transition shrink-0">
-                â† Voltar aos RelatÃ³rios
+                ← Voltar aos Relatórios
             </a>
         </div>
     </x-slot>
@@ -25,23 +25,23 @@
                     <p class="text-xl sm:text-3xl font-black text-emerald-600 tracking-tighter">R$ {{ number_format($stats['total_recebido'], 2, ',', '.') }}</p>
                 </div>
                 <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Recebido este mÃªs</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Recebido este mês</p>
                     <p class="text-xl sm:text-3xl font-black text-blue-600 tracking-tighter">R$ {{ number_format($stats['recebido_mes'], 2, ',', '.') }}</p>
                 </div>
                 <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Em Aberto ({{ $stats['titulos_abertos'] }} tÃ­tulos)</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Em Aberto ({{ $stats['titulos_abertos'] }} títulos)</p>
                     <p class="text-xl sm:text-3xl font-black text-amber-600 tracking-tighter">R$ {{ number_format($stats['valor_aberto'], 2, ',', '.') }}</p>
                 </div>
                 <div class="bg-rose-50 rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl border border-rose-100">
-                    <p class="text-[10px] font-black text-rose-400 uppercase tracking-widest mb-1">Vencidos ({{ $stats['titulos_vencidos'] }} tÃ­tulos)</p>
+                    <p class="text-[10px] font-black text-rose-400 uppercase tracking-widest mb-1">Vencidos ({{ $stats['titulos_vencidos'] }} títulos)</p>
                     <p class="text-xl sm:text-3xl font-black text-rose-600 tracking-tighter">R$ {{ number_format($stats['valor_vencido'], 2, ',', '.') }}</p>
                 </div>
             </div>
 
-            {{-- GrÃ¡fico de Recebimentos --}}
+            {{-- Gráfico de Recebimentos --}}
             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                 <div class="px-6 sm:px-10 py-5 sm:py-8 border-b border-slate-50 bg-slate-50/30">
-                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">Recebimentos dos Ãšltimos 12 Meses</h3>
+                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">Recebimentos dos Últimos 12 Meses</h3>
                 </div>
                 <div class="p-5 sm:p-8">
                     @php $maxValor = $meses->max('valor') ?: 1; @endphp
@@ -60,11 +60,11 @@
                 </div>
             </div>
 
-            {{-- PrevisÃ£o PrÃ³ximos 3 Meses --}}
+            {{-- Previsão Próximos 3 Meses --}}
             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                 <div class="px-6 sm:px-10 py-5 sm:py-8 border-b border-slate-50 bg-slate-50/30 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">PrevisÃ£o de Recebimento (PrÃ³ximos 3 Meses)</h3>
-                    <span class="text-[10px] font-black text-amber-500 uppercase tracking-widest">Baseado em tÃ­tulos em aberto</span>
+                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">Previsão de Recebimento (Próximos 3 Meses)</h3>
+                    <span class="text-[10px] font-black text-amber-500 uppercase tracking-widest">Baseado em títulos em aberto</span>
                 </div>
                 <div class="p-5 sm:p-8">
                     <div class="grid grid-cols-3 gap-4">
@@ -97,10 +97,10 @@
                             @forelse($pagamentosRecentes as $pag)
                             <tr class="hover:bg-slate-50/50 transition">
                                 <td class="px-6 py-4 text-sm font-bold text-slate-800">
-                                    {{ $pag->acordo?->devedor?->nome ?? 'â€”' }}
+                                    {{ $pag->acordo?->devedor?->nome ?? '—' }}
                                 </td>
                                 <td class="px-6 py-4 text-sm text-slate-500 hidden sm:table-cell">
-                                    {{ $pag->forma_pagamento ?? 'â€”' }}
+                                    {{ $pag->forma_pagamento ?? '—' }}
                                 </td>
                                 <td class="px-6 py-4 text-sm font-black text-emerald-600 text-right">
                                     R$ {{ number_format($pag->valor, 2, ',', '.') }}

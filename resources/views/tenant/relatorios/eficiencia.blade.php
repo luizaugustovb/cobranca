@@ -7,10 +7,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
                     </svg>
                 </div>
-                EficiÃªncia Operacional
+                Eficiência Operacional
             </h2>
             <a href="{{ route('tenant.relatorios') }}" class="inline-flex items-center text-xs font-black text-slate-400 hover:text-slate-700 uppercase tracking-widest transition shrink-0">
-                â† Voltar aos RelatÃ³rios
+                ← Voltar aos Relatórios
             </a>
         </div>
     </x-slot>
@@ -21,29 +21,29 @@
             {{-- Cards de Taxas --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl text-white">
-                    <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Taxa de RecuperaÃ§Ã£o</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Taxa de Recuperação</p>
                     <p class="text-4xl sm:text-5xl font-black tracking-tighter">{{ $taxaRecuperacao }}%</p>
-                    <p class="text-xs font-medium mt-2 opacity-70">TÃ­tulos pagos + em acordo / total</p>
+                    <p class="text-xs font-medium mt-2 opacity-70">Títulos pagos + em acordo / total</p>
                 </div>
                 <div class="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">ConversÃ£o em Acordos</p>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Conversão em Acordos</p>
                     <p class="text-4xl sm:text-5xl font-black text-blue-600 tracking-tighter">{{ $taxaConversao }}%</p>
-                    <p class="text-xs font-medium text-slate-400 mt-2">{{ $titulosAcordo }} de {{ $totalTitulos }} tÃ­tulos negociados</p>
+                    <p class="text-xs font-medium text-slate-400 mt-2">{{ $titulosAcordo }} de {{ $totalTitulos }} títulos negociados</p>
                 </div>
                 <div class="bg-rose-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border border-rose-100">
-                    <p class="text-[10px] font-black text-rose-400 uppercase tracking-widest mb-1">InadimplÃªncia Residual</p>
+                    <p class="text-[10px] font-black text-rose-400 uppercase tracking-widest mb-1">Inadimplência Residual</p>
                     <p class="text-4xl sm:text-5xl font-black text-rose-600 tracking-tighter">{{ $taxaInadimplencia }}%</p>
-                    <p class="text-xs font-medium text-rose-400 mt-2">{{ $titulosAbertos }} tÃ­tulos em aberto</p>
+                    <p class="text-xs font-medium text-rose-400 mt-2">{{ $titulosAbertos }} títulos em aberto</p>
                 </div>
             </div>
 
-            {{-- Resumo de TÃ­tulos e Acordos --}}
+            {{-- Resumo de Títulos e Acordos --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                {{-- TÃ­tulos --}}
+                {{-- Títulos --}}
                 <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                     <div class="px-6 sm:px-8 py-5 border-b border-slate-50 bg-slate-50/30">
-                        <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm">TÃ­tulos â€” VisÃ£o Geral</h3>
+                        <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm">Títulos — Visão Geral</h3>
                     </div>
                     <div class="p-6 sm:p-8 space-y-4">
                         @php
@@ -76,13 +76,13 @@
                 {{-- Acordos --}}
                 <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                     <div class="px-6 sm:px-8 py-5 border-b border-slate-50 bg-slate-50/30">
-                        <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm">Acordos â€” VisÃ£o Geral</h3>
+                        <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm">Acordos — Visão Geral</h3>
                     </div>
                     <div class="p-6 sm:p-8 space-y-4">
                         @php
                             $acordoBarras = [
                                 ['label' => 'Ativos', 'qtd' => $acordosAtivos, 'cor' => 'bg-blue-500'],
-                                ['label' => 'ConcluÃ­dos', 'qtd' => $acordosConcluidos, 'cor' => 'bg-emerald-500'],
+                                ['label' => 'Concluídos', 'qtd' => $acordosConcluidos, 'cor' => 'bg-emerald-500'],
                                 ['label' => 'Inadimplentes', 'qtd' => $acordosInad, 'cor' => 'bg-rose-400'],
                             ];
                             $maxAcordo = collect($acordoBarras)->max('qtd') ?: 1;
@@ -109,7 +109,7 @@
                                 <span class="text-xs font-black text-emerald-600">R$ {{ number_format($valorNegociado, 2, ',', '.') }}</span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Desconto MÃ©dio Concedido</span>
+                                <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Desconto Médio Concedido</span>
                                 <span class="text-xs font-black text-blue-600">{{ $descontoMedio }}%</span>
                             </div>
                         </div>
@@ -117,10 +117,10 @@
                 </div>
             </div>
 
-            {{-- Acordos por MÃªs --}}
+            {{-- Acordos por Mês --}}
             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                 <div class="px-6 sm:px-10 py-5 sm:py-8 border-b border-slate-50 bg-slate-50/30">
-                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">Acordos Criados â€” Ãšltimos 6 Meses</h3>
+                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">Acordos Criados — Últimos 6 Meses</h3>
                 </div>
                 <div class="p-5 sm:p-8">
                     @php $maxAcordoMes = $acordosPorMes->max('qtd') ?: 1; @endphp
@@ -137,10 +137,10 @@
                 </div>
             </div>
 
-            {{-- Ãšltimos Acordos --}}
+            {{-- Últimos Acordos --}}
             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                 <div class="px-6 sm:px-10 py-5 sm:py-8 border-b border-slate-50 bg-slate-50/30">
-                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">Ãšltimos Acordos</h3>
+                    <h3 class="font-black text-slate-800 uppercase tracking-tighter text-sm sm:text-base">Últimos Acordos</h3>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-50">
@@ -160,7 +160,7 @@
                                 $cor = $cores[$acordo->status] ?? 'bg-slate-100 text-slate-700';
                             @endphp
                             <tr class="hover:bg-slate-50/50 transition">
-                                <td class="px-6 py-4 text-sm font-bold text-slate-800">{{ $acordo->devedor?->nome ?? 'â€”' }}</td>
+                                <td class="px-6 py-4 text-sm font-bold text-slate-800">{{ $acordo->devedor?->nome ?? '—' }}</td>
                                 <td class="px-6 py-4 text-sm text-slate-500 text-right hidden sm:table-cell">R$ {{ number_format($acordo->valor_original, 2, ',', '.') }}</td>
                                 <td class="px-6 py-4 text-sm font-black text-blue-600 text-right">R$ {{ number_format($acordo->valor_acordo, 2, ',', '.') }}</td>
                                 <td class="px-6 py-4 text-center">

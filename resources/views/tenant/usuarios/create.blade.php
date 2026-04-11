@@ -4,7 +4,7 @@
             <a href="{{ route('tenant.usuarios') }}" class="mr-4 p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             </a>
-            <h2 class="font-black text-lg sm:text-2xl text-slate-800 uppercase tracking-tighter">Novo UsuÃ¡rio</h2>
+            <h2 class="font-black text-lg sm:text-2xl text-slate-800 uppercase tracking-tighter">Novo Usuário</h2>
         </div>
     </x-slot>
 
@@ -17,7 +17,7 @@
                         <p class="font-black text-xs uppercase tracking-widest mb-2">Corrija os erros:</p>
                         <ul class="text-sm space-y-1">
                             @foreach($errors->all() as $error)
-                                <li>â€¢ {{ $error }}</li>
+                                <li>• {{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -56,7 +56,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <x-input-label for="password" value="Senha" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
-                            <x-text-input id="password" name="password" type="password" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4" required placeholder="MÃ­nimo 8 caracteres" />
+                            <x-text-input id="password" name="password" type="password" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4" required placeholder="Mínimo 8 caracteres" />
                         </div>
                         <div class="space-y-2">
                             <x-input-label for="password_confirmation" value="Confirmar Senha" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
@@ -67,7 +67,7 @@
                     <div class="pt-4 flex justify-end gap-4">
                         <a href="{{ route('tenant.usuarios') }}" class="px-6 py-3 border border-slate-200 rounded-xl text-sm font-black text-slate-500 uppercase tracking-widest hover:bg-slate-50 transition">Cancelar</a>
                         <x-primary-button class="px-8 py-3 bg-purple-600 hover:bg-purple-700 rounded-xl shadow-lg shadow-purple-500/20 font-black uppercase tracking-widest">
-                            Criar UsuÃ¡rio
+                            Criar Usuário
                         </x-primary-button>
                     </div>
                 </form>

@@ -7,10 +7,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                 </div>
-                GESTÃƒO DE ESCRITÃ“RIOS
+                GESTÃO DE ESCRITÓRIOS
             </h2>
             <a href="{{ route('admin.tenants.create') }}" class="inline-flex items-center justify-center px-5 py-3 bg-slate-900 border border-transparent rounded-xl font-black text-white uppercase text-[10px] tracking-widest hover:bg-black transition shadow-xl shadow-black/10">
-                Novo EscritÃ³rio
+                Novo Escritório
             </a>
         </div>
     </x-slot>
@@ -23,7 +23,7 @@
                     <div class="flex items-start space-x-3">
                         <svg class="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         <div>
-                            <p class="text-sm font-black text-emerald-800">OperaÃ§Ã£o realizada com sucesso</p>
+                            <p class="text-sm font-black text-emerald-800">Operação realizada com sucesso</p>
                             <p class="text-xs text-emerald-700 mt-1 font-semibold">{{ session('success') }}</p>
                         </div>
                     </div>
@@ -42,10 +42,10 @@
                     <table class="min-w-full divide-y divide-slate-100">
                         <thead class="bg-slate-50">
                             <tr>
-                                <th scope="col" class="px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">EscritÃ³rio / Slug</th>
+                                <th scope="col" class="px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Escritório / Slug</th>
                                 <th scope="col" class="hidden sm:table-cell px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">CNPJ / Plano</th>
                                 <th scope="col" class="px-8 py-5 text-left text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Status</th>
-                                <th scope="col" class="px-8 py-5 text-right text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">AÃ§Ãµes</th>
+                                <th scope="col" class="px-8 py-5 text-right text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Ações</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50 bg-white">
@@ -73,7 +73,7 @@
                                          </a>
                                          
                                          @if($tenant->status === 'inactive')
-                                             <form action="{{ route('admin.tenants.destroy', $tenant) }}" method="POST" class="inline" onsubmit="return confirm('ATENÃ‡ÃƒO: Deseja realmente excluir este escritÃ³rio?')">
+                                             <form action="{{ route('admin.tenants.destroy', $tenant) }}" method="POST" class="inline" onsubmit="return confirm('ATENÇÃO: Deseja realmente excluir este escritório?')">
                                                  @csrf @method('DELETE')
                                                  <button type="submit" class="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition">
                                                      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white uppercase tracking-tighter">
-            SeguranÃ§a: AutenticaÃ§Ã£o em Duas Etapas (2FA)
+            Segurança: Autenticação em Duas Etapas (2FA)
         </h2>
     </x-slot>
 
@@ -26,11 +26,11 @@
 
                     <div class="flex-1 space-y-6">
                         <h4 class="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tighter">Proteja sua conta</h4>
-                        <p class="text-sm text-gray-500 font-medium">A autenticaÃ§Ã£o em duas etapas adiciona uma camada extra de seguranÃ§a Ã  sua conta, exigindo mais do que apenas uma senha para entrar.</p>
+                        <p class="text-sm text-gray-500 font-medium">A autenticação em duas etapas adiciona uma camada extra de segurança à sua conta, exigindo mais do que apenas uma senha para entrar.</p>
                         
                         <div class="pt-6">
                             @if(!auth()->user()->google2fa_secret)
-                                <form method="POST" action="#"> <!-- Rota de ativaÃ§Ã£o 2FA -->
+                                <form method="POST" action="#"> <!-- Rota de ativação 2FA -->
                                     @csrf
                                     <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl shadow-lg shadow-blue-500/20 font-black uppercase tracking-widest leading-none">
                                         Ativar 2FA Agora
@@ -39,7 +39,7 @@
                             @else
                                 <div class="flex items-center text-green-600 font-black uppercase text-xs tracking-widest mb-6">
                                     <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    AutenticaÃ§Ã£o Ativada
+                                    Autenticação Ativada
                                 </div>
                                 <form method="POST" action="#">
                                     @csrf

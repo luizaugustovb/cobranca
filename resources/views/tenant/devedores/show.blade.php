@@ -37,15 +37,15 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
-                <!-- Coluna da Esquerda: Resumo e TÃ­tulos -->
+                <!-- Coluna da Esquerda: Resumo e Títulos -->
                 <div class="lg:col-span-2 space-y-8">
                     
-                    <!-- Card de DÃ­vidas -->
+                    <!-- Card de Dívidas -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
                         <div class="bg-indigo-600 px-8 py-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <h3 class="text-white font-black text-xl tracking-tighter flex items-center">
                                 <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                DÃVIDAS ATIVAS
+                                DÍVIDAS ATIVAS
                             </h3>
                             <div class="text-white text-right">
                                 <p class="text-xs uppercase font-thin leading-tight">Total em Aberto</p>
@@ -56,7 +56,7 @@
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700/30">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">NÂº TÃ­tulo</th>
+                                        <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Nº Título</th>
                                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Vencimento</th>
                                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Valor</th>
                                         <th class="px-6 py-3 text-right text-xs font-bold text-gray-400 uppercase tracking-widest">Status</th>
@@ -76,7 +76,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">Nenhum tÃ­tulo vinculado.</td>
+                                            <td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">Nenhum título vinculado.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -85,7 +85,7 @@
                         @if($devedor->titulos->where('status', 'aberto')->count() > 0)
                             <div class="px-8 py-6 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-100 dark:border-gray-700">
                                 <a href="{{ route('tenant.acordos.create', ['devedor' => $devedor->id]) }}" class="w-full inline-flex justify-center items-center px-6 py-4 bg-indigo-600 text-white rounded-2xl font-black uppercase tracking-widest transition hover:bg-indigo-700 shadow-xl shadow-indigo-500/30">
-                                    INICIAR NEGOCIAÃ‡ÃƒO
+                                    INICIAR NEGOCIAÇÃO
                                 </a>
                             </div>
                         @endif
@@ -94,7 +94,7 @@
                     <!-- Acordos Recentes -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                         <div class="px-8 py-6 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                            <h3 class="font-black text-xl text-slate-800 dark:text-white tracking-tighter uppercase">Acordos / NegociaÃ§Ãµes</h3>
+                            <h3 class="font-black text-xl text-slate-800 dark:text-white tracking-tighter uppercase">Acordos / Negociações</h3>
                             <svg class="h-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <div class="p-8 space-y-4">
@@ -111,14 +111,14 @@
                                 </div>
                             @empty
                                 <div class="text-center py-8">
-                                    <p class="text-gray-400 italic">Nenhuma negociaÃ§Ã£o formalizada recentemente.</p>
+                                    <p class="text-gray-400 italic">Nenhuma negociação formalizada recentemente.</p>
                                 </div>
                             @endforelse
                         </div>
                     </div>
                 </div>
 
-                <!-- Coluna da Direita: Dados de Contato e HistÃ³rico -->
+                <!-- Coluna da Direita: Dados de Contato e Histórico -->
                 <div class="space-y-8">
                     
                     <!-- Dados de Contato -->
@@ -130,21 +130,21 @@
                         <div class="space-y-4">
                             <div>
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">WhatsApp / Telefone</p>
-                                <p class="text-lg font-bold text-slate-700 dark:text-white tracking-wide">{{ $devedor->telefone ?? 'NÃ£o informado' }}</p>
+                                <p class="text-lg font-bold text-slate-700 dark:text-white tracking-wide">{{ $devedor->telefone ?? 'Não informado' }}</p>
                             </div>
                             <div>
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">E-mail Principal</p>
-                                <p class="text-sm font-bold text-indigo-600 break-all">{{ $devedor->email ?? 'NÃ£o informado' }}</p>
+                                <p class="text-sm font-bold text-indigo-600 break-all">{{ $devedor->email ?? 'Não informado' }}</p>
                             </div>
                             <hr class="border-gray-50 dark:border-gray-700">
                             <div>
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Ãšltimo Contato</p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400">HÃ¡ 3 dias (NÃ£o atendeu)</p>
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Último Contato</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">Há 3 dias (Não atendeu)</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- HistÃ³rico de InteraÃ§Ãµes -->
+                    <!-- Histórico de Interações -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
                         <div class="p-8 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <h3 class="font-black text-lg text-slate-800 dark:text-white tracking-tighter uppercase">LINHA DO TEMPO</h3>
@@ -159,7 +159,7 @@
                                         <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">{{ $contato->descricao }}</p>
                                     </li>
                                 @empty
-                                    <p class="text-center text-gray-400 italic text-sm">Sem histÃ³rico registrado.</p>
+                                    <p class="text-center text-gray-400 italic text-sm">Sem histórico registrado.</p>
                                 @endforelse
                             </ul>
                         </div>
