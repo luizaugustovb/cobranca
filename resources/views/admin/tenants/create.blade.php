@@ -10,6 +10,18 @@
 
     <div class="py-6 sm:py-12 px-4 sm:px-6">
         <div class="max-w-4xl mx-auto">
+
+            @if($errors->any())
+                <div class="mb-6 px-6 py-4 bg-rose-50 border border-rose-100 rounded-2xl">
+                    <p class="text-sm font-black text-rose-700 mb-2">Corrija os erros abaixo antes de continuar:</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        @foreach($errors->all() as $error)
+                            <li class="text-xs text-rose-600 font-semibold">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="bg-white rounded-[2.5rem] shadow-xl p-6 sm:p-10 border border-slate-100">
                 <form action="{{ route('admin.tenants.store') }}" method="POST">
                     @csrf
@@ -19,26 +31,31 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="space-y-2">
                                 <x-input-label for="name" :value="__('Razão Social / Nome Fantasia')" class="text-xs font-black uppercase tracking-widest text-gray-400" />
-                                <x-text-input id="name" name="name" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4" required placeholder="Ex: ABC Recuperadora de Crédito" />
+                                <x-text-input id="name" name="name" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4 {{ $errors->has('name') ? 'border-rose-300' : '' }}" :value="old('name')" required placeholder="Ex: ABC Recuperadora de Crédito" />
+                                @error('name') <p class="text-[10px] text-rose-500 font-bold">{{ $message }}</p> @enderror
                             </div>
                             <div class="space-y-2">
                                 <x-input-label for="slug" :value="__('Slug Único (Subdomínio/Identificador)')" class="text-xs font-black uppercase tracking-widest text-gray-400" />
-                                <x-text-input id="slug" name="slug" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4" required placeholder="ex: abc-cobrancas" />
+                                <x-text-input id="slug" name="slug" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4 {{ $errors->has('slug') ? 'border-rose-300' : '' }}" :value="old('slug')" required placeholder="ex: abc-cobrancas" />
+                                @error('slug') <p class="text-[10px] text-rose-500 font-bold">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div class="space-y-2">
                                 <x-input-label for="document" :value="__('CNPJ / CPF do Escritório')" class="text-xs font-black uppercase tracking-widest text-gray-400" />
-                                <x-text-input id="document" name="document" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4" required placeholder="00.000.000/0000-00" />
+                                <x-text-input id="document" name="document" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4 {{ $errors->has('document') ? 'border-rose-300' : '' }}" :value="old('document')" required placeholder="00.000.000/0000-00" />
+                                @error('document') <p class="text-[10px] text-rose-500 font-bold">{{ $message }}</p> @enderror
                             </div>
                             <div class="space-y-2">
                                 <x-input-label for="phone" :value="__('Telefone (WhatsApp)')" class="text-xs font-black uppercase tracking-widest text-gray-400" />
-                                <x-text-input id="phone" name="phone" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4" required placeholder="558498888..." />
+                                <x-text-input id="phone" name="phone" type="text" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4 {{ $errors->has('phone') ? 'border-rose-300' : '' }}" :value="old('phone')" required placeholder="558498888..." />
+                                @error('phone') <p class="text-[10px] text-rose-500 font-bold">{{ $message }}</p> @enderror
                             </div>
                             <div class="space-y-2">
                                 <x-input-label for="email" :value="__('E-mail Administrativo')" class="text-xs font-black uppercase tracking-widest text-gray-400" />
-                                <x-text-input id="email" name="email" type="email" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4" required placeholder="admin@escritorio.com" />
+                                <x-text-input id="email" name="email" type="email" class="w-full bg-slate-50 border-gray-100 rounded-2xl py-4 {{ $errors->has('email') ? 'border-rose-300' : '' }}" :value="old('email')" required placeholder="admin@escritorio.com" />
+                                @error('email') <p class="text-[10px] text-rose-500 font-bold">{{ $message }}</p> @enderror
                             </div>
                         </div>
 

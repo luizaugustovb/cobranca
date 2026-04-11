@@ -28,10 +28,12 @@ class TenantController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|unique:tenants,slug|max:255',
             'document' => 'required|string|unique:tenants,document|max:255',
-            'email' => 'required|email|unique:tenants,email|max:255',
+            'email' => 'required|email|unique:tenants,email|max:255|unique:users,email',
             'phone' => 'required|string|max:20',
             'status' => 'required|string|in:active,inactive,suspended',
             'plan' => 'required|string',
+        ], [
+            'email.unique' => 'Este e-mail já está em uso por outro escritório ou usuário. Use um e-mail diferente.',
         ]);
 
         $tenant = Tenant::create($validated);
@@ -81,6 +83,13 @@ class TenantController extends Controller
 
         // Criar o usuário administrador do escritório com senha padrão
         $password = 'Admin@123';
+        $userExists = \App\Models\User::withoutGlobalScopes()->where('email', $tenant->email)->exists();
+        if ($userExists) {
+            $tenant->delete();
+            return redirect()->back()->withInput()->withErrors([
+                'email' => 'Este e-mail já está em uso por outro usuário no sistema. Use um e-mail diferente.',
+            ]);
+        }
         $user = \App\Models\User::withoutGlobalScopes()->create([
             'tenant_id' => $tenant->id,
             'name' => 'Admin - ' . $tenant->name,
