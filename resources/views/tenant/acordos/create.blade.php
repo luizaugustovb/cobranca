@@ -3,7 +3,7 @@
         <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
             Simulador de Acordo
         </h2>
-        <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Refinanciamento de dÌvida para: <strong class="text-indigo-600">{{ $devedor->nome }}</strong></p>
+        <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Refinanciamento de d√≠vida para: <strong class="text-indigo-600">{{ $devedor->nome }}</strong></p>
     </x-slot>
 
     <div class="py-6 sm:py-12" x-data="{
@@ -49,7 +49,7 @@
 
                                 {{-- Breakdown dos valores --}}
                                 <div>
-                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">ComposiÁ„o da DÌvida</p>
+                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Composi√ß√£o da D√≠vida</p>
                                     <div class="rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                                         <table class="w-full text-sm">
                                             <thead class="bg-gray-50 dark:bg-gray-700/40">
@@ -95,7 +95,7 @@
                                                 </tr>
                                                 <tr class="bg-amber-50 dark:bg-amber-900/20">
                                                     <td class="px-5 py-4 font-bold text-amber-700 dark:text-amber-400">
-                                                        Honor·rios
+                                                        Honor√°rios
                                                         <span class="ml-2 text-[9px] bg-amber-100 text-amber-600 dark:bg-amber-900 dark:text-amber-300 font-black uppercase px-2 py-0.5 rounded-full tracking-widest">Fixo</span>
                                                     </td>
                                                     <td class="px-5 py-4 text-right font-black text-amber-700 dark:text-amber-400">R$ {{ number_format($totalHonorarios, 2, ',', '.') }}</td>
@@ -142,7 +142,7 @@
                                 <div class="bg-indigo-600 rounded-3xl p-5 sm:p-10 shadow-2xl shadow-indigo-500/30 transform hover:scale-[1.02] transition">
                                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 text-white">
                                         <div>
-                                            <p class="text-xs font-black uppercase tracking-widest opacity-70">Resultado da SimulaÁ„o</p>
+                                            <p class="text-xs font-black uppercase tracking-widest opacity-70">Resultado da Simula√ß√£o</p>
                                             <p class="text-5xl font-black tracking-tighter mt-2"><span x-text="parcelas"></span>x R$ <span x-text="fmt(valorParcela)"></span></p>
                                         </div>
                                         <div class="text-right">
@@ -159,7 +159,7 @@
                                         <template x-for="op in [
                                             {v:'BOLETO',      label:'Boleto',  icon:'??'},
                                             {v:'PIX',         label:'PIX',     icon:'?'},
-                                            {v:'CREDIT_CARD', label:'Cart„o',  icon:'??'},
+                                            {v:'CREDIT_CARD', label:'Cart√£o',  icon:'??'},
                                             {v:'UNDEFINED',   label:'Livre',   icon:'??'}
                                         ]" :key="op.v">
                                             <button type="button"
@@ -174,15 +174,15 @@
                                         </template>
                                     </div>
                                     <p class="text-[10px] text-gray-400 mt-2 font-medium">
-                                        <span x-show="formaPagamento === 'UNDEFINED'">O devedor poder· escolher a forma ao pagar pelo link Asaas.</span>
-                                        <span x-show="formaPagamento !== 'UNDEFINED'" x-text="'As cobranÁas ser„o geradas no Asaas na modalidade: ' + formaPagamento"></span>
+                                        <span x-show="formaPagamento === 'UNDEFINED'">O devedor poder√° escolher a forma ao pagar pelo link Asaas.</span>
+                                        <span x-show="formaPagamento !== 'UNDEFINED'" x-text="'As cobran√ßas ser√£o geradas no Asaas na modalidade: ' + formaPagamento"></span>
                                     </p>
                                 </div>
 
                                 <div class="pt-2">
                                     <x-primary-button class="w-full bg-slate-900 hover:bg-black px-12 py-6 rounded-2xl shadow-2xl text-xl font-black tracking-widest uppercase items-center justify-center">
                                         <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                        Gerar CobranÁa
+                                        Gerar Cobran√ßa
                                     </x-primary-button>
                                 </div>
                             </div>
@@ -190,10 +190,10 @@
                     </div>
                 </div>
 
-                <!-- Resumo TÌtulos Direita -->
+                <!-- Resumo T√≠tulos Direita -->
                 <div class="space-y-8">
                     <div class="bg-gray-900 rounded-3xl p-5 sm:p-8 shadow-xl text-white">
-                        <h3 class="text-sm font-black uppercase tracking-widest text-gray-500 mb-6">TÌtulos Selecionados</h3>
+                        <h3 class="text-sm font-black uppercase tracking-widest text-gray-500 mb-6">T√≠tulos Selecionados</h3>
                         <ul class="space-y-5">
                             @foreach($devedor->titulos as $titulo)
                                 <li class="border-b border-gray-700 pb-4 last:border-0 last:pb-0">
@@ -208,7 +208,7 @@
                                         <div class="flex justify-between"><span>Principal</span><span>R$ {{ number_format($titulo->valor_original, 2, ',', '.') }}</span></div>
                                         @if($titulo->juros > 0)<div class="flex justify-between"><span>Juros</span><span>R$ {{ number_format($titulo->juros, 2, ',', '.') }}</span></div>@endif
                                         @if($titulo->multa > 0)<div class="flex justify-between"><span>Multa</span><span>R$ {{ number_format($titulo->multa, 2, ',', '.') }}</span></div>@endif
-                                        @if($titulo->honorarios > 0)<div class="flex justify-between text-amber-400"><span>Honor·rios</span><span>R$ {{ number_format($titulo->honorarios, 2, ',', '.') }}</span></div>@endif
+                                        @if($titulo->honorarios > 0)<div class="flex justify-between text-amber-400"><span>Honor√°rios</span><span>R$ {{ number_format($titulo->honorarios, 2, ',', '.') }}</span></div>@endif
                                     </div>
                                 </li>
                             @endforeach
@@ -221,9 +221,9 @@
                     </div>
 
                     <div class="bg-white dark:bg-gray-800 rounded-3xl p-5 sm:p-8 shadow-xl border border-gray-100 dark:border-gray-700">
-                        <h3 class="text-xs font-black uppercase tracking-widest text-indigo-500 mb-4">InformaÁ„o importante</h3>
-                        <p class="text-sm text-gray-500 font-medium">Ao confirmar este acordo, todos os tÌtulos listados acima ser„o cancelados e substituÌdos pelas novas parcelas geradas aqui.</p>
-                        <p class="text-[10px] text-amber-600 font-bold mt-3">? Honor·rios n„o podem ser reduzidos na negociaÁ„o.</p>
+                        <h3 class="text-xs font-black uppercase tracking-widest text-indigo-500 mb-4">Informa√ß√£o importante</h3>
+                        <p class="text-sm text-gray-500 font-medium">Ao confirmar este acordo, todos os t√≠tulos listados acima ser√£o cancelados e substitu√≠dos pelas novas parcelas geradas aqui.</p>
+                        <p class="text-[10px] text-amber-600 font-bold mt-3">? Honor√°rios n√£o podem ser reduzidos na negocia√ß√£o.</p>
                     </div>
                 </div>
 
