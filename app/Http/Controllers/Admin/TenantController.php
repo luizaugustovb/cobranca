@@ -143,9 +143,12 @@ class TenantController extends Controller
             'phone' => 'required|string|max:20',
             'status' => 'required|string|in:active,inactive,suspended',
             'plan' => 'required|string',
+            'viicio_token' => 'nullable|string|max:255',
         ]);
 
         $tenant->fill($validated);
+        // viicio_token pode ser enviado em branco (limpar) ou preenchido
+        $tenant->viicio_token = $request->input('viicio_token') ?: null;
         $tenant->save();
 
         return redirect()->route('admin.tenants')->with('success', 'Escritório atualizado com sucesso!');

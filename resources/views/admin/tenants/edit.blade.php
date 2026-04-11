@@ -83,12 +83,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <x-input-label for="viicio_token" value="Token de Conexão do Escritório" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
-                                <x-text-input id="viicio_token" name="viicio_token" type="password" class="w-full bg-white border-slate-200 rounded-2xl py-4" :value="old('viicio_token', $tenant->viicio_token)" placeholder="Token Bearer da API" />
+                                <x-text-input id="viicio_token" name="viicio_token" type="text" class="w-full bg-white border-slate-200 rounded-2xl py-4" :value="old('viicio_token', $tenant->viicio_token)" placeholder="Token Bearer da API Viicio" />
                                 <p class="text-[9px] text-slate-400 font-medium italic mt-1">* Se vazio, usará o Token Master do sistema para disparos.</p>
-                            </div>
-                            <div class="space-y-2">
-                                <x-input-label for="viicio_company_id" value="ID da Empresa (Viicio ID)" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
-                                <x-text-input id="viicio_company_id" name="viicio_company_id" type="text" class="w-full bg-white border-slate-200 rounded-2xl py-4" :value="old('viicio_company_id', $tenant->viicio_company_id)" placeholder="Ex: 123456" />
                             </div>
                         </div>
                     </div>

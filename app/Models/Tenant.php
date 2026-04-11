@@ -18,7 +18,9 @@ class Tenant extends Model
         'logo',
         'status',
         'plan',
-        'settings'
+        'settings',
+        'viicio_token',
+        'viicio_company_id',
     ];
 
     protected $casts = [
