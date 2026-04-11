@@ -12,6 +12,21 @@
 
     <div class="py-6 sm:py-10">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+
+            @if(session('success'))
+                <div class="mb-6 px-6 py-5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start space-x-3">
+                    <svg class="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <p class="text-xs font-bold text-emerald-800">{{ session('success') }}</p>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-6 px-6 py-4 bg-rose-50 border border-rose-200 rounded-2xl flex items-center space-x-3">
+                    <svg class="w-5 h-5 text-rose-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <p class="text-xs font-bold text-rose-700">{{ session('error') }}</p>
+                </div>
+            @endif
+
             <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
                 <form action="{{ route('admin.tenants.update', $tenant) }}" method="POST" class="p-6 sm:p-10 space-y-8">
                     @csrf
@@ -92,11 +107,38 @@
                     <!-- Rodapé de Ações -->
                     <div class="pt-10 flex items-center justify-between">
                         <button type="button" onclick="window.history.back()" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition">Cancelar Alterações</button>
-                        <x-primary-button class="px-12 py-5 bg-indigo-600 hover:bg-slate-900 rounded-2xl shadow-xl shadow-indigo-500/20 text-sm font-black uppercase tracking-[0.2em] transition">
-                            Salvar Alterações
-                        </x-primary-button>
+                        <div class="flex items-center gap-4">
+                            <button type="button" onclick="document.getElementById('modal-reset').classList.remove('hidden')" class="px-6 py-4 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-2xl text-[10px] font-black uppercase tracking-widest transition">
+                                🔑 Resetar Senha
+                            </button>
+                            <x-primary-button class="px-12 py-5 bg-indigo-600 hover:bg-slate-900 rounded-2xl shadow-xl shadow-indigo-500/20 text-sm font-black uppercase tracking-[0.2em] transition">
+                                Salvar Alterações
+                            </x-primary-button>
+                        </div>
                     </div>
                 </form>
+
+                <!-- Modal de Confirmação de Reset -->
+                <div id="modal-reset" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+                    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full">
+                        <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                        </div>
+                        <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight mb-2">Confirmar Reset de Senha</h3>
+                        <p class="text-xs text-slate-500 font-semibold mb-1">A senha do escritório <strong>{{ $tenant->name }}</strong> será redefinida para:</p>
+                        <p class="text-lg font-black text-indigo-600 tracking-widest my-3">Admin@123</p>
+                        <p class="text-[10px] text-slate-400 mb-6">O gestor será obrigado a trocar a senha no próximo acesso. {{ $tenant->phone ? 'Um WhatsApp será enviado para ' . $tenant->phone . '.' : 'Nenhum WhatsApp será enviado (telefone não cadastrado).' }}</p>
+                        <div class="flex gap-3">
+                            <button type="button" onclick="document.getElementById('modal-reset').classList.add('hidden')" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl text-[10px] font-black uppercase tracking-widest transition">Cancelar</button>
+                            <form action="{{ route('admin.tenants.reset-password', $tenant) }}" method="POST" class="flex-1">
+                                @csrf
+                                <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition shadow-lg shadow-amber-500/20">
+                                    Confirmar Reset
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

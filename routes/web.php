@@ -85,6 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/tenants/{tenant}/edit', [\App\Http\Controllers\Admin\TenantController::class, 'edit'])->name('tenants.edit');
         Route::put('/tenants/{tenant}', [\App\Http\Controllers\Admin\TenantController::class, 'update'])->name('tenants.update');
         Route::delete('/tenants/{tenant}', [\App\Http\Controllers\Admin\TenantController::class, 'destroy'])->name('tenants.destroy');
+        Route::post('/tenants/{tenant}/reset-password', [\App\Http\Controllers\Admin\TenantController::class, 'resetPassword'])->name('tenants.reset-password');
         Route::get('/tenants/{tenant}/impersonate', [\App\Http\Controllers\Admin\ImpersonationController::class, 'start'])->name('impersonate');
         Route::post('/tenants/stop-impersonation', [\App\Http\Controllers\Admin\ImpersonationController::class, 'stop'])->name('stop-impersonation');
         

@@ -127,6 +127,52 @@ class TenantController extends Controller
         );
     }
 
+    public function resetPassword(Tenant $tenant)
+    {
+        $user = \App\Models\User::withoutGlobalScopes()
+            ->where('tenant_id', $tenant->id)
+            ->where('email', $tenant->email)
+            ->first();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'Usuário administrador do escritório não encontrado.');
+        }
+
+        $newPassword = 'Admin@123';
+        $user->password = \Illuminate\Support\Facades\Hash::make($newPassword);
+        $user->must_change_password = true;
+        $user->save();
+
+        // Disparar WhatsApp com nova senha
+        $whatsappEnviado = false;
+        try {
+            $phone = preg_replace('/[^0-9]/', '', $tenant->phone ?? '');
+            if ($phone) {
+                $link = config('app.url');
+                $mensagem = "🔑 *Redefinição de Senha — CobrançaPro*\n\n"
+                    . "Olá! A senha da sua conta foi redefinida pelo administrador do sistema.\n\n"
+                    . "📧 *Login:* {$tenant->email}\n"
+                    . "🔑 *Nova Senha:* {$newPassword}\n"
+                    . "🔗 *Acesso:* {$link}\n\n"
+                    . "⚠️ No próximo acesso você será solicitado a criar uma nova senha pessoal.\n\n"
+                    . "_CobrançaPro — Desenvolvido por LAVB Tecnologias_";
+
+                $token = $tenant->viicio_token ?: null;
+                $whatsappEnviado = (new \App\Services\WhatsAppService($token))->sendMessage($phone, $mensagem);
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Erro ao enviar WhatsApp de reset: " . $e->getMessage());
+        }
+
+        $whatsappStatus = $whatsappEnviado
+            ? ' ✅ WhatsApp com nova senha enviado ao escritório.'
+            : ' ⚠️ WhatsApp NÃO enviado (verifique o Token Viicio).';
+
+        return redirect()->back()->with('success',
+            "Senha de '{$tenant->name}' redefinida para: {$newPassword} |{$whatsappStatus}"
+        );
+    }
+
     public function edit(Tenant $tenant)
     {
         $plans = Plan::where('ativo', true)->orderBy('valor')->get();
