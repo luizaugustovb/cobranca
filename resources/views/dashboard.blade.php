@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-black text-lg text-slate-800 uppercase tracking-tighter">
-                {{ __('Visão Geral') }}
+                {{ __('VisÃ£o Geral') }}
             </h2>
             <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-                {{ $tenantName ?? 'Operação Global' }} <span class="mx-1 text-slate-300">|</span> <span class="text-indigo-600">{{ now()->format('d M Y') }}</span>
+                {{ $tenantName ?? 'OperaÃ§Ã£o Global' }} <span class="mx-1 text-slate-300">|</span> <span class="text-indigo-600">{{ now()->format('d M Y') }}</span>
             </div>
         </div>
     </x-slot>
@@ -24,7 +24,7 @@
                             <div class="bg-emerald-50 p-2.5 rounded-xl">
                                 <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">Mês Atual</span>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">MÃªs Atual</span>
                         </div>
                         <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Recebido</p>
                         <p class="text-3xl font-black text-slate-900 tracking-tighter leading-none">R$ {{ number_format($totais['pagamentos_mes'] ?? 0, 2, ',', '.') }}</p>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Títulos -->
+                <!-- Card 2: TÃ­tulos -->
                 <div class="relative bg-white rounded-2xl shadow-md border border-amber-100 overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                     <div class="absolute top-0 left-0 right-0 h-1 bg-amber-400 rounded-t-2xl"></div>
                     <div class="p-6">
@@ -44,12 +44,12 @@
                                 <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                             </div>
                             @if(($totais['titulos_abertos'] ?? 0) > 0)
-                                <span class="text-[9px] font-black uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-1 rounded-full border border-amber-100">Atenção</span>
+                                <span class="text-[9px] font-black uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-1 rounded-full border border-amber-100">AtenÃ§Ã£o</span>
                             @else
                                 <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 bg-slate-50 px-2 py-1 rounded-full border border-slate-100">Zerado</span>
                             @endif
                         </div>
-                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Títulos em Aberto</p>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">TÃ­tulos em Aberto</p>
                         <p class="text-3xl font-black text-slate-900 tracking-tighter leading-none">{{ $totais['titulos_abertos'] ?? 0 }}</p>
                         <div class="mt-4 pt-4 border-t border-slate-50">
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total: <span class="text-slate-600">R$ {{ number_format($totais['valor_aberto'] ?? 0, 2, ',', '.') }}</span></p>
@@ -71,7 +71,7 @@
                         <p class="text-3xl font-black text-slate-900 tracking-tighter leading-none">{{ $totais['acordos_ativos'] ?? 0 }}</p>
                         <div class="mt-4 pt-4 border-t border-slate-50 flex items-center">
                             <div class="w-2 h-2 rounded-full bg-indigo-400 mr-2"></div>
-                            <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-tight">Em recuperação</span>
+                            <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-tight">Em recuperaÃ§Ã£o</span>
                         </div>
                     </div>
                 </div>
@@ -96,14 +96,14 @@
 
             </div>
 
-            <!-- Seção de Relatórios Detalhados -->
+            <!-- SeÃ§Ã£o de RelatÃ³rios Detalhados -->
             <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Coluna Principal (Gráficos) -->
+                <!-- Coluna Principal (GrÃ¡ficos) -->
                 <div class="lg:col-span-2 bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
                     <div class="flex items-center justify-between mb-8">
                         <div>
-                            <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">Desempenho da Recuperação</h3>
-                            <p class="text-xs text-slate-400 mt-1 italic">Projeção estimada para o trimestre corrente.</p>
+                            <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest">Desempenho da RecuperaÃ§Ã£o</h3>
+                            <p class="text-xs text-slate-400 mt-1 italic">ProjeÃ§Ã£o estimada para o trimestre corrente.</p>
                         </div>
                         <button class="text-[10px] font-black text-slate-400 uppercase border border-slate-200 px-4 py-2 rounded-xl hover:bg-slate-50 transition">Exportar PDF</button>
                     </div>
@@ -115,21 +115,21 @@
                             <div class="w-4 h-14 bg-indigo-300 rounded-t-sm"></div>
                             <div class="w-4 h-16 bg-indigo-500 rounded-t-sm"></div>
                         </div>
-                        <p class="text-slate-400 uppercase font-black text-[9px] tracking-widest italic">Processando Inteligência de Dados...</p>
+                        <p class="text-slate-400 uppercase font-black text-[9px] tracking-widest italic">Processando InteligÃªncia de Dados...</p>
                     </div>
                 </div>
 
-                <!-- Sidebar de Ações / Histórico -->
+                <!-- Sidebar de AÃ§Ãµes / HistÃ³rico -->
                 <div class="bg-indigo-600 rounded-3xl p-8 text-white shadow-xl shadow-indigo-500/20">
-                    <h3 class="text-xs font-black uppercase tracking-widest mb-6 opacity-80">Ações Sugeridas</h3>
+                    <h3 class="text-xs font-black uppercase tracking-widest mb-6 opacity-80">AÃ§Ãµes Sugeridas</h3>
                     <div class="space-y-4">
                         <div class="flex items-start space-x-3 p-3 bg-white/10 rounded-2xl border border-white/10 hover:bg-white/20 transition cursor-pointer">
                             <div class="bg-white/20 p-2 rounded-xl">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                             </div>
                             <div>
-                                <p class="text-[11px] font-black uppercase tracking-tight">Cobrança em Massa</p>
-                                <p class="text-[10px] opacity-60 leading-tight mt-1">Disparar WhatsApp para {{ $totais['titulos_vencidos_hoje'] ?? 0 }} título(s) vencido(s) hoje.</p>
+                                <p class="text-[11px] font-black uppercase tracking-tight">CobranÃ§a em Massa</p>
+                                <p class="text-[10px] opacity-60 leading-tight mt-1">Disparar WhatsApp para {{ $totais['titulos_vencidos_hoje'] ?? 0 }} tÃ­tulo(s) vencido(s) hoje.</p>
                             </div>
                         </div>
                         
@@ -138,15 +138,15 @@
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
                             </div>
                             <div>
-                                <p class="text-[11px] font-black uppercase tracking-tight">Relatório SaaS</p>
-                                <p class="text-[10px] opacity-60 leading-tight mt-1">Baixar demonstrativo de receita por escritório.</p>
+                                <p class="text-[11px] font-black uppercase tracking-tight">RelatÃ³rio SaaS</p>
+                                <p class="text-[10px] opacity-60 leading-tight mt-1">Baixar demonstrativo de receita por escritÃ³rio.</p>
                             </div>
                         </div>
                     </div>
                     
                     <div class="mt-8 pt-6 border-t border-white/10">
-                        <p class="text-[9px] font-black uppercase tracking-widest opacity-60 mb-2">Suporte Prioritário</p>
-                        <p class="text-[10px] leading-tight italic">Link direto com consultor técnico para ajuda na operação.</p>
+                        <p class="text-[9px] font-black uppercase tracking-widest opacity-60 mb-2">Suporte PrioritÃ¡rio</p>
+                        <p class="text-[10px] leading-tight italic">Link direto com consultor tÃ©cnico para ajuda na operaÃ§Ã£o.</p>
                     </div>
                 </div>
             </div>

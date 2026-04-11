@@ -33,7 +33,7 @@
                                 <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Valor Acordo</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Parcelas</th>
                                 <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-widest">Status</th>
-                                <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">Ações</th>
+                                <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-widest">AÃ§Ãµes</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-slate-100">

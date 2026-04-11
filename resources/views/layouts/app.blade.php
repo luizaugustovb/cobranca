@@ -51,7 +51,7 @@
                             <button @click="sidebarOpen = !sidebarOpen" class="text-slate-400 hover:text-indigo-600 transition p-2 lg:hidden">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                             </button>
-                            <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-300 ml-4 hidden md:block italic">Sistema Operacional de Recuperação de Ativos</span>
+                            <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-300 ml-4 hidden md:block italic">Sistema Operacional de RecuperaÃ§Ã£o de Ativos</span>
                         </div>
                         
                         <div class="flex items-center space-x-4">
@@ -87,7 +87,7 @@
                     </div>
                 </header>
 
-                <!-- Header de Seção (Optional) -->
+                <!-- Header de SeÃ§Ã£o (Optional) -->
                 @isset($header)
                     <div class="bg-gray-50 border-b border-slate-100 px-4 sm:px-6 py-4 sm:py-8">
                         {{ $header }}
@@ -100,7 +100,7 @@
                 </main>
 
                 <footer class="mt-auto py-6 px-4 bg-gray-100 text-center text-xs text-gray-400">
-                    &copy; {{ date('Y') }} {{ config('app.name') }} - Gestão Inteligente de Recuperação de Ativos.
+                    &copy; {{ date('Y') }} {{ config('app.name') }} - GestÃ£o Inteligente de RecuperaÃ§Ã£o de Ativos.
                     <span class="mx-2 text-gray-300">|</span>
                     Desenvolvido por <span class="font-bold text-indigo-500">LAVB Tecnologias</span>
                 </footer>

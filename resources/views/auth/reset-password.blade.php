@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-10 text-center">
         <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Nova <span class="text-indigo-600">Senha</span></h2>
-        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-6">Defina seu novo acesso de segurança.</p>
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-6">Defina seu novo acesso de seguranÃ§a.</p>
     </div>
 
     <form method="POST" action="{{ route('password.store') }}" class="space-y-6">
@@ -20,7 +20,7 @@
         <!-- Password -->
         <div class="space-y-2">
             <x-input-label for="password" value="Sua Nova Senha" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
-            <x-text-input id="password" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm" type="password" name="password" required autocomplete="new-password" placeholder="••••••••" />
+            <x-text-input id="password" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm" type="password" name="password" required autocomplete="new-password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
             <x-input-error :messages="$errors->get('password')" class="mt-1" />
         </div>
 
@@ -29,7 +29,7 @@
             <x-input-label for="password_confirmation" value="Repetir Senha" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
             <x-text-input id="password_confirmation" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
                                 type="password"
-                                name="password_confirmation" required autocomplete="new-password" placeholder="••••••••" />
+                                name="password_confirmation" required autocomplete="new-password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
         </div>
 

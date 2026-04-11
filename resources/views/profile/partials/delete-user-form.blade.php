@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            Depois que sua conta for excluída, todos os recursos e dados serão excluídos permanentemente. Antes de excluir sua conta, faça o download de quaisquer dados ou informações que deseja reter.
+            Depois que sua conta for excluÃ­da, todos os recursos e dados serÃ£o excluÃ­dos permanentemente. Antes de excluir sua conta, faÃ§a o download de quaisquer dados ou informaÃ§Ãµes que deseja reter.
         </p>
     </header>
 
@@ -24,7 +24,7 @@
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Depois que sua conta for excluída, todos os recursos e dados serão excluídos permanentemente. Por favor, insira sua senha para confirmar que deseja excluir permanentemente sua conta.
+                Depois que sua conta for excluÃ­da, todos os recursos e dados serÃ£o excluÃ­dos permanentemente. Por favor, insira sua senha para confirmar que deseja excluir permanentemente sua conta.
             </p>
 
             <div class="mt-6">

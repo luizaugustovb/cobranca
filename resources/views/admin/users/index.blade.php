@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <h2 class="font-black text-lg sm:text-2xl text-slate-900 tracking-tighter uppercase leading-none">
-                Gestão Mestra de <span class="text-emerald-600">Usuários</span>
+                GestÃ£o Mestra de <span class="text-emerald-600">UsuÃ¡rios</span>
             </h2>
             <a href="{{ route('admin.users.create') }}" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-lg shadow-emerald-500/20 font-black uppercase text-[10px] tracking-widest text-white transition flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -30,7 +30,7 @@
                                 <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Master / Contato</th>
                                 <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Documento (CPF)</th>
                                 <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest">Telefone (WhatsApp)</th>
-                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Governança</th>
+                                <th class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">GovernanÃ§a</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50 text-sm">
@@ -49,12 +49,12 @@
                                     </td>
                                     <td class="px-8 py-6">
                                         <span class="inline-flex px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full bg-slate-100 text-slate-500">
-                                            {{ $admin->document ?? 'Não Informado' }}
+                                            {{ $admin->document ?? 'NÃ£o Informado' }}
                                         </span>
                                     </td>
                                     <td class="px-8 py-6">
                                         <span class="inline-flex px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-50 text-emerald-600">
-                                            {{ $admin->phone ?? 'Não Informado' }}
+                                            {{ $admin->phone ?? 'NÃ£o Informado' }}
                                         </span>
                                     </td>
                                     <td class="px-8 py-6 text-right">
@@ -63,7 +63,7 @@
                                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                             </a>
                                             @if($admin->id !== auth()->id())
-                                            <form action="{{ route('admin.users.destroy', $admin->id) }}" method="POST" class="inline-block" onsubmit="return confirm('ATENÇÃO CIVIL/CRIMINAL: A exclusão revogará todos os acessos master. Tem certeza?')">
+                                            <form action="{{ route('admin.users.destroy', $admin->id) }}" method="POST" class="inline-block" onsubmit="return confirm('ATENÃ‡ÃƒO CIVIL/CRIMINAL: A exclusÃ£o revogarÃ¡ todos os acessos master. Tem certeza?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="p-2 bg-white text-rose-500 hover:bg-rose-50 rounded-xl shadow-sm border border-rose-100 transition" title="Deletar">
@@ -80,7 +80,7 @@
                                         <div class="mx-auto w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 mb-4">
                                             <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                         </div>
-                                        <p class="text-sm font-black text-slate-400 uppercase tracking-widest">Nenhum administrador encontrado além da matriz originadora.</p>
+                                        <p class="text-sm font-black text-slate-400 uppercase tracking-widest">Nenhum administrador encontrado alÃ©m da matriz originadora.</p>
                                     </td>
                                 </tr>
                             @endforelse

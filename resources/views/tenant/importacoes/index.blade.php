@@ -7,11 +7,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
                 </div>
-                IMPORTAÇÕES EM LOTE
+                IMPORTAÃ‡Ã•ES EM LOTE
             </h2>
             <a href="{{ route('tenant.importacoes.create') }}" class="inline-flex items-center justify-center px-5 py-3 bg-slate-800 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-slate-900 transition shadow-xl text-sm">
                 <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Nova Importação
+                Nova ImportaÃ§Ã£o
             </a>
         </div>
     </x-slot>
@@ -27,7 +27,7 @@
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Tipo</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Status</th>
                                 <th scope="col" class="hidden md:table-cell px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Resultado</th>
-                                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Ações</th>
+                                <th scope="col" class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">AÃ§Ãµes</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -42,7 +42,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($import->status === 'concluido')
-                                            <span class="px-3 py-1 text-xs font-black uppercase rounded-full bg-green-100 text-green-600">Concluído</span>
+                                            <span class="px-3 py-1 text-xs font-black uppercase rounded-full bg-green-100 text-green-600">ConcluÃ­do</span>
                                         @elseif($import->status === 'processando')
                                             <span class="px-3 py-1 text-xs font-black uppercase rounded-full bg-blue-100 text-blue-600 animate-pulse">Processando</span>
                                         @elseif($import->status === 'erro')
@@ -53,7 +53,7 @@
                                     </td>
                                     <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">
                                         <div class="text-xs font-bold text-gray-600">
-                                            <span class="text-green-600">✓ {{ $import->processados }}</span> / <span class="text-red-400">✗ {{ $import->erros }}</span> (Total: {{ $import->total }})
+                                            <span class="text-green-600">âœ“ {{ $import->processados }}</span> / <span class="text-red-400">âœ— {{ $import->erros }}</span> (Total: {{ $import->total }})
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -70,7 +70,7 @@
                             @empty
                                 <tr>
                                     <td colspan="5" class="px-6 py-16 text-center text-gray-400 italic font-medium">
-                                        Nenhuma importação realizada.
+                                        Nenhuma importaÃ§Ã£o realizada.
                                     </td>
                                 </tr>
                             @endforelse

@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex flex-col">
             <h2 class="font-black text-lg sm:text-2xl text-slate-900 leading-none uppercase tracking-tighter">
-                Planos & Preços
+                Planos & PreÃ§os
             </h2>
-            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-1">Gerencie os valores e configurações dos planos SaaS</p>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-1">Gerencie os valores e configuraÃ§Ãµes dos planos SaaS</p>
         </div>
     </x-slot>
 
@@ -29,7 +29,7 @@
                         </div>
                         <div>
                             <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Valores dos Planos</h3>
-                            <p class="text-[10px] text-slate-400 mt-0.5">Altere o valor mensal de cada plano. As próximas cobranças usarão os valores salvos aqui.</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Altere o valor mensal de cada plano. As prÃ³ximas cobranÃ§as usarÃ£o os valores salvos aqui.</p>
                         </div>
                     </div>
 
@@ -85,7 +85,7 @@
                                 </div>
                             </div>
 
-                            <!-- Linha secundária: Viicio Plan ID -->
+                            <!-- Linha secundÃ¡ria: Viicio Plan ID -->
                             <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div class="md:col-start-3 space-y-2">
                                     <label for="viicio_{{ $i }}" class="text-[10px] font-black uppercase tracking-widest text-slate-400">ID do Plano no Viicio</label>
@@ -117,8 +117,8 @@
             <div class="mt-6 p-6 bg-amber-50 border border-amber-100 rounded-2xl flex items-start space-x-3">
                 <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 <p class="text-xs text-amber-700 font-semibold">
-                    Os valores alterados aqui serão usados automaticamente ao cadastrar novos escritórios.
-                    Cobranças já geradas <strong>não são afetadas retroativamente</strong>.
+                    Os valores alterados aqui serÃ£o usados automaticamente ao cadastrar novos escritÃ³rios.
+                    CobranÃ§as jÃ¡ geradas <strong>nÃ£o sÃ£o afetadas retroativamente</strong>.
                 </p>
             </div>
         </div>

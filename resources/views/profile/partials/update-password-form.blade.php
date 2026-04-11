@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            Certifique-se de que sua conta esteja usando uma senha longa e aleatória para se manter segura.
+            Certifique-se de que sua conta esteja usando uma senha longa e aleatÃ³ria para se manter segura.
         </p>
     </header>
 

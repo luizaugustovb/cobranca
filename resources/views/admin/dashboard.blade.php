@@ -14,7 +14,7 @@
     <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            <!-- Grid de Estatísticas (Unificado Premium) -->
+            <!-- Grid de EstatÃ­sticas (Unificado Premium) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 
                 <!-- Card 1 -->
@@ -38,11 +38,11 @@
                         <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-500">
                              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         </div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Escritórios ativos</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">EscritÃ³rios ativos</p>
                         <p class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tighter">{{ $stats['active_tenants'] }}</p>
                     </div>
                     <div class="mt-8 pt-6 border-t border-slate-50 flex items-center text-[9px] font-black text-blue-500 uppercase tracking-widest">
-                        Sincronização Ativa
+                        SincronizaÃ§Ã£o Ativa
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                         <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-600 mb-6 group-hover:bg-slate-900 group-hover:text-white transition-colors duration-500">
                             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         </div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Usuários globais</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">UsuÃ¡rios globais</p>
                         <p class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tighter">{{ $stats['total_users'] }}</p>
                     </div>
                     <div class="mt-8 pt-6 border-t border-slate-50 flex items-center text-[9px] font-black text-slate-500 uppercase tracking-widest">
@@ -71,7 +71,7 @@
                         <p class="text-xl sm:text-3xl font-black text-white tracking-tighter leading-none">R$ {{ number_format($stats['global_revenue'], 2, ',', '.') }}</p>
                     </div>
                     <div class="mt-8 pt-6 border-t border-slate-800 flex items-center text-[9px] font-black text-indigo-400 uppercase tracking-widest">
-                        MÉTRICA DE PERFORMANCE
+                        MÃ‰TRICA DE PERFORMANCE
                     </div>
                 </div>
 
@@ -83,7 +83,7 @@
                     <h3 class="font-black text-lg text-slate-800 tracking-tighter uppercase mb-0 leading-none">Atividades Recentes - Global</h3>
                     <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-full border border-slate-100 shadow-sm">
                         <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                        <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Monitor Automático Ativo</span>
+                        <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Monitor AutomÃ¡tico Ativo</span>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -115,7 +115,7 @@
                             @empty
                             <tr>
                                 <td colspan="2" class="px-10 py-12 text-center text-[10px] font-black text-slate-300 uppercase tracking-widest">
-                                    Nenhum escritório cadastrado ainda.
+                                    Nenhum escritÃ³rio cadastrado ainda.
                                 </td>
                             </tr>
                             @endforelse

@@ -8,12 +8,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
-                    CENTRAL DE COBRAN�A
+                    CENTRAL DE COBRANÃ‡A
                 </h2>
                 <a href="{{ route('tenant.titulos.create') }}"
                    class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 border border-transparent rounded-xl font-bold text-white uppercase tracking-widest hover:bg-black transition shadow-lg text-xs self-start sm:self-auto">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Gerar T�tulo
+                    Gerar TÃ­tulo
                 </a>
             </div>
             {{-- Tabs de status com contadores --}}
@@ -44,7 +44,7 @@
         </div>
     </x-slot>
 
-    {{-- Modal de confirma��o de cancelamento (Alpine.js) --}}
+    {{-- Modal de confirmaÃ§Ã£o de cancelamento (Alpine.js) --}}
     <div x-data="{
             showModal: false,
             tituloId: null,
@@ -76,13 +76,13 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="font-black text-slate-800 dark:text-white text-lg tracking-tight">Cancelar T�tulo</h3>
-                        <p class="text-sm text-gray-500 mt-0.5">Esta a��o n�o pode ser desfeita facilmente.</p>
+                        <h3 class="font-black text-slate-800 dark:text-white text-lg tracking-tight">Cancelar TÃ­tulo</h3>
+                        <p class="text-sm text-gray-500 mt-0.5">Esta aÃ§Ã£o nÃ£o pode ser desfeita facilmente.</p>
                     </div>
                 </div>
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                    Voc� est� prestes a cancelar o t�tulo <strong x-text="'#' + tituloNumero" class="text-slate-800 dark:text-white"></strong>.
-                    O t�tulo n�o ser� deletado, mas passar� para o status <strong>Cancelado</strong> e sair� da cobran�a ativa.
+                    VocÃª estÃ¡ prestes a cancelar o tÃ­tulo <strong x-text="'#' + tituloNumero" class="text-slate-800 dark:text-white"></strong>.
+                    O tÃ­tulo nÃ£o serÃ¡ deletado, mas passarÃ¡ para o status <strong>Cancelado</strong> e sairÃ¡ da cobranÃ§a ativa.
                 </p>
                 <div class="flex gap-3">
                     <button @click="showModal = false"
@@ -123,13 +123,13 @@
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700/50">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">N� T�tulo</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">NÂº TÃ­tulo</th>
                                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Devedor</th>
                                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Vencimento</th>
                                     <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Valor Original</th>
                                     <th class="hidden md:table-cell px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Encargos</th>
                                     <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Status</th>
-                                    <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">A��es</th>
+                                    <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">AÃ§Ãµes</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
@@ -174,7 +174,7 @@
                                                     <div class="text-xs text-amber-500 font-medium">Hon: R$ {{ number_format($titulo->honorarios, 2, ',', '.') }}</div>
                                                 @endif
                                             @else
-                                                <span class="text-gray-300 text-sm">�</span>
+                                                <span class="text-gray-300 text-sm">â€”</span>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
@@ -216,7 +216,7 @@
                                                 </a>
 
                                                 @if($titulo->status === 'negociado')
-                                                    {{-- Negociado: s� mostra link para o acordo --}}
+                                                    {{-- Negociado: sÃ³ mostra link para o acordo --}}
                                                     <a href="{{ route('tenant.acordos.show', $titulo->acordo_id) }}"
                                                        title="Ver Acordo"
                                                        class="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-500 hover:text-white transition shadow-sm">
@@ -230,12 +230,12 @@
                                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                                     </a>
                                                     <button @click="confirmar({{ $titulo->id }}, '{{ addslashes($titulo->numero) }}')"
-                                                            title="Cancelar T�tulo"
+                                                            title="Cancelar TÃ­tulo"
                                                             class="p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition">
                                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                                     </button>
                                                 @else
-                                                    {{-- Pago / Cancelado: s� editar --}}
+                                                    {{-- Pago / Cancelado: sÃ³ editar --}}
                                                     <a href="{{ route('tenant.titulos.edit', $titulo) }}"
                                                        title="Editar"
                                                        class="p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-500 hover:text-white transition">
@@ -250,7 +250,7 @@
                                         <td colspan="7" class="px-6 py-16 text-center text-gray-400">
                                             <div class="flex flex-col items-center gap-3">
                                                 <svg class="w-10 h-10 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                                <p class="text-sm font-bold uppercase tracking-widest">Nenhum t�tulo com este status.</p>
+                                                <p class="text-sm font-bold uppercase tracking-widest">Nenhum tÃ­tulo com este status.</p>
                                             </div>
                                         </td>
                                     </tr>

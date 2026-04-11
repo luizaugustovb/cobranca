@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            Informações do Perfil
+            InformaÃ§Ãµes do Perfil
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            Atualize as informações do perfil e o endereço de e-mail da sua conta.
+            Atualize as informaÃ§Ãµes do perfil e o endereÃ§o de e-mail da sua conta.
         </p>
     </header>
 
@@ -31,16 +31,16 @@
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800">
-                        Seu endereço de e-mail não está verificado.
+                        Seu endereÃ§o de e-mail nÃ£o estÃ¡ verificado.
 
                         <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Clique aqui para reenviar o e-mail de verificação.
+                            Clique aqui para reenviar o e-mail de verificaÃ§Ã£o.
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
                         <p class="mt-2 font-medium text-sm text-green-600">
-                            Um novo link de verificação foi enviado para o seu endereço de e-mail.
+                            Um novo link de verificaÃ§Ã£o foi enviado para o seu endereÃ§o de e-mail.
                         </p>
                     @endif
                 </div>
