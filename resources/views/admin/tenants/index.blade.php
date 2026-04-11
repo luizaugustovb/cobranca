@@ -17,6 +17,26 @@
 
     <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            @if(session('success'))
+                <div class="mb-6 px-6 py-5 bg-emerald-50 border border-emerald-200 rounded-2xl">
+                    <div class="flex items-start space-x-3">
+                        <svg class="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <div>
+                            <p class="text-sm font-black text-emerald-800">Operação realizada com sucesso</p>
+                            <p class="text-xs text-emerald-700 mt-1 font-semibold">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-6 px-6 py-4 bg-rose-50 border border-rose-200 rounded-2xl flex items-center space-x-3">
+                    <svg class="w-5 h-5 text-rose-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <p class="text-sm font-bold text-rose-700">{{ session('error') }}</p>
+                </div>
+            @endif
+
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-100">

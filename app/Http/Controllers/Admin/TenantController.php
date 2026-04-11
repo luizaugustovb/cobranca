@@ -99,6 +99,7 @@ class TenantController extends Controller
         ]);
 
         // Disparar WhatsApp com credenciais de acesso
+        $whatsappEnviado = false;
         try {
             $phone = preg_replace('/[^0-9]/', '', $request->phone ?? '');
             if ($phone) {
@@ -111,13 +112,19 @@ class TenantController extends Controller
                     . "⚠️ No primeiro acesso você será solicitado a criar uma senha pessoal.\n\n"
                     . "_CobrançaPro — Desenvolvido por LAVB Tecnologias_";
 
-                (new \App\Services\WhatsAppService())->sendMessage($phone, $mensagem);
+                $whatsappEnviado = (new \App\Services\WhatsAppService())->sendMessage($phone, $mensagem);
             }
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("Erro ao enviar WhatsApp de boas-vindas: " . $e->getMessage());
         }
 
-        return redirect()->route('admin.tenants')->with('success', "Escritório '{$tenant->name}' registrado com sucesso! | Login: {$tenant->email} | Senha padrão: {$password} (o gestor será obrigado a trocar no primeiro acesso)");
+        $whatsappStatus = $whatsappEnviado
+            ? ' ✅ WhatsApp de boas-vindas enviado ao escritório.'
+            : ' ⚠️ WhatsApp NÃO enviado (verifique o Token Viicio nas Configurações).';
+
+        return redirect()->route('admin.tenants')->with('success',
+            "Escritório '{$tenant->name}' criado! Login: {$tenant->email} | Senha padrão: {$password} |{$whatsappStatus}"
+        );
     }
 
     public function edit(Tenant $tenant)
