@@ -46,7 +46,7 @@
                                     <td class="hidden sm:table-cell px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center space-x-2">
                                             @if($pagamento->forma_pagamento == 'pix')
-                                                <span class="p-1 px-2 bg-indigo-100 text-indigo-700 rounded-md text-[10px] font-black uppercase tracking-tight">PIX</span>
+                                                <span class="p-1 px-2 bg-blue-100 text-blue-700 rounded-md text-[10px] font-black uppercase tracking-tight">PIX</span>
                                             @elseif($pagamento->forma_pagamento == 'boleto')
                                                 <span class="p-1 px-2 bg-gray-100 text-gray-700 rounded-md text-[10px] font-black uppercase tracking-tight">Boleto</span>
                                             @else

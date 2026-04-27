@@ -1,11 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center space-x-4">
-            <a href="{{ route('admin.tenants') }}" class="p-2 bg-white border border-slate-100 rounded-xl text-slate-400 hover:text-indigo-600 transition shadow-sm">
+            <a href="{{ route('admin.tenants') }}" class="p-2 bg-white border border-slate-100 rounded-xl text-slate-400 hover:text-blue-600 transition shadow-sm">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             </a>
             <h2 class="font-black text-lg sm:text-2xl text-slate-900 tracking-tighter uppercase leading-none">
-                Editar Escritório: <span class="text-indigo-600">{{ $tenant->name }}</span>
+                Editar Escritório: <span class="text-blue-600">{{ $tenant->name }}</span>
             </h2>
         </div>
     </x-slot>
@@ -34,8 +34,8 @@
 
                     <!-- Seção: Identificação -->
                     <div>
-                        <h3 class="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] mb-6 flex items-center">
-                            <span class="w-8 h-px bg-indigo-100 mr-3"></span> Identificação Básica
+                        <h3 class="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-6 flex items-center">
+                            <span class="w-8 h-px bg-blue-100 mr-3"></span> Identificação Básica
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
@@ -68,13 +68,13 @@
 
                     <!-- Seção: Plano e Status -->
                     <div class="pt-6 border-t border-slate-50">
-                        <h3 class="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] mb-6 flex items-center">
-                            <span class="w-8 h-px bg-indigo-100 mr-3"></span> Configurações de Operação
+                        <h3 class="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-6 flex items-center">
+                            <span class="w-8 h-px bg-blue-100 mr-3"></span> Configurações de Operação
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <x-input-label for="plan" value="Plano de Assinatura" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
-                                <select name="plan" id="plan" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 text-sm font-bold text-slate-700 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                <select name="plan" id="plan" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 text-sm font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 transition">
                                     @foreach($plans as $plan)
                                         <option value="{{ $plan->slug }}" {{ $tenant->plan == $plan->slug ? 'selected' : '' }}>{{ $plan->nome }} — R$ {{ number_format($plan->valor, 2, ',', '.') }}/mês</option>
                                     @endforeach
@@ -82,7 +82,7 @@
                             </div>
                             <div class="space-y-2">
                                 <x-input-label for="status" value="Status do Acesso" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
-                                <select name="status" id="status" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 text-sm font-bold text-slate-700 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                <select name="status" id="status" class="w-full bg-slate-50 border-slate-100 rounded-2xl py-4 text-sm font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500 transition">
                                     <option value="active" {{ $tenant->status == 'active' ? 'selected' : '' }}>Ativo (Liberado)</option>
                                     <option value="inactive" {{ $tenant->status == 'inactive' ? 'selected' : '' }}>Bloqueado (Inativo)</option>
                                 </select>
@@ -91,9 +91,9 @@
                     </div>
 
                     <!-- Seção: Integração WhatsApp (Viicio) -->
-                    <div class="pt-6 border-t border-slate-50 bg-indigo-50/30 -mx-10 px-10 pb-10 mt-6">
-                        <h3 class="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] py-6 flex items-center">
-                            <span class="w-8 h-px bg-indigo-200 mr-3"></span> Integração Viicio (WhatsApp)
+                    <div class="pt-6 border-t border-slate-50 bg-blue-50/30 -mx-10 px-10 pb-10 mt-6">
+                        <h3 class="text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] py-6 flex items-center">
+                            <span class="w-8 h-px bg-blue-200 mr-3"></span> Integração Viicio (WhatsApp)
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
@@ -111,7 +111,7 @@
                             <button type="button" @click="$dispatch('open-reset-modal')" class="px-6 py-4 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-2xl text-[10px] font-black uppercase tracking-widest transition">
                                 🔑 Resetar Senha
                             </button>
-                            <x-primary-button class="px-12 py-5 bg-indigo-600 hover:bg-slate-900 rounded-2xl shadow-xl shadow-indigo-500/20 text-sm font-black uppercase tracking-[0.2em] transition">
+                            <x-primary-button class="px-12 py-5 bg-blue-600 hover:bg-slate-900 rounded-2xl shadow-xl shadow-blue-500/20 text-sm font-black uppercase tracking-[0.2em] transition">
                                 Salvar Alterações
                             </x-primary-button>
                         </div>
@@ -132,7 +132,7 @@
             </div>
             <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight mb-2">Confirmar Reset de Senha</h3>
             <p class="text-xs text-slate-500 font-semibold mb-1">A senha do escritório <strong>{{ $tenant->name }}</strong> será redefinida para:</p>
-            <p class="text-lg font-black text-indigo-600 tracking-widest my-3">Admin@123</p>
+            <p class="text-lg font-black text-blue-600 tracking-widest my-3">Admin@123</p>
             <p class="text-[10px] text-slate-400 mb-6">O gestor será obrigado a trocar a senha no próximo acesso. {{ $tenant->phone ? 'Um WhatsApp será enviado para ' . $tenant->phone . '.' : 'Nenhum WhatsApp será enviado (telefone não cadastrado).' }}</p>
             <div class="flex gap-3">
                 <button type="button" @click="open = false" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-2xl text-[10px] font-black uppercase tracking-widest transition">Cancelar</button>

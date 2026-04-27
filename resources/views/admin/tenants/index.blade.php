@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h2 class="font-black text-lg sm:text-2xl text-slate-900 flex items-center tracking-tighter uppercase leading-none">
-                <div class="p-2 bg-indigo-600 rounded-lg mr-3 shadow-lg shadow-indigo-500/20 text-white shrink-0">
+                <div class="p-2 bg-blue-600 rounded-lg mr-3 shadow-lg shadow-blue-500/20 text-white shrink-0">
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
@@ -50,10 +50,10 @@
                         </thead>
                         <tbody class="divide-y divide-slate-50 bg-white">
                             @forelse ($tenants as $tenant)
-                                <tr class="hover:bg-indigo-50/30 transition-colors group">
+                                <tr class="hover:bg-blue-50/30 transition-colors group">
                                     <td class="px-8 py-6">
                                         <div class="text-sm font-black text-slate-800 uppercase tracking-tighter">{{ $tenant->name }}</div>
-                                        <div class="text-[10px] text-indigo-500 font-bold tracking-widest">{{ $tenant->slug }}</div>
+                                        <div class="text-[10px] text-blue-500 font-bold tracking-widest">{{ $tenant->slug }}</div>
                                     </td>
                                     <td class="hidden sm:table-cell px-8 py-6">
                                         <div class="text-xs font-bold text-slate-500">{{ $tenant->document }}</div>
@@ -65,10 +65,10 @@
                                         </span>
                                     </td>
                                     <td class="px-8 py-6 text-right space-x-3 flex items-center justify-end">
-                                         <a href="{{ route('admin.impersonate', $tenant) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 transition shadow-lg shadow-indigo-500/20">
+                                         <a href="{{ route('admin.impersonate', $tenant) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 transition shadow-lg shadow-blue-500/20">
                                              Impersonar
                                          </a>
-                                         <a href="{{ route('admin.tenants.edit', $tenant) }}" class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg transition border border-transparent hover:border-slate-100 inline-flex align-middle">
+                                         <a href="{{ route('admin.tenants.edit', $tenant) }}" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-white rounded-lg transition border border-transparent hover:border-slate-100 inline-flex align-middle">
                                              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                          </a>
                                          
@@ -85,7 +85,7 @@
                             @empty
                                 <tr>
                                     <td colspan="4" class="px-8 py-20 text-center">
-                                       <span class="text-xs font-black text-slate-300 uppercase underline decoration-indigo-200">Nenhum tenant registrado no core</span>
+                                       <span class="text-xs font-black text-slate-300 uppercase underline decoration-blue-200">Nenhum tenant registrado no core</span>
                                     </td>
                                 </tr>
                             @endforelse

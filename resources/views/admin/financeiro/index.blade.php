@@ -5,7 +5,7 @@
                 Receitas do SaaS
             </h2>
             <div class="flex items-center mt-2">
-                <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
                 <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">Faturamento Recorrente (Tenants)</p>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100">
                 <div class="px-6 sm:px-10 py-6 sm:py-8 border-b border-slate-50 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 bg-slate-50/20">
                     <h3 class="font-black text-lg text-slate-800 uppercase tracking-tighter">Histórico de Cobranças (Assinaturas)</h3>
-                    <div class="px-4 py-2 bg-white rounded-xl border border-slate-100 text-[10px] font-black uppercase text-indigo-500 shadow-sm flex items-center">
+                    <div class="px-4 py-2 bg-white rounded-xl border border-slate-100 text-[10px] font-black uppercase text-blue-500 shadow-sm flex items-center">
                         <svg class="w-3 h-3 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         Gestão via Asaas API
                     </div>
@@ -75,7 +75,7 @@
                                         </span>
                                     </td>
                                     <td class="px-10 py-7 text-right">
-                                        <button class="text-[10px] font-black text-indigo-500 hover:text-indigo-800 uppercase tracking-widest bg-indigo-50 px-4 py-2 rounded-xl transition">Acessar no Asaas</button>
+                                        <button class="text-[10px] font-black text-blue-500 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-xl transition">Acessar no Asaas</button>
                                     </td>
                                 </tr>
                             @empty

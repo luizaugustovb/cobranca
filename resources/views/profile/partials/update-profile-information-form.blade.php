@@ -33,7 +33,7 @@
                     <p class="text-sm mt-2 text-gray-800">
                         Seu endereço de e-mail não está verificado.
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             Clique aqui para reenviar o e-mail de verificação.
                         </button>
                     </p>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center">
-            <a href="{{ route('tenant.usuarios') }}" class="mr-4 p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition">
+            <a href="{{ route('tenant.usuarios') }}" class="mr-4 p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             </a>
             <h2 class="font-black text-lg sm:text-2xl text-slate-800 uppercase tracking-tighter">Editar Usuário</h2>
@@ -70,7 +70,7 @@
 
                     <div class="pt-4 flex justify-end gap-4">
                         <a href="{{ route('tenant.usuarios') }}" class="px-6 py-3 border border-slate-200 rounded-xl text-sm font-black text-slate-500 uppercase tracking-widest hover:bg-slate-50 transition">Cancelar</a>
-                        <x-primary-button class="px-8 py-3 bg-purple-600 hover:bg-purple-700 rounded-xl shadow-lg shadow-purple-500/20 font-black uppercase tracking-widest">
+                        <x-primary-button class="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg shadow-blue-500/20 font-black uppercase tracking-widest">
                             Salvar Alterações
                         </x-primary-button>
                     </div>

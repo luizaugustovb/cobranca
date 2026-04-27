@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="mb-10 text-center">
-        <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Validar <span class="text-indigo-600">E-mail</span></h2>
+        <h2 class="text-3xl font-black text-slate-800 uppercase tracking-tighter">Validar <span class="text-blue-600">E-mail</span></h2>
         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 px-6">Segurança e Autenticidade CobrançaPro.</p>
     </div>
 
@@ -17,7 +17,7 @@
     <div class="mt-8 flex flex-col space-y-4">
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-            <x-primary-button class="w-full py-5 bg-indigo-600 hover:bg-slate-900 rounded-2xl shadow-xl shadow-indigo-500/20 flex justify-center text-sm font-black uppercase tracking-[0.2em] transition">
+            <x-primary-button class="w-full py-5 bg-blue-600 hover:bg-slate-900 rounded-2xl shadow-xl shadow-blue-500/20 flex justify-center text-sm font-black uppercase tracking-[0.2em] transition">
                 {{ __('Reenviar E-mail de Verificação') }}
             </x-primary-button>
         </form>

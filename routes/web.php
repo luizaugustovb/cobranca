@@ -47,9 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pagamentos', [\App\Http\Controllers\Tenant\PagamentoController::class, 'index'])->name('pagamentos');
         Route::get('/pagamentos/create', [\App\Http\Controllers\Tenant\PagamentoController::class, 'create'])->name('pagamentos.create');
         Route::post('/pagamentos', [\App\Http\Controllers\Tenant\PagamentoController::class, 'store'])->name('pagamentos.store');
-        // Conversor PDF → XLSX
+        // Conversor PDF → XLSX / Leitura direta
         Route::get('/pdf-conversao', [\App\Http\Controllers\Tenant\PdfConversaoController::class, 'create'])->name('pdf-conversao.create');
         Route::post('/pdf-conversao', [\App\Http\Controllers\Tenant\PdfConversaoController::class, 'store'])->name('pdf-conversao.store');
+        Route::post('/pdf-conversao/preview', [\App\Http\Controllers\Tenant\PdfConversaoController::class, 'preview'])->name('pdf-conversao.preview');
+        Route::post('/pdf-conversao/importar', [\App\Http\Controllers\Tenant\PdfConversaoController::class, 'importar'])->name('pdf-conversao.importar');
 
         // Importações (Lotes)
         Route::get('/importacoes', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'index'])->name('importacoes');
@@ -58,12 +60,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/importacoes', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'store'])->name('importacoes.store');
         Route::get('/importacoes/{importacao}', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'show'])->name('importacoes.show');
         Route::get('/importacoes/{importacao}/download', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'download'])->name('importacoes.download');
-        
+
         Route::get('/relatorios', [\App\Http\Controllers\Tenant\RelatorioController::class, 'index'])->name('relatorios');
         Route::get('/relatorios/fluxo-caixa', [\App\Http\Controllers\Tenant\RelatorioController::class, 'fluxoCaixa'])->name('relatorios.fluxo-caixa');
         Route::get('/relatorios/eficiencia', [\App\Http\Controllers\Tenant\RelatorioController::class, 'eficiencia'])->name('relatorios.eficiencia');
         Route::get('/relatorios/auditoria', [\App\Http\Controllers\Tenant\RelatorioController::class, 'auditoria'])->name('relatorios.auditoria');
-        
+
         // Configurações
         Route::get('/configuracoes', [\App\Http\Controllers\Tenant\SettingController::class, 'index'])->name('settings');
         Route::post('/configuracoes', [\App\Http\Controllers\Tenant\SettingController::class, 'store'])->name('settings.store');
@@ -88,10 +90,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/tenants/{tenant}/reset-password', [\App\Http\Controllers\Admin\TenantController::class, 'resetPassword'])->name('tenants.reset-password');
         Route::get('/tenants/{tenant}/impersonate', [\App\Http\Controllers\Admin\ImpersonationController::class, 'start'])->name('impersonate');
         Route::post('/tenants/stop-impersonation', [\App\Http\Controllers\Admin\ImpersonationController::class, 'stop'])->name('stop-impersonation');
-        
+
         // Financeiro Global do SaaS (Receitas de Assinaturas)
         Route::get('/financeiro', [\App\Http\Controllers\Admin\FinanceiroController::class, 'index'])->name('financeiro');
-        
+
         // Configurações Globais SaaS
         Route::get('/configuracoes', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings');
         Route::post('/configuracoes', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');
@@ -109,4 +111,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

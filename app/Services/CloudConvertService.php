@@ -22,7 +22,13 @@ class CloudConvertService
 
     public function __construct()
     {
-        $this->apiKey = config('services.cloudconvert.api_key');
+        $apiKey = config('services.cloudconvert.api_key');
+
+        if (empty($apiKey)) {
+            throw new \RuntimeException('A chave da API do CloudConvert não está configurada. Defina CLOUDCONVERT_API_KEY no arquivo .env.');
+        }
+
+        $this->apiKey = $apiKey;
     }
 
     /**

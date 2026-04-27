@@ -10,6 +10,7 @@ use App\Models\Cliente;
 use App\Models\Devedor;
 use App\Models\Aluno;
 use App\Models\Titulo;
+use App\Models\Setting;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -30,10 +31,17 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
     public int $erros = 0;
     public array $erroDetalhe = [];
 
+    private string $honorariosTipo;
+    private float $honorariosValor;
+
     public function __construct(int $tenantId, int $userId)
     {
         $this->tenantId = $tenantId;
         $this->userId   = $userId;
+
+        // Carrega regra de honorários configurada pelo tenant
+        $this->honorariosTipo  = Setting::where('tenant_id', $tenantId)->where('key', 'honorarios_tipo')->value('value') ?? 'fixo';
+        $this->honorariosValor = (float) (Setting::where('tenant_id', $tenantId)->where('key', 'honorarios_valor')->value('value') ?? 0);
     }
 
     public function collection(Collection $rows)
@@ -52,7 +60,13 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
                     continue;
                 }
 
-                $fone     = $this->sanitize($row['contato'] ?? $row['telefone'] ?? null);
+                $fone = $this->sanitize($row['contato'] ?? $row['telefone'] ?? null);
+
+                if (empty($fone)) {
+                    $this->erros++;
+                    $this->erroDetalhe[] = "Linha " . ($index + 2) . ": Contato (telefone/WhatsApp) é obrigatório.";
+                    continue;
+                }
                 $email    = trim($row['email'] ?? '');
                 $rua      = trim($row['rua'] ?? $row['endereco'] ?? '');
                 $numEnd   = trim($row['numero_end'] ?? $row['num'] ?? '');
@@ -111,6 +125,14 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
                     continue;
                 }
 
+                // Honorários: usa o valor da planilha se informado; senão aplica regra configurada
+                $honorariosRaw = $this->parseValor($row['honorarios'] ?? $row['honorarios_advocaticios'] ?? 0);
+                if ($honorariosRaw == 0 && $this->honorariosValor > 0) {
+                    $honorariosRaw = $this->honorariosTipo === 'percentual'
+                        ? round($valor * $this->honorariosValor / 100, 2)
+                        : $this->honorariosValor;
+                }
+
                 Titulo::updateOrCreate(
                     ['tenant_id' => $this->tenantId, 'numero' => $numeroTitulo],
                     [
@@ -120,14 +142,13 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
                         'juros'          => $this->parseValor($row['juros'] ?? 0),
                         'multa'          => $this->parseValor($row['multa'] ?? 0),
                         'desconto'       => $this->parseValor($row['desconto'] ?? 0),
-                        'honorarios'     => $this->parseValor($row['honorarios'] ?? $row['honorarios_advocaticios'] ?? 0),
+                        'honorarios'     => $honorariosRaw,
                         'vencimento'     => $vencimento,
                         'status'         => 'aberto',
                     ]
                 );
 
                 $this->importados++;
-
             } catch (\Exception $e) {
                 $this->erros++;
                 $this->erroDetalhe[] = "Linha " . ($index + 2) . ": " . $e->getMessage();
@@ -162,9 +183,11 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
             foreach (['d/m/Y', 'd-m-Y', 'Y-m-d', 'd/m/y'] as $fmt) {
                 try {
                     return Carbon::createFromFormat($fmt, trim($value))->format('Y-m-d');
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                }
             }
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         return null;
     }
 }

@@ -54,7 +54,7 @@
                             </div>
                             <div class="space-y-2 md:col-span-2">
                                 <x-input-label for="password" value="Senha Inicial do Executivo" class="text-[10px] font-black uppercase tracking-widest text-slate-400" />
-                                <x-text-input id="password" name="password" type="password" class="w-full bg-indigo-50 border-indigo-100/50 rounded-2xl py-4" required />
+                                <x-text-input id="password" name="password" type="password" class="w-full bg-blue-50 border-blue-100/50 rounded-2xl py-4" required />
                                 <x-input-error :messages="$errors->get('password')" class="mt-1" />
                             </div>
                         </div>

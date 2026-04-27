@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h2 class="font-black text-xl sm:text-3xl text-slate-800 flex items-center tracking-tighter uppercase">
-                <div class="p-2 bg-indigo-100 rounded-lg mr-3 shrink-0">
-                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 bg-blue-100 rounded-lg mr-3 shrink-0">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
@@ -53,7 +53,7 @@
                                         R$ {{ number_format($acordo->valor_acordo, 2, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 text-xs font-bold rounded-full bg-indigo-50 text-indigo-700">
+                                        <span class="px-2 py-1 text-xs font-bold rounded-full bg-blue-50 text-blue-700">
                                             {{ $acordo->parcelas }}x
                                         </span>
                                     </td>
@@ -71,7 +71,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">
-                                        <a href="{{ route('tenant.acordos.show', $acordo) }}" class="p-2 inline-flex bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-500 hover:text-white transition duration-200">
+                                        <a href="{{ route('tenant.acordos.show', $acordo) }}" class="p-2 inline-flex bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white transition duration-200">
                                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                         </a>
                                     </td>

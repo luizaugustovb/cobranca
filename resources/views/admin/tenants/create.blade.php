@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-black text-lg sm:text-2xl text-slate-900 uppercase tracking-tighter leading-tight flex items-center">
-             <div class="p-2 bg-indigo-600 rounded-lg mr-3 shadow-lg shadow-indigo-500/20 text-white leading-none">
+             <div class="p-2 bg-blue-600 rounded-lg mr-3 shadow-lg shadow-blue-500/20 text-white leading-none">
                 <svg class="w-6 h-6 leading-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
             CADASTRAR NOVO ESCRITÓRIO
@@ -63,7 +63,7 @@
                         <div class="pt-6 border-t border-gray-50 flex flex-col md:flex-row gap-8">
                             <div class="flex-1">
                                 <x-input-label for="plan" :value="__('Plano do SaaS')" class="text-xs font-black uppercase tracking-widest text-gray-400 mb-2" />
-                                <select id="plan" name="plan" class="w-full bg-indigo-50 border-none rounded-2xl py-4 font-black uppercase text-xs tracking-widest text-indigo-700">
+                                <select id="plan" name="plan" class="w-full bg-blue-50 border-none rounded-2xl py-4 font-black uppercase text-xs tracking-widest text-blue-700">
                                     @foreach($plans as $plan)
                                         <option value="{{ $plan->slug }}">{{ $plan->nome }} — R$ {{ number_format($plan->valor, 2, ',', '.') }}/mês</option>
                                     @endforeach
@@ -81,7 +81,7 @@
 
                         <div class="pt-8 flex justify-end">
                             <a href="{{ route('admin.tenants') }}" class="mr-4 px-8 py-4 bg-gray-50 text-gray-500 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-gray-100 transition">Cancelar</a>
-                            <x-primary-button class="bg-indigo-600 hover:bg-indigo-700 px-10 py-5 rounded-3xl shadow-2xl shadow-indigo-500/20 font-black uppercase tracking-widest text-sm leading-none">
+                            <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-10 py-5 rounded-3xl shadow-2xl shadow-blue-500/20 font-black uppercase tracking-widest text-sm leading-none">
                                 Confirmar e Criar Escritório
                             </x-primary-button>
                         </div>

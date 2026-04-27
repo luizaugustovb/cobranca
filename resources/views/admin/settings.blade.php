@@ -21,9 +21,9 @@
                 
                     <!-- Seção: Pagamentos e Mensagens -->
                     <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden mb-8">
-                        <div class="p-8 border-b border-slate-50 flex items-center justify-between bg-indigo-50/20">
+                        <div class="p-8 border-b border-slate-50 flex items-center justify-between bg-blue-50/20">
                             <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                                <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 </div>
                                 <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Infraestrutura: Pagamentos & WhatsApp</h3>
@@ -44,7 +44,7 @@
                                 <div class="space-y-2 flex items-center space-x-3">
                                     <div class="flex-grow">
                                         <x-input-label for="test_phone" value="📲 Celular para Teste" class="text-[10px] font-black uppercase text-slate-400" />
-                                        <x-text-input id="test_phone" name="test_phone" type="text" class="w-full bg-white border border-indigo-100 rounded-2xl py-4" placeholder="55849..." />
+                                        <x-text-input id="test_phone" name="test_phone" type="text" class="w-full bg-white border border-blue-100 rounded-2xl py-4" placeholder="55849..." />
                                     </div>
                                     <button type="submit" form="test-whatsapp-form" class="mt-6 px-6 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition shadow-lg shadow-emerald-500/20">
                                         Testar
@@ -58,8 +58,8 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                                 <div class="space-y-2">
                                     <x-input-label for="asas_master_token" value="Token Master do ASAS (API Key)" class="text-[10px] font-black uppercase text-slate-400" />
-                                    <x-text-input id="asas_master_token" name="asas_master_token" type="text" class="w-full bg-white border border-indigo-100 rounded-2xl py-4" :value="$settings['asas_master_token']" placeholder="$aask_..." />
-                                    <p class="text-[9px] text-indigo-400 font-bold italic">Usado para gerenciar faturas automáticas de todos os escritórios.</p>
+                                    <x-text-input id="asas_master_token" name="asas_master_token" type="text" class="w-full bg-white border border-blue-100 rounded-2xl py-4" :value="$settings['asas_master_token']" placeholder="$aask_..." />
+                                    <p class="text-[9px] text-blue-400 font-bold italic">Usado para gerenciar faturas automáticas de todos os escritórios.</p>
                                 </div>
                                 <div class="space-y-2">
                                     <x-input-label for="asas_mode" value="Modo do Sistema Asas" class="text-[10px] font-black uppercase text-slate-400" />
@@ -81,7 +81,7 @@
                             </div>
                             <h3 class="text-xs font-black text-slate-800 uppercase tracking-widest">Configuração de Planos & Módulos Liberados</h3>
                         </div>
-                        <a href="{{ route('admin.planos') }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition shadow-md shadow-indigo-500/20">
+                        <a href="{{ route('admin.planos') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition shadow-md shadow-blue-500/20">
                             Editar Valores
                         </a>
                     </div>
@@ -93,39 +93,39 @@
                                     <th class="px-8 py-4 text-[10px] font-black text-black uppercase tracking-widest border-b border-slate-100 italic">Módulos do Sistema</th>
                                     <th class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">PLANO BASIC (Bronze)</th>
                                     <th class="px-8 py-4 text-[10px] font-black text-amber-500 uppercase tracking-widest border-b border-slate-100 text-center">PLANO GOLD (Prata)</th>
-                                    <th class="px-8 py-4 text-[10px] font-black text-indigo-500 uppercase tracking-widest border-b border-slate-100 text-center">PLANO PLATINUM (Diamante)</th>
+                                    <th class="px-8 py-4 text-[10px] font-black text-blue-500 uppercase tracking-widest border-b border-slate-100 text-center">PLANO PLATINUM (Diamante)</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-50 text-sm">
-                                <tr class="bg-indigo-50/10">
-                                    <td class="px-8 py-5 font-black text-indigo-600 uppercase text-[10px] tracking-tight">💰 Valor da Assinatura (Mensal)</td>
+                                <tr class="bg-blue-50/10">
+                                    <td class="px-8 py-5 font-black text-blue-600 uppercase text-[10px] tracking-tight">💰 Valor da Assinatura (Mensal)</td>
                                     <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ {{ isset($plans['basic']) ? number_format($plans['basic']->valor, 2, ',', '.') : '—' }}</td>
                                     <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ {{ isset($plans['gold']) ? number_format($plans['gold']->valor, 2, ',', '.') : '—' }}</td>
                                     <td class="px-8 py-5 text-center font-black text-slate-900 border-x border-slate-50">R$ {{ isset($plans['platinum']) ? number_format($plans['platinum']->valor, 2, ',', '.') : '—' }}</td>
                                 </tr>
                                 <tr class="hover:bg-slate-50/50 transition">
                                     <td class="px-8 py-5 font-bold text-slate-700 uppercase text-[10px] tracking-tight">📲 Automação WhatsApp (Disparos API)</td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
                                 </tr>
                                 <tr class="hover:bg-slate-50/50 transition">
                                     <td class="px-8 py-5 font-bold text-slate-700 uppercase text-[10px] tracking-tight">📥 Importação Massiva (Lotes Excel)</td>
                                     <td class="px-8 py-5 text-center"><input type="checkbox" disabled class="rounded border-slate-200 text-slate-300 h-5 w-5"></td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
                                 </tr>
                                 <tr class="hover:bg-slate-50/50 transition">
                                     <td class="px-8 py-5 font-bold text-slate-700 uppercase text-[10px] tracking-tight">🤖 Consultas de CPF Automatizadas (Bot)</td>
                                     <td class="px-8 py-5 text-center"><input type="checkbox" disabled class="rounded border-slate-200 text-slate-300 h-5 w-5"></td>
                                     <td class="px-8 py-5 text-center"><input type="checkbox" disabled class="rounded border-slate-200 text-slate-300 h-5 w-5"></td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
                                 </tr>
                                 <tr class="hover:bg-slate-50/50 transition">
                                     <td class="px-8 py-5 font-bold text-slate-700 uppercase text-[10px] tracking-tight">📊 Relatórios de Performance Avançados</td>
                                     <td class="px-8 py-5 text-center"><input type="checkbox" disabled class="rounded border-slate-200 text-slate-300 h-5 w-5"></td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
-                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-indigo-600 focus:ring-indigo-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
+                                    <td class="px-8 py-5 text-center"><input type="checkbox" checked disabled class="rounded border-slate-200 text-blue-600 focus:ring-blue-500 h-5 w-5"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="pt-8 flex justify-end">
-                    <x-primary-button class="px-16 py-5 bg-indigo-600 hover:bg-slate-900 rounded-3xl shadow-2xl shadow-indigo-500/20 text-sm font-black uppercase tracking-[0.2em] transition">
+                    <x-primary-button class="px-16 py-5 bg-blue-600 hover:bg-slate-900 rounded-3xl shadow-2xl shadow-blue-500/20 text-sm font-black uppercase tracking-[0.2em] transition">
                         Atualizar Configurações Maestras
                     </x-primary-button>
                 </div>

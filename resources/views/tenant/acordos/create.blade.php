@@ -3,7 +3,7 @@
         <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
             Simulador de Acordo
         </h2>
-        <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Refinanciamento de dívida para: <strong class="text-indigo-600">{{ $devedor->nome }}</strong></p>
+        <p class="text-xs text-gray-400 font-bold tracking-widest mt-1">Refinanciamento de dívida para: <strong class="text-blue-600">{{ $devedor->nome }}</strong></p>
     </x-slot>
 
     <div class="py-6 sm:py-12" x-data="{
@@ -74,7 +74,7 @@
                                                         @if($totalJuros > 0)
                                                             <input type="number" step="0.01" min="0" max="{{ $totalJuros }}"
                                                                 x-model.number="jurosNeg"
-                                                                class="w-32 text-right text-sm font-black rounded-xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                                                class="w-32 text-right text-sm font-black rounded-xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 py-2 px-3 focus:ring-blue-500 focus:border-blue-500"/>
                                                         @else
                                                             <span class="text-sm text-gray-400 italic">R$ 0,00</span>
                                                         @endif
@@ -87,7 +87,7 @@
                                                         @if($totalMulta > 0)
                                                             <input type="number" step="0.01" min="0" max="{{ $totalMulta }}"
                                                                 x-model.number="multaNeg"
-                                                                class="w-32 text-right text-sm font-black rounded-xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500"/>
+                                                                class="w-32 text-right text-sm font-black rounded-xl border-gray-200 dark:bg-gray-700 dark:border-gray-600 py-2 px-3 focus:ring-blue-500 focus:border-blue-500"/>
                                                         @else
                                                             <span class="text-sm text-gray-400 italic">R$ 0,00</span>
                                                         @endif
@@ -103,9 +103,9 @@
                                                         <span class="text-sm font-black text-amber-600 dark:text-amber-400">R$ {{ number_format($totalHonorarios, 2, ',', '.') }}</span>
                                                     </td>
                                                 </tr>
-                                                <tr class="bg-indigo-50 dark:bg-indigo-900/20">
-                                                    <td class="px-5 py-4 font-black text-indigo-700 dark:text-indigo-300 uppercase text-xs tracking-widest" colspan="2">Total Negociado</td>
-                                                    <td class="px-5 py-4 text-right font-black text-indigo-700 dark:text-indigo-300 text-lg">
+                                                <tr class="bg-blue-50 dark:bg-blue-900/20">
+                                                    <td class="px-5 py-4 font-black text-blue-700 dark:text-blue-300 uppercase text-xs tracking-widest" colspan="2">Total Negociado</td>
+                                                    <td class="px-5 py-4 text-right font-black text-blue-700 dark:text-blue-300 text-lg">
                                                         R$ <span x-text="fmt(valorAcordo)"></span>
                                                     </td>
                                                 </tr>
@@ -139,7 +139,7 @@
                                     <x-text-input id="vencimento_primeira" name="vencimento_primeira" type="date" class="w-full text-xl font-bold rounded-2xl border-gray-100 dark:bg-gray-700 py-4 bg-gray-50" value="{{ date('Y-m-d') }}" required />
                                 </div>
 
-                                <div class="bg-indigo-600 rounded-3xl p-5 sm:p-10 shadow-2xl shadow-indigo-500/30 transform hover:scale-[1.02] transition">
+                                <div class="bg-blue-600 rounded-3xl p-5 sm:p-10 shadow-2xl shadow-blue-500/30 transform hover:scale-[1.02] transition">
                                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 text-white">
                                         <div>
                                             <p class="text-xs font-black uppercase tracking-widest opacity-70">Resultado da Simulação</p>
@@ -165,8 +165,8 @@
                                             <button type="button"
                                                 @click="formaPagamento = op.v"
                                                 :class="formaPagamento === op.v
-                                                    ? 'ring-2 ring-indigo-600 bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300'
-                                                    : 'border-gray-200 dark:border-gray-600 hover:border-indigo-300'"
+                                                    ? 'ring-2 ring-blue-600 bg-blue-50 dark:bg-blue-900/30 border-blue-300'
+                                                    : 'border-gray-200 dark:border-gray-600 hover:border-blue-300'"
                                                 class="flex flex-col items-center justify-center gap-1 p-4 rounded-2xl border-2 transition text-center">
                                                 <span class="text-2xl" x-text="op.icon"></span>
                                                 <span class="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-gray-200" x-text="op.label"></span>
@@ -221,7 +221,7 @@
                     </div>
 
                     <div class="bg-white dark:bg-gray-800 rounded-3xl p-5 sm:p-8 shadow-xl border border-gray-100 dark:border-gray-700">
-                        <h3 class="text-xs font-black uppercase tracking-widest text-indigo-500 mb-4">Informação importante</h3>
+                        <h3 class="text-xs font-black uppercase tracking-widest text-blue-500 mb-4">Informação importante</h3>
                         <p class="text-sm text-gray-500 font-medium">Ao confirmar este acordo, todos os títulos listados acima serão cancelados e substituídos pelas novas parcelas geradas aqui.</p>
                         <p class="text-[10px] text-amber-600 font-bold mt-3">? Honorários não podem ser reduzidos na negociação.</p>
                     </div>

@@ -31,7 +31,7 @@
             <x-primary-button class="w-full py-5 bg-emerald-600 hover:bg-emerald-700 rounded-2xl shadow-xl shadow-emerald-500/20 flex justify-center text-sm font-black uppercase tracking-[0.2em] transition">
                 Enviar Senha por WhatsApp
             </x-primary-button>
-            <a href="{{ route('login') }}" class="text-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 transition">Voltar para o Login</a>
+            <a href="{{ route('login') }}" class="text-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition">Voltar para o Login</a>
         </div>
     </form>
 </x-guest-layout>

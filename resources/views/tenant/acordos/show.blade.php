@@ -5,7 +5,7 @@
                 <nav class="flex mb-4 text-xs font-bold text-gray-400 uppercase tracking-widest" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-3">
                         <li class="inline-flex items-center">
-                            <a href="{{ route('tenant.acordos') }}" class="hover:text-indigo-600 transition">Acordos</a>
+                            <a href="{{ route('tenant.acordos') }}" class="hover:text-blue-600 transition">Acordos</a>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-4 h-4 mx-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
@@ -30,7 +30,7 @@
                     </span>
                 </div>
                 <div class="mt-2 flex items-center gap-4 text-sm text-gray-500">
-                    <span>Devedor: <a href="{{ route('tenant.devedores.show', $acordo->devedor) }}" class="font-bold text-indigo-600 hover:underline">{{ $acordo->devedor->nome }}</a></span>
+                    <span>Devedor: <a href="{{ route('tenant.devedores.show', $acordo->devedor) }}" class="font-bold text-blue-600 hover:underline">{{ $acordo->devedor->nome }}</a></span>
                     <span class="text-gray-300">�</span>
                     <span>Gerado em {{ $acordo->created_at->format('d/m/Y \�\s H:i') }}</span>
                 </div>
@@ -38,7 +38,7 @@
             <div class="flex items-center gap-3 mt-1">
                 @if($acordo->asaas_link)
                     <a href="{{ $acordo->asaas_link }}" target="_blank"
-                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black uppercase tracking-widest rounded-xl transition shadow-lg shadow-indigo-500/30">
+                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase tracking-widest rounded-xl transition shadow-lg shadow-blue-500/30">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         Abrir Link
                     </a>
@@ -77,19 +77,19 @@
                             : 0;
                     @endphp
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
-                        <div class="bg-indigo-600 px-8 py-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                        <div class="bg-blue-600 px-8 py-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <div>
-                                <p class="text-xs font-black text-indigo-200 uppercase tracking-widest mb-1">Valor do Acordo</p>
+                                <p class="text-xs font-black text-blue-200 uppercase tracking-widest mb-1">Valor do Acordo</p>
                                 <p class="text-2xl sm:text-4xl font-black text-white tracking-tighter">R$ {{ number_format($acordo->valor_acordo, 2, ',', '.') }}</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-xs font-black text-indigo-200 uppercase tracking-widest mb-1">Progresso</p>
-                                <p class="text-3xl font-black text-white">{{ $pagas }}<span class="text-xl text-indigo-300">/{{ $total }}</span></p>
-                                <p class="text-xs text-indigo-300 mt-0.5">parcelas pagas</p>
+                                <p class="text-xs font-black text-blue-200 uppercase tracking-widest mb-1">Progresso</p>
+                                <p class="text-3xl font-black text-white">{{ $pagas }}<span class="text-xl text-blue-300">/{{ $total }}</span></p>
+                                <p class="text-xs text-blue-300 mt-0.5">parcelas pagas</p>
                             </div>
                         </div>
                         {{-- Barra de progresso --}}
-                        <div class="h-2 bg-indigo-100">
+                        <div class="h-2 bg-blue-100">
                             <div class="h-2 bg-emerald-500 transition-all duration-700" style="width: {{ $progresso }}%"></div>
                         </div>
                         {{-- Mini-stats --}}
@@ -118,9 +118,9 @@
                     @if($acordo->titulos->isNotEmpty())
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-x-auto">
                         <div class="px-8 py-5 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                             <h3 class="font-black text-slate-800 dark:text-white uppercase tracking-tighter text-lg">T�tulos Negociados</h3>
-                            <span class="ml-auto text-xs font-black text-gray-400 uppercase tracking-widest bg-indigo-50 dark:bg-indigo-900/20 text-indigo-500 px-3 py-1 rounded-full">
+                            <span class="ml-auto text-xs font-black text-gray-400 uppercase tracking-widest bg-blue-50 dark:bg-blue-900/20 text-blue-500 px-3 py-1 rounded-full">
                                 {{ $acordo->titulos->count() }} t�tulo(s)
                             </span>
                         </div>
@@ -137,8 +137,8 @@
                             </thead>
                             <tbody class="divide-y divide-gray-50 dark:divide-gray-700/50">
                                 @foreach($acordo->titulos->sortBy('vencimento') as $titulo)
-                                    <tr class="bg-indigo-50/30 dark:bg-indigo-900/5 hover:bg-indigo-50/60 transition-colors">
-                                        <td class="px-6 py-4 text-sm font-black text-indigo-700 dark:text-indigo-400 uppercase tracking-tighter">
+                                    <tr class="bg-blue-50/30 dark:bg-blue-900/5 hover:bg-blue-50/60 transition-colors">
+                                        <td class="px-6 py-4 text-sm font-black text-blue-700 dark:text-blue-400 uppercase tracking-tighter">
                                             #{{ $titulo->numero }}
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
@@ -167,9 +167,9 @@
                                     </tr>
                                 @endforeach
                                 {{-- Linha de total --}}
-                                <tr class="bg-indigo-100/50 dark:bg-indigo-900/20 font-black">
-                                    <td colspan="5" class="px-6 py-3 text-right text-xs font-black uppercase tracking-widest text-indigo-600">Total dos t�tulos</td>
-                                    <td class="px-6 py-3 text-right text-sm font-black text-indigo-700 dark:text-indigo-300">
+                                <tr class="bg-blue-100/50 dark:bg-blue-900/20 font-black">
+                                    <td colspan="5" class="px-6 py-3 text-right text-xs font-black uppercase tracking-widest text-blue-600">Total dos t�tulos</td>
+                                    <td class="px-6 py-3 text-right text-sm font-black text-blue-700 dark:text-blue-300">
                                         R$ {{ number_format($acordo->titulos->sum(fn($t) => $t->valor_total), 2, ',', '.') }}
                                     </td>
                                 </tr>
@@ -182,7 +182,7 @@
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-x-auto">
                         <div class="px-8 py-5 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
                             <h3 class="font-black text-slate-800 dark:text-white uppercase tracking-tighter text-lg flex items-center gap-2">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                                 Parcelas
                             </h3>
                             <span class="text-xs font-black text-gray-400 uppercase tracking-widest bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">{{ $pagas }}/{{ $total }} pagas</span>
@@ -225,7 +225,7 @@
                                         </td>
                                         <td class="px-6 py-4 text-center">
                                             @if($parcela->payment_id)
-                                                <span class="text-[10px] text-indigo-500 font-mono bg-indigo-50 dark:bg-indigo-900/20 px-2 py-1 rounded truncate max-w-[120px] block">{{ $parcela->payment_id }}</span>
+                                                <span class="text-[10px] text-blue-500 font-mono bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded truncate max-w-[120px] block">{{ $parcela->payment_id }}</span>
                                             @else
                                                 <span class="text-gray-300 text-sm">�</span>
                                             @endif
@@ -280,7 +280,7 @@
                         $formaConfig = match($acordo->forma_pagamento) {
                             'BOLETO'      => ['icon' => '??', 'label' => 'Boleto Banc�rio',    'color' => 'bg-blue-50 dark:bg-blue-900/20 border-blue-200'],
                             'PIX'         => ['icon' => '?', 'label' => 'Pix',                'color' => 'bg-green-50 dark:bg-green-900/20 border-green-200'],
-                            'CREDIT_CARD' => ['icon' => '??', 'label' => 'Cart�o de Cr�dito',  'color' => 'bg-purple-50 dark:bg-purple-900/20 border-purple-200'],
+                            'CREDIT_CARD' => ['icon' => '??', 'label' => 'Cart�o de Cr�dito',  'color' => 'bg-blue-50 dark:bg-blue-900/20 border-blue-200'],
                             default       => ['icon' => '??', 'label' => 'Livre (devedor escolhe)', 'color' => 'bg-amber-50 dark:bg-amber-900/20 border-amber-200'],
                         };
                     @endphp
@@ -306,7 +306,7 @@
                             </div>
                             <div class="border-t border-gray-100 dark:border-gray-700 pt-3 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                                 <span class="font-black text-slate-700 dark:text-white uppercase text-xs tracking-widest">Valor do Acordo</span>
-                                <span class="font-black text-indigo-600 text-base">R$ {{ number_format($acordo->valor_acordo, 2, ',', '.') }}</span>
+                                <span class="font-black text-blue-600 text-base">R$ {{ number_format($acordo->valor_acordo, 2, ',', '.') }}</span>
                             </div>
                         </div>
                     </div>
@@ -348,9 +348,9 @@
 
                     {{-- Card: Asaas Link --}}
                     @if($acordo->asaas_link)
-                    <div class="bg-indigo-600 rounded-2xl p-6 shadow-xl shadow-indigo-500/30">
-                        <p class="text-xs font-black text-indigo-200 uppercase tracking-widest mb-3">Link de Pagamento</p>
-                        <p class="text-xs text-indigo-300 break-all mb-4 leading-relaxed">{{ $acordo->asaas_link }}</p>
+                    <div class="bg-blue-600 rounded-2xl p-6 shadow-xl shadow-blue-500/30">
+                        <p class="text-xs font-black text-blue-200 uppercase tracking-widest mb-3">Link de Pagamento</p>
+                        <p class="text-xs text-blue-300 break-all mb-4 leading-relaxed">{{ $acordo->asaas_link }}</p>
                         <a href="{{ $acordo->asaas_link }}" target="_blank"
                            class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/20 hover:bg-white/30 text-white text-xs font-black uppercase tracking-widest rounded-xl transition">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -361,9 +361,9 @@
 
                     {{-- Acesso r�pido ao devedor --}}
                     <a href="{{ route('tenant.devedores.show', $acordo->devedor) }}"
-                       class="flex items-center gap-4 bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-100 dark:border-gray-700 p-5 hover:border-indigo-300 hover:shadow-md transition group">
-                        <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center shrink-0 group-hover:bg-indigo-200 transition">
-                            <svg class="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                       class="flex items-center gap-4 bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-100 dark:border-gray-700 p-5 hover:border-blue-300 hover:shadow-md transition group">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0 group-hover:bg-blue-200 transition">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                         </div>
                         <div class="min-w-0">
                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Devedor</p>
@@ -372,7 +372,7 @@
                                 <p class="text-xs text-gray-400 font-mono">{{ $acordo->devedor->cpf_cnpj }}</p>
                             @endif
                         </div>
-                        <svg class="w-4 h-4 text-gray-300 group-hover:text-indigo-400 ml-auto transition" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        <svg class="w-4 h-4 text-gray-300 group-hover:text-blue-400 ml-auto transition" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </a>
 
                 </div>

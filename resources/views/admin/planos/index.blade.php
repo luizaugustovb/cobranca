@@ -23,8 +23,8 @@
                 @method('PUT')
 
                 <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-8 border-b border-slate-50 flex items-center space-x-3 bg-indigo-50/20">
-                        <div class="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                    <div class="p-8 border-b border-slate-50 flex items-center space-x-3 bg-blue-50/20">
+                        <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <div>
@@ -55,7 +55,7 @@
                                         type="text"
                                         name="plans[{{ $i }}][nome]"
                                         value="{{ old("plans.{$i}.nome", $plan->nome) }}"
-                                        class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm font-bold text-slate-700 focus:ring-indigo-500 focus:border-indigo-500"
+                                        class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3 px-4 text-sm font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500"
                                         required
                                     />
                                     @error("plans.{$i}.nome")
@@ -75,7 +75,7 @@
                                             min="0"
                                             name="plans[{{ $i }}][valor]"
                                             value="{{ old("plans.{$i}.valor", number_format($plan->valor, 2, '.', '')) }}"
-                                            class="w-full bg-white border border-indigo-100 rounded-2xl py-3 pl-10 pr-4 text-sm font-black text-slate-900 focus:ring-indigo-500 focus:border-indigo-500"
+                                            class="w-full bg-white border border-blue-100 rounded-2xl py-3 pl-10 pr-4 text-sm font-black text-slate-900 focus:ring-blue-500 focus:border-blue-500"
                                             required
                                         />
                                     </div>
@@ -96,7 +96,7 @@
                                         name="plans[{{ $i }}][viicio_plan_id]"
                                         value="{{ old("plans.{$i}.viicio_plan_id", $plan->viicio_plan_id) }}"
                                         placeholder="Ex: 1"
-                                        class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-2.5 px-4 text-sm font-bold text-slate-700 focus:ring-indigo-500 focus:border-indigo-500"
+                                        class="w-full bg-slate-50 border border-slate-100 rounded-2xl py-2.5 px-4 text-sm font-bold text-slate-700 focus:ring-blue-500 focus:border-blue-500"
                                     />
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                     </div>
 
                     <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-100 flex justify-end">
-                        <button type="submit" class="px-10 py-4 bg-indigo-600 hover:bg-slate-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition shadow-lg shadow-indigo-500/20">
+                        <button type="submit" class="px-10 py-4 bg-blue-600 hover:bg-slate-900 text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition shadow-lg shadow-blue-500/20">
                             Salvar Valores dos Planos
                         </button>
                     </div>

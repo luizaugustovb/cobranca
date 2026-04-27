@@ -5,7 +5,7 @@
                 {{ __('Visão Geral') }}
             </h2>
             <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-                {{ $tenantName ?? 'Operação Global' }} <span class="mx-1 text-slate-300">|</span> <span class="text-indigo-600">{{ now()->format('d M Y') }}</span>
+                {{ $tenantName ?? 'Operação Global' }} <span class="mx-1 text-slate-300">|</span> <span class="text-blue-600">{{ now()->format('d M Y') }}</span>
             </div>
         </div>
     </x-slot>
@@ -58,20 +58,20 @@
                 </div>
 
                 <!-- Card 3: Acordos -->
-                <div class="relative bg-white rounded-2xl shadow-md border border-indigo-100 overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-                    <div class="absolute top-0 left-0 right-0 h-1 bg-indigo-500 rounded-t-2xl"></div>
+                <div class="relative bg-white rounded-2xl shadow-md border border-blue-100 overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+                    <div class="absolute top-0 left-0 right-0 h-1 bg-blue-500 rounded-t-2xl"></div>
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
-                            <div class="bg-indigo-50 p-2.5 rounded-xl">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <div class="bg-blue-50 p-2.5 rounded-xl">
+                                <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-indigo-500 bg-indigo-50 px-2 py-1 rounded-full border border-indigo-100">Ativos</span>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-blue-500 bg-blue-50 px-2 py-1 rounded-full border border-blue-100">Ativos</span>
                         </div>
                         <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Acordos Ativos</p>
                         <p class="text-3xl font-black text-slate-900 tracking-tighter leading-none">{{ $totais['acordos_ativos'] ?? 0 }}</p>
                         <div class="mt-4 pt-4 border-t border-slate-50 flex items-center">
-                            <div class="w-2 h-2 rounded-full bg-indigo-400 mr-2"></div>
-                            <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-tight">Em recuperação</span>
+                            <div class="w-2 h-2 rounded-full bg-blue-400 mr-2"></div>
+                            <span class="text-[10px] font-bold text-blue-600 uppercase tracking-tight">Em recuperação</span>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                         <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Base de Devedores</p>
                         <p class="text-3xl font-black text-slate-900 tracking-tighter leading-none">{{ $totais['devedores'] ?? 0 }}</p>
                         <div class="mt-4 pt-4 border-t border-slate-50">
-                            <a href="{{ route('tenant.devedores') }}" class="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline underline-offset-4">Gerenciar carteira &rarr;</a>
+                            <a href="{{ route('tenant.devedores') }}" class="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline underline-offset-4">Gerenciar carteira &rarr;</a>
                         </div>
                     </div>
                 </div>
@@ -109,18 +109,18 @@
                     </div>
                     <div class="flex flex-col items-center justify-center h-48 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-100">
                         <div class="flex space-x-2 items-end mb-4">
-                            <div class="w-4 h-12 bg-indigo-200 rounded-t-sm"></div>
-                            <div class="w-4 h-8 bg-indigo-100 rounded-t-sm"></div>
-                            <div class="w-4 h-20 bg-indigo-400 rounded-t-sm"></div>
-                            <div class="w-4 h-14 bg-indigo-300 rounded-t-sm"></div>
-                            <div class="w-4 h-16 bg-indigo-500 rounded-t-sm"></div>
+                            <div class="w-4 h-12 bg-blue-200 rounded-t-sm"></div>
+                            <div class="w-4 h-8 bg-blue-100 rounded-t-sm"></div>
+                            <div class="w-4 h-20 bg-blue-400 rounded-t-sm"></div>
+                            <div class="w-4 h-14 bg-blue-300 rounded-t-sm"></div>
+                            <div class="w-4 h-16 bg-blue-500 rounded-t-sm"></div>
                         </div>
                         <p class="text-slate-400 uppercase font-black text-[9px] tracking-widest italic">Processando Inteligência de Dados...</p>
                     </div>
                 </div>
 
                 <!-- Sidebar de Ações / Histórico -->
-                <div class="bg-indigo-600 rounded-3xl p-8 text-white shadow-xl shadow-indigo-500/20">
+                <div class="bg-blue-600 rounded-3xl p-8 text-white shadow-xl shadow-blue-500/20">
                     <h3 class="text-xs font-black uppercase tracking-widest mb-6 opacity-80">Ações Sugeridas</h3>
                     <div class="space-y-4">
                         <div class="flex items-start space-x-3 p-3 bg-white/10 rounded-2xl border border-white/10 hover:bg-white/20 transition cursor-pointer">

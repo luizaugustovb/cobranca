@@ -21,7 +21,7 @@
                 @php
                     $tabs = [
                         'aberto'    => ['label' => 'Abertos',    'activeClass' => 'text-amber-600'],
-                        'negociado' => ['label' => 'Negociados', 'activeClass' => 'text-indigo-600'],
+                        'negociado' => ['label' => 'Negociados', 'activeClass' => 'text-blue-600'],
                         'pago'      => ['label' => 'Pagos',      'activeClass' => 'text-emerald-600'],
                         'cancelado' => ['label' => 'Cancelados', 'activeClass' => 'text-red-500'],
                     ];
@@ -136,7 +136,7 @@
                                 @forelse ($titulos as $titulo)
                                     @php
                                         $rowBg = match($titulo->status) {
-                                            'negociado' => 'bg-indigo-50/40 dark:bg-indigo-900/10',
+                                            'negociado' => 'bg-blue-50/40 dark:bg-blue-900/10',
                                             'pago'      => 'bg-emerald-50/30 dark:bg-emerald-900/10',
                                             'cancelado' => 'bg-gray-50/60 dark:bg-gray-700/20',
                                             default     => '',
@@ -148,7 +148,7 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <a href="{{ route('tenant.devedores.show', $titulo->devedor_id) }}"
-                                               class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-tighter hover:text-indigo-600 transition">
+                                               class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-tighter hover:text-blue-600 transition">
                                                 {{ $titulo->devedor->nome }}
                                             </a>
                                             <div class="text-[10px] text-gray-400 font-bold tracking-widest">{{ $titulo->devedor->cpf_cnpj }}</div>
@@ -181,7 +181,7 @@
                                             @php
                                                 $badgeClass = match($titulo->status) {
                                                     'aberto'    => 'bg-amber-100 text-amber-700',
-                                                    'negociado' => 'bg-indigo-100 text-indigo-700',
+                                                    'negociado' => 'bg-blue-100 text-blue-700',
                                                     'pago'      => 'bg-emerald-100 text-emerald-700',
                                                     'cancelado' => 'bg-red-100 text-red-600',
                                                     default     => 'bg-gray-100 text-gray-600',
@@ -200,7 +200,7 @@
                                             @if($titulo->status === 'negociado' && $titulo->acordo)
                                                 <div class="mt-1">
                                                     <a href="{{ route('tenant.acordos.show', $titulo->acordo_id) }}"
-                                                       class="text-[10px] text-indigo-500 hover:text-indigo-700 font-black uppercase tracking-widest underline">
+                                                       class="text-[10px] text-blue-500 hover:text-blue-700 font-black uppercase tracking-widest underline">
                                                         Ver Acordo #{{ $titulo->acordo_id }}
                                                     </a>
                                                 </div>
@@ -219,7 +219,7 @@
                                                     {{-- Negociado: só mostra link para o acordo --}}
                                                     <a href="{{ route('tenant.acordos.show', $titulo->acordo_id) }}"
                                                        title="Ver Acordo"
-                                                       class="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-500 hover:text-white transition shadow-sm">
+                                                       class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white transition shadow-sm">
                                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                                     </a>
                                                 @elseif($titulo->status === 'aberto')

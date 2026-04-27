@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h2 class="font-black text-xl sm:text-3xl text-slate-800 flex items-center tracking-tighter uppercase">
-                <div class="p-2 bg-purple-100 rounded-lg mr-3 shrink-0">
-                    <svg class="w-8 h-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 bg-blue-100 rounded-lg mr-3 shrink-0">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                     </svg>
                 </div>
@@ -43,7 +43,7 @@
                                 <tr class="hover:bg-slate-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-black text-xs mr-3">
+                                            <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-black text-xs mr-3">
                                                 {{ strtoupper(substr($usuario->name, 0, 2)) }}
                                             </div>
                                             <div>
@@ -63,7 +63,7 @@
                                             {{ $usuario->status === 'active' ? 'Ativo' : 'Inativo' }}
                                         </span>
                                         @if($usuario->id === auth()->id())
-                                            <span class="ml-1 px-2 py-1 text-xs font-bold rounded-full bg-indigo-50 text-indigo-600 uppercase">Você</span>
+                                            <span class="ml-1 px-2 py-1 text-xs font-bold rounded-full bg-blue-50 text-blue-600 uppercase">Você</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right">

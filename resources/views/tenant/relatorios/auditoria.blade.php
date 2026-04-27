@@ -2,8 +2,8 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <h2 class="font-black text-xl sm:text-3xl text-slate-800 dark:text-white flex items-center tracking-tighter uppercase leading-none">
-                <div class="p-2 bg-indigo-100 rounded-lg mr-3 shrink-0">
-                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="p-2 bg-blue-100 rounded-lg mr-3 shrink-0">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
@@ -23,7 +23,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Ação</label>
-                        <select name="acao" class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
+                        <select name="acao" class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-blue-500 focus:border-blue-500">
                             <option value="">Todas</option>
                             @foreach($acoes as $acao)
                                 <option value="{{ $acao }}" {{ request('acao') == $acao ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $acao)) }}</option>
@@ -33,21 +33,21 @@
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Usuário</label>
                         <input type="text" name="usuario" value="{{ request('usuario') }}" placeholder="Nome do usuário..."
-                            class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">De</label>
                         <input type="date" name="data_inicio" value="{{ request('data_inicio') }}"
-                            class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Até</label>
                         <input type="date" name="data_fim" value="{{ request('data_fim') }}"
-                            class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-full rounded-xl border-slate-200 text-sm font-medium text-slate-700 focus:ring-blue-500 focus:border-blue-500">
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3 mt-4">
-                    <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition shadow-lg shadow-indigo-500/20">
+                    <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition shadow-lg shadow-blue-500/20">
                         Filtrar
                     </button>
                     @if(request()->hasAny(['acao','usuario','data_inicio','data_fim']))
@@ -82,7 +82,7 @@
                                     'update'  => 'bg-blue-100 text-blue-700',
                                     'delete'  => 'bg-rose-100 text-rose-700',
                                     'view'    => 'bg-slate-100 text-slate-600',
-                                    'login'   => 'bg-indigo-100 text-indigo-700',
+                                    'login'   => 'bg-blue-100 text-blue-700',
                                     'logout'  => 'bg-slate-100 text-slate-600',
                                 ];
                                 $corAcao = $acaoCores[$log->action] ?? 'bg-slate-100 text-slate-600';
