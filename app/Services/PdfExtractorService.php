@@ -19,13 +19,13 @@ class PdfExtractorService
 
     public function __construct()
     {
-        $this->pythonBin  = base_path('.venv/Scripts/python.exe');
-        $this->scriptPath = base_path('scripts/pdf_extractor.py');
+        // Detecta SO: Windows usa Scripts\python.exe, Linux/Mac usa bin/python3
+        $venvBin = PHP_OS_FAMILY === 'Windows'
+            ? base_path('.venv/Scripts/python.exe')
+            : base_path('.venv/bin/python3');
 
-        // Fallback para python do sistema
-        if (!file_exists($this->pythonBin)) {
-            $this->pythonBin = 'python';
-        }
+        $this->pythonBin  = file_exists($venvBin) ? $venvBin : (PHP_OS_FAMILY === 'Windows' ? 'python' : 'python3');
+        $this->scriptPath = base_path('scripts/pdf_extractor.py');
     }
 
     /**
