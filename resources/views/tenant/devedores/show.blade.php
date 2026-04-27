@@ -27,9 +27,17 @@
                 @php
                 $telDevedor = preg_replace('/[^0-9]/', '', $devedor->telefone ?? '');
                 $telWaDevedor = strlen($telDevedor) >= 10 ? '55' . $telDevedor : '';
-                $totalAberto = $devedor->titulos->where('status', 'aberto')->sum(fn($t) => $t->valor_total);
+                $titulosAbertos = $devedor->titulos->where('status', 'aberto');
+                $totalAberto = $titulosAbertos->sum(fn($t) => $t->valor_total);
+                $qtdAbertos = $titulosAbertos->count();
                 $primeiroNome = explode(' ', $devedor->nome)[0];
-                $msgCobranca = urlencode("Ola " . $primeiroNome . ", consta em nosso sistema um debito de R$ " . number_format($totalAberto, 2, ',', '.') . " em seu nome. Entre em contato para regularizacao.");
+                $settingsWa = \App\Models\Setting::all()->pluck('value', 'key');
+                $templateAuto = $settingsWa['whatsapp_autoatendimento_texto'] ?? 'Ola {nome}, identificamos {qtd} titulo(s) em aberto totalizando R$ {total}. Entre em contato para negociar suas dividas.';
+                $msgCobranca = urlencode(str_replace(
+                ['{nome}', '{qtd}', '{total}'],
+                [$primeiroNome, $qtdAbertos, number_format($totalAberto, 2, ',', '.')],
+                $templateAuto
+                ));
                 @endphp
                 @if($telWaDevedor)
                 <a href="https://wa.me/{{ $telWaDevedor }}?text={{ $msgCobranca }}" target="_blank"

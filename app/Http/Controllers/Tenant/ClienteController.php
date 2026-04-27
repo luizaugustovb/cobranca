@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
+use App\Models\Pagamento;
+use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
@@ -58,5 +61,80 @@ class ClienteController extends Controller
     {
         $cliente->delete();
         return redirect()->route('tenant.clientes')->with('success', 'Cliente excluído com sucesso!');
+    }
+
+    public function relatorio(Request $request, Cliente $cliente)
+    {
+        $dataInicio = $request->get('data_inicio', now()->startOfMonth()->toDateString());
+        $dataFim    = $request->get('data_fim',    now()->toDateString());
+
+        // Pagamentos do período vinculados a devedores deste cliente
+        $pagamentos = Pagamento::with(['acordo.devedor', 'parcela'])
+            ->whereHas('acordo.devedor', fn($q) => $q->where('cliente_id', $cliente->id))
+            ->whereBetween('data_pagamento', [$dataInicio, $dataFim . ' 23:59:59'])
+            ->orderBy('data_pagamento')
+            ->get();
+
+        // Agrupado por devedor
+        $porDevedor = $pagamentos->groupBy(fn($p) => $p->acordo->devedor_id ?? 0)
+            ->map(function ($pags) {
+                $devedor = $pags->first()->acordo->devedor ?? null;
+                return [
+                    'devedor'  => $devedor,
+                    'pagamentos' => $pags,
+                    'total'    => $pags->sum('valor'),
+                ];
+            })->values();
+
+        $totalGeral  = $pagamentos->sum('valor');
+        $settings    = Setting::all()->pluck('value', 'key');
+
+        return view('tenant.clientes.relatorio', compact(
+            'cliente',
+            'pagamentos',
+            'porDevedor',
+            'totalGeral',
+            'dataInicio',
+            'dataFim',
+            'settings'
+        ));
+    }
+
+    public function relatorioPdf(Request $request, Cliente $cliente)
+    {
+        $dataInicio = $request->get('data_inicio', now()->startOfMonth()->toDateString());
+        $dataFim    = $request->get('data_fim',    now()->toDateString());
+
+        $pagamentos = Pagamento::with(['acordo.devedor', 'parcela'])
+            ->whereHas('acordo.devedor', fn($q) => $q->where('cliente_id', $cliente->id))
+            ->whereBetween('data_pagamento', [$dataInicio, $dataFim . ' 23:59:59'])
+            ->orderBy('data_pagamento')
+            ->get();
+
+        $porDevedor = $pagamentos->groupBy(fn($p) => $p->acordo->devedor_id ?? 0)
+            ->map(function ($pags) {
+                $devedor = $pags->first()->acordo->devedor ?? null;
+                return [
+                    'devedor'  => $devedor,
+                    'pagamentos' => $pags,
+                    'total'    => $pags->sum('valor'),
+                ];
+            })->values();
+
+        $totalGeral = $pagamentos->sum('valor');
+        $settings   = Setting::all()->pluck('value', 'key');
+
+        $html = view('tenant.clientes.relatorio-pdf', compact(
+            'cliente',
+            'porDevedor',
+            'totalGeral',
+            'dataInicio',
+            'dataFim',
+            'settings'
+        ))->render();
+
+        return response($html)
+            ->header('Content-Type', 'text/html')
+            ->header('X-Content-For-Print', '1');
     }
 }

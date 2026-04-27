@@ -20,6 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/clientes', [\App\Http\Controllers\Tenant\ClienteController::class, 'index'])->name('clientes');
         Route::get('/clientes/create', [\App\Http\Controllers\Tenant\ClienteController::class, 'create'])->name('clientes.create');
         Route::post('/clientes', [\App\Http\Controllers\Tenant\ClienteController::class, 'store'])->name('clientes.store');
+        Route::get('/clientes/{cliente}/relatorio', [\App\Http\Controllers\Tenant\ClienteController::class, 'relatorio'])->name('clientes.relatorio');
+        Route::get('/clientes/{cliente}/relatorio/pdf', [\App\Http\Controllers\Tenant\ClienteController::class, 'relatorioPdf'])->name('clientes.relatorio.pdf');
         Route::get('/clientes/{cliente}/edit', [\App\Http\Controllers\Tenant\ClienteController::class, 'edit'])->name('clientes.edit');
         Route::put('/clientes/{cliente}', [\App\Http\Controllers\Tenant\ClienteController::class, 'update'])->name('clientes.update');
         Route::delete('/clientes/{cliente}', [\App\Http\Controllers\Tenant\ClienteController::class, 'destroy'])->name('clientes.destroy');

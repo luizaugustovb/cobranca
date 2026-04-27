@@ -22,8 +22,9 @@ class SettingController extends Controller
             'company_name'              => 'nullable|string',
             'logo'                      => 'nullable|image|max:2048',
             'honorarios_tipo'           => 'nullable|in:fixo,percentual',
-            'honorarios_valor'          => 'nullable|numeric|min:0',
-            'whatsapp_cobranca_texto'   => 'nullable|string|max:1000',
+            'honorarios_valor'               => 'nullable|numeric|min:0',
+            'whatsapp_cobranca_texto'       => 'nullable|string|max:1000',
+            'whatsapp_autoatendimento_texto' => 'nullable|string|max:1000',
         ]);
 
         foreach ($validated as $key => $value) {
