@@ -197,8 +197,8 @@
                             Salvar Configurações
                         </x-primary-button>
                     </div>
-            </div>
             </form>
+            </div>
 
             <script>
                 function toggleHonorariosLabel(tipo) {
@@ -214,6 +214,5 @@
                 }
             </script>
         </div>
-    </div>
     </div>
 </x-app-layout>
