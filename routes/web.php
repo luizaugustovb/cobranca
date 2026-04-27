@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/acordos/create', [\App\Http\Controllers\Tenant\AcordoController::class, 'create'])->name('acordos.create');
         Route::post('/acordos', [\App\Http\Controllers\Tenant\AcordoController::class, 'store'])->name('acordos.store');
         Route::get('/acordos/{acordo}', [\App\Http\Controllers\Tenant\AcordoController::class, 'show'])->name('acordos.show');
+        Route::post('/acordos/{acordo}/reabrir', [\App\Http\Controllers\Tenant\AcordoController::class, 'reabrir'])->name('acordos.reabrir');
         // Pagamentos (Módulo Financeiro)
         Route::get('/pagamentos', [\App\Http\Controllers\Tenant\PagamentoController::class, 'index'])->name('pagamentos');
         Route::get('/pagamentos/create', [\App\Http\Controllers\Tenant\PagamentoController::class, 'create'])->name('pagamentos.create');

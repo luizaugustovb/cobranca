@@ -25,7 +25,7 @@ class AcordoController extends Controller
     public function create(Request $request)
     {
         $devedorId = $request->get('devedor');
-        $devedor = Devedor::with(['titulos' => function($q) {
+        $devedor = Devedor::with(['titulos' => function ($q) {
             $q->where('status', 'aberto');
         }])->findOrFail($devedorId);
 
@@ -34,9 +34,14 @@ class AcordoController extends Controller
         $totalMulta      = $devedor->titulos->sum('multa');
         $totalHonorarios = $devedor->titulos->sum('honorarios');
         $totalOriginal   = $totalPrincipal + $totalJuros + $totalMulta + $totalHonorarios;
-        
+
         return view('tenant.acordos.create', compact(
-            'devedor', 'totalOriginal', 'totalPrincipal', 'totalJuros', 'totalMulta', 'totalHonorarios'
+            'devedor',
+            'totalOriginal',
+            'totalPrincipal',
+            'totalJuros',
+            'totalMulta',
+            'totalHonorarios'
         ));
     }
 
@@ -49,7 +54,7 @@ class AcordoController extends Controller
             'valor_acordo'       => 'required|numeric',
             'entrada'            => 'required|numeric|min:0',
             'parcelas'           => 'required|integer|min:1|max:48',
-            'vencimento_primeira'=> 'required|date|after_or_equal:today',
+            'vencimento_primeira' => 'required|date|after_or_equal:today',
             'forma_pagamento'    => 'required|string|in:BOLETO,PIX,CREDIT_CARD,UNDEFINED',
         ]);
 
@@ -146,7 +151,7 @@ class AcordoController extends Controller
                 ? 'Acordo gerado! Cobranças criadas no Asaas — o devedor pode pagar via boleto, PIX ou cartão.'
                 : 'Acordo formalizado com sucesso! Configure o token Asaas nas configurações para gerar cobranças automáticas.';
 
-            return redirect()->route('tenant.devedores.show', $devedor->id)->with('success', $msg);
+            return redirect()->route('tenant.acordos.show', $acordo->id)->with('success', $msg);
         });
     }
 
@@ -154,5 +159,30 @@ class AcordoController extends Controller
     {
         $acordo->load(['devedor', 'acordoParcelas', 'pagamentos', 'titulos']);
         return view('tenant.acordos.show', compact('acordo'));
+    }
+
+    public function reabrir(Acordo $acordo)
+    {
+        if ($acordo->status === 'quitado') {
+            return back()->with('error', 'Acordos quitados nao podem ser reabertos.');
+        }
+
+        DB::transaction(function () use ($acordo) {
+            // Reverte títulos vinculados para em aberto
+            Titulo::where('acordo_id', $acordo->id)
+                ->update(['status' => 'aberto', 'acordo_id' => null]);
+
+            // Cancela parcelas pendentes
+            AcordoParcela::where('acordo_id', $acordo->id)
+                ->where('status', '!=', 'pago')
+                ->update(['status' => 'cancelado']);
+
+            // Marca acordo como cancelado
+            $acordo->update(['status' => 'cancelado']);
+        });
+
+        return redirect()
+            ->route('tenant.devedores.show', $acordo->devedor_id)
+            ->with('success', 'Acordo cancelado. Os titulos voltaram para "em aberto".');
     }
 }

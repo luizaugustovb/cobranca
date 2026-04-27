@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-start">
             <div>
@@ -37,8 +37,22 @@
                     <span>Gerado em {{ $acordo->created_at->format('d/m/Y H:i') }}</span>
                 </div>
             </div>
-            <div class="flex items-center gap-3 mt-1">
+            <div class="flex items-center gap-3 mt-1 flex-wrap">
                 @if($acordo->asaas_link)
+                @php
+                $telLimpo = preg_replace('/[^0-9]/', '', $acordo->devedor->telefone ?? '');
+                $telWa = strlen($telLimpo) >= 10 ? '55' . $telLimpo : '';
+                $msgWa = urlencode("Ola " . explode(' ', $acordo->devedor->nome)[0] . "! Segue o link para pagamento do seu acordo: " . $acordo->asaas_link);
+                @endphp
+                @if($telWa)
+                <a href="https://wa.me/{{ $telWa }}?text={{ $msgWa }}" target="_blank"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 hover:bg-green-600 text-white text-xs font-black uppercase tracking-widest rounded-xl transition shadow-lg shadow-green-500/30">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.765-5.771zm3.392 8.244c-.144.405-.837.774-1.171.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.512-2.961-2.628-.086-.117-.704-.933-.704-1.782 0-.85.433-1.268.587-1.442.155-.174.337-.217.45-.217l.323.004c.103.005.23.02.361.33.136.323.466 1.137.507 1.219.04.083.067.18.013.287-.054.107-.081.174-.162.27-.081.094-.17.21-.242.282-.081.082-.166.171-.072.332.094.162.418.689.897 1.115.617.551 1.137.721 1.3.8.163.078.261.066.359-.045.099-.112.424-.492.537-.66.113-.168.225-.141.38-.084.155.057.986.465 1.155.549.169.085.281.127.322.197.041.07.041.405-.103.81z" />
+                    </svg>
+                    Enviar Link
+                </a>
+                @endif
                 <a href="{{ $acordo->asaas_link }}" target="_blank"
                     class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase tracking-widest rounded-xl transition shadow-lg shadow-blue-500/30">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,6 +60,19 @@
                     </svg>
                     Abrir Link
                 </a>
+                @endif
+                @if($acordo->status === 'ativo')
+                <form method="POST" action="{{ route('tenant.acordos.reabrir', $acordo) }}"
+                    onsubmit="return confirm('Cancelar este acordo e devolver os titulos para em aberto?')">
+                    @csrf
+                    <button type="submit"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-red-50 border border-red-200 text-red-600 text-xs font-black uppercase tracking-widest rounded-xl hover:bg-red-100 transition shadow-sm">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Cliente Nao Pagou
+                    </button>
+                </form>
                 @endif
                 <a href="{{ route('tenant.devedores.show', $acordo->devedor) }}"
                     class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-200 text-gray-600 text-xs font-black uppercase tracking-widest rounded-xl hover:bg-gray-50 transition shadow-sm">
@@ -65,6 +92,12 @@
             <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-xl shadow-sm">
                 <p class="font-bold">Sucesso!</p>
                 <p>{{ session('success') }}</p>
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-r-xl shadow-sm">
+                <p class="font-bold">Atencao!</p>
+                <p>{{ session('error') }}</p>
             </div>
             @endif
 
@@ -120,7 +153,7 @@
                         </div>
                     </div>
 
-                    {{-- T�tulos Negociados --}}
+                    {{-- Titulos Negociados --}}
                     @if($acordo->titulos->isNotEmpty())
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-x-auto">
                         <div class="px-8 py-5 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
@@ -325,7 +358,7 @@
                         <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Resumo Financeiro</h4>
                         <div class="space-y-3 text-sm">
                             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                                <span class="text-gray-500">D�vida original</span>
+                                <span class="text-gray-500">Divida original</span>
                                 <span class="font-bold text-slate-700 dark:text-white">R$ {{ number_format($acordo->valor_original, 2, ',', '.') }}</span>
                             </div>
                             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 text-emerald-600">
@@ -339,9 +372,9 @@
                         </div>
                     </div>
 
-                    {{-- Card: Condi��es --}}
+                    {{-- Card: Condicoes --}}
                     <div class="bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-100 dark:border-gray-700 p-6 space-y-4">
-                        <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Condi��es</h4>
+                        <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Condicoes</h4>
                         <div class="space-y-3 text-sm">
                             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                                 <span class="text-gray-500">Entrada</span>
@@ -389,7 +422,7 @@
                     </div>
                     @endif
 
-                    {{-- Acesso r�pido ao devedor --}}
+                    {{-- Acesso rapido ao devedor --}}
                     <a href="{{ route('tenant.devedores.show', $acordo->devedor) }}"
                         class="flex items-center gap-4 bg-white dark:bg-gray-800 rounded-2xl shadow border border-gray-100 dark:border-gray-700 p-5 hover:border-blue-300 hover:shadow-md transition group">
                         <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0 group-hover:bg-blue-200 transition">
