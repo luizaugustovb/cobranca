@@ -69,6 +69,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/relatorios/eficiencia', [\App\Http\Controllers\Tenant\RelatorioController::class, 'eficiencia'])->name('relatorios.eficiencia');
         Route::get('/relatorios/auditoria', [\App\Http\Controllers\Tenant\RelatorioController::class, 'auditoria'])->name('relatorios.auditoria');
 
+        // WhatsApp (Viicio API)
+        Route::post('/whatsapp/disparar', [\App\Http\Controllers\Tenant\WhatsAppController::class, 'disparar'])->name('whatsapp.disparar');
+
         // Configurações
         Route::get('/configuracoes', [\App\Http\Controllers\Tenant\SettingController::class, 'index'])->name('settings');
         Route::post('/configuracoes', [\App\Http\Controllers\Tenant\SettingController::class, 'store'])->name('settings.store');

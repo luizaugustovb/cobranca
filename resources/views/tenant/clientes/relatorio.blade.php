@@ -18,22 +18,32 @@
                 @php
                 $telCliente = preg_replace('/[^0-9]/', '', $cliente->telefone ?? '');
                 $telWaCliente = strlen($telCliente) >= 10 ? '55' . $telCliente : '';
-                $msgResumo = urlencode(
+                $msgResumo =
                 "Prezado(a) " . explode(' ', $cliente->nome)[0] . ", segue o relatorio de pagamentos do periodo " .
                 \Carbon\Carbon::parse($dataInicio)->format('d/m/Y') . " a " .
                 \Carbon\Carbon::parse($dataFim)->format('d/m/Y') . ". " .
                 "Total recebido: R$ " . number_format($totalGeral, 2, ',', '.') . ". " .
                 "Acesse o relatorio completo em: " . request()->fullUrl()
-                );
+                ;
                 @endphp
                 @if($telWaCliente)
-                <a href="https://wa.me/{{ $telWaCliente }}?text={{ $msgResumo }}" target="_blank"
-                    class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-xl font-bold text-sm uppercase transition hover:bg-green-600 shadow-lg shadow-green-500/20 gap-2">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <button
+                    x-data="{ st: 'idle' }"
+                    @click="if(st!='idle')return;st='loading';fetch('{{ route('tenant.whatsapp.disparar') }}',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-TOKEN':document.querySelector('meta[name=csrf-token]').content},body:JSON.stringify({phone:'{{ $telWaCliente }}',message:@js($msgResumo)})}).then(r=>r.json()).then(d=>{st=d.success?'sent':'idle';if(!d.success)alert(d.error||'Erro ao enviar.');}).catch(()=>{st='idle';alert('Erro de conexão.');})"
+                    :disabled="st==='loading'"
+                    :class="st==='sent'?'inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-xl font-bold text-sm uppercase shadow-lg shadow-green-500/20 gap-2':'inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-xl font-bold text-sm uppercase transition hover:bg-green-600 shadow-lg shadow-green-500/20 gap-2'">
+                    <svg x-show="st!=='loading'&&st!=='sent'" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.765-5.771zm3.392 8.244c-.144.405-.837.774-1.171.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.512-2.961-2.628-.086-.117-.704-.933-.704-1.782 0-.85.433-1.268.587-1.442.155-.174.337-.217.45-.217l.323.004c.103.005.23.02.361.33.136.323.466 1.137.507 1.219.04.083.067.18.013.287-.054.107-.081.174-.162.27-.081.094-.17.21-.242.282-.081.082-.166.171-.072.332.094.162.418.689.897 1.115.617.551 1.137.721 1.3.8.163.078.261.066.359-.045.099-.112.424-.492.537-.66.113-.168.225-.141.38-.084.155.057.986.465 1.155.549.169.085.281.127.322.197.041.07.041.405-.103.81z" />
                     </svg>
-                    Enviar Resumo
-                </a>
+                    <svg x-show="st==='loading'" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    <svg x-show="st==='sent'" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span x-text="st==='sent'?'Enviado!':'Enviar Resumo'"></span>
+                </button>
                 @endif
                 <a href="{{ route('tenant.clientes.relatorio.pdf', [$cliente, 'data_inicio' => $dataInicio, 'data_fim' => $dataFim]) }}"
                     target="_blank"
