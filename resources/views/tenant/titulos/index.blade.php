@@ -223,7 +223,30 @@
                                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                                     </a>
                                                 @elseif($titulo->status === 'aberto')
-                                                    {{-- Aberto: editar + cancelar --}}
+                                                    {{-- Aberto: WhatsApp + editar + cancelar --}}
+                                                    @php
+                                                        $telTitulo = preg_replace('/[^0-9]/', '', $titulo->devedor->telefone ?? '');
+                                                        $telWaTitulo = strlen($telTitulo) >= 10 ? '55' . $telTitulo : '';
+                                                        $templateMsg = $settings['whatsapp_cobranca_texto'] ?? 'Ola {nome}, consta em nosso sistema o titulo #{numero} no valor de R$ {valor} com vencimento em {vencimento}. Entre em contato para regularizacao.';
+                                                        $msgTitulo = str_replace(
+                                                            ['{nome}', '{numero}', '{valor}', '{vencimento}'],
+                                                            [
+                                                                explode(' ', $titulo->devedor->nome)[0],
+                                                                $titulo->numero,
+                                                                number_format($titulo->valor_total, 2, ',', '.'),
+                                                                $titulo->vencimento->format('d/m/Y'),
+                                                            ],
+                                                            $templateMsg
+                                                        );
+                                                    @endphp
+                                                    @if($telWaTitulo)
+                                                    <a href="https://wa.me/{{ $telWaTitulo }}?text={{ urlencode($msgTitulo) }}"
+                                                       target="_blank"
+                                                       title="Enviar cobrança via WhatsApp"
+                                                       class="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-500 hover:text-white transition shadow-sm">
+                                                        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.765-5.771zm3.392 8.244c-.144.405-.837.774-1.171.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.512-2.961-2.628-.086-.117-.704-.933-.704-1.782 0-.85.433-1.268.587-1.442.155-.174.337-.217.45-.217l.323.004c.103.005.23.02.361.33.136.323.466 1.137.507 1.219.04.083.067.18.013.287-.054.107-.081.174-.162.27-.081.094-.17.21-.242.282-.081.082-.166.171-.072.332.094.162.418.689.897 1.115.617.551 1.137.721 1.3.8.163.078.261.066.359-.045.099-.112.424-.492.537-.66.113-.168.225-.141.38-.084.155.057.986.465 1.155.549.169.085.281.127.322.197.041.07.041.405-.103.81z"/></svg>
+                                                    </a>
+                                                    @endif
                                                     <a href="{{ route('tenant.titulos.edit', $titulo) }}"
                                                        title="Editar"
                                                        class="p-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-500 hover:text-white transition">

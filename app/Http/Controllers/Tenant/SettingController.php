@@ -17,12 +17,13 @@ class SettingController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'asaas_token'       => 'nullable|string',
-            'viicio_token'      => 'nullable|string',
-            'company_name'      => 'nullable|string',
-            'logo'              => 'nullable|image|max:2048',
-            'honorarios_tipo'   => 'nullable|in:fixo,percentual',
-            'honorarios_valor'  => 'nullable|numeric|min:0',
+            'asaas_token'               => 'nullable|string',
+            'viicio_token'              => 'nullable|string',
+            'company_name'              => 'nullable|string',
+            'logo'                      => 'nullable|image|max:2048',
+            'honorarios_tipo'           => 'nullable|in:fixo,percentual',
+            'honorarios_valor'          => 'nullable|numeric|min:0',
+            'whatsapp_cobranca_texto'   => 'nullable|string|max:1000',
         ]);
 
         foreach ($validated as $key => $value) {

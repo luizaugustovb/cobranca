@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\Titulo;
 use App\Models\Devedor;
 use Illuminate\Http\Request;
@@ -28,7 +29,9 @@ class TituloController extends Controller
             ->groupBy('status')
             ->pluck('total', 'status');
 
-        return view('tenant.titulos.index', compact('titulos', 'status', 'counts'));
+        $settings = Setting::all()->pluck('value', 'key');
+
+        return view('tenant.titulos.index', compact('titulos', 'status', 'counts', 'settings'));
     }
 
     public function create()

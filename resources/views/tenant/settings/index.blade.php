@@ -141,6 +141,33 @@
                             </div>
                         </div>
 
+                        <hr class="border-gray-50 dark:border-gray-700">
+
+                        {{-- Mensagem de Cobrança WhatsApp --}}
+                        <div>
+                            <h3 class="text-lg font-black text-slate-800 dark:text-gray-200 uppercase tracking-tighter mb-2 flex items-center">
+                                <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.765-5.771zm3.392 8.244c-.144.405-.837.774-1.171.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.512-2.961-2.628-.086-.117-.704-.933-.704-1.782 0-.85.433-1.268.587-1.442.155-.174.337-.217.45-.217l.323.004c.103.005.23.02.361.33.136.323.466 1.137.507 1.219.04.083.067.18.013.287-.054.107-.081.174-.162.27-.081.094-.17.21-.242.282-.081.082-.166.171-.072.332.094.162.418.689.897 1.115.617.551 1.137.721 1.3.8.163.078.261.066.359-.045.099-.112.424-.492.537-.66.113-.168.225-.141.38-.084.155.057.986.465 1.155.549.169.085.281.127.322.197.041.07.041.405-.103.81z" />
+                                    </svg>
+                                </div>
+                                Mensagem de Cobrança (WhatsApp)
+                            </h3>
+                            <p class="text-xs text-gray-400 mb-6 ml-11">
+                                Texto enviado ao devedor ao clicar no botão WhatsApp da lista de títulos em aberto.<br>
+                                <span class="font-bold text-gray-500">Variáveis disponíveis:</span>
+                                <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">{nome}</code> nome do devedor,
+                                <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">{numero}</code> nº do título,
+                                <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">{valor}</code> valor total,
+                                <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">{vencimento}</code> data de vencimento.
+                            </p>
+                            <div class="ml-11">
+                                <textarea id="whatsapp_cobranca_texto" name="whatsapp_cobranca_texto" rows="4"
+                                    class="w-full rounded-xl border-gray-200 dark:bg-gray-700 bg-gray-50 py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-200 resize-none"
+                                    placeholder="Ola {nome}, consta em nosso sistema o titulo #{numero} no valor de R$ {valor} com vencimento em {vencimento}. Entre em contato para regularizacao.">{{ $settings['whatsapp_cobranca_texto'] ?? '' }}</textarea>
+                            </div>
+                        </div>
+
                         <div class="pt-10 flex justify-end">
                             <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-10 py-4 font-black rounded-2xl shadow-xl shadow-blue-500/20 uppercase tracking-widest">
                                 Salvar Configurações
