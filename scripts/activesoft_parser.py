@@ -155,8 +155,8 @@ RE_PARCELA = re.compile(
 # Linha de total do responsável → marca fim do bloco
 RE_TOTAL = re.compile(r'^Total de t[ií]tulos do respons[aá]vel:', re.IGNORECASE)
 
-# Celular (em linha de responsável)
-RE_CELULAR = re.compile(r'Celular:\s*([^\-\n]+)', re.IGNORECASE)
+# Celular (em linha de responsável) — para em ' - ' (separador de campo), não no '-' do número
+RE_CELULAR = re.compile(r'Celular:\s*([\d\s()\-\.]+?)(?=\s+-\s+|$)', re.IGNORECASE)
 
 
 # ---------------------------------------------------------------------------
@@ -175,15 +175,17 @@ def parse_responsavel_line(line):
     if '(N' in tel_res or 'nao' in tel_res.lower():
         tel_res = ''
 
-    # Tenta pegar celular da mesma linha
+    # Tenta pegar celular da mesma linha (preferência: celular > residencial)
     mc = RE_CELULAR.search(line)
     if mc and '(N' not in mc.group(1) and 'nao' not in mc.group(1).lower():
         telefone = clean(mc.group(1))
     else:
-        telefone = tel_res
-
-    # Limpa telefone: remove texto extra
-    telefone = telefone.split('-')[0].strip() if '-' in telefone else telefone
+        # Telefone residencial: reextrair para não cortar no '-' do número
+        m_tel = re.search(r'Telefone\s+residencial:\s*([\d\s()\-\.]+?)(?=\s+-\s+|$)', line, re.IGNORECASE)
+        if m_tel and '(N' not in m_tel.group(1):
+            telefone = clean(m_tel.group(1))
+        else:
+            telefone = tel_res
 
     return {'nome': nome, 'cpf': cpf, 'telefone': telefone}
 

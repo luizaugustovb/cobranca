@@ -18,7 +18,8 @@
             </div>
             @endif
 
-            <form action="{{ route('tenant.importacoes.activesoft.confirmar') }}" method="POST" id="form-confirmar">
+            <form action="{{ route('tenant.importacoes.activesoft.confirmar') }}" method="POST" id="form-confirmar"
+                onsubmit="this.querySelector('[type=submit]').disabled=true; this.querySelector('[type=submit]').textContent='Importando...';">
                 @csrf
                 <input type="hidden" name="key" value="{{ $key }}">
 
@@ -41,8 +42,7 @@
                             Cancelar
                         </a>
                         <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-xl shadow text-xs font-black tracking-widest uppercase transition"
-                            onclick="this.disabled=true; this.textContent='Importando...';">
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-xl shadow text-xs font-black tracking-widest uppercase transition">
                             Confirmar Importação
                         </button>
                     </div>
