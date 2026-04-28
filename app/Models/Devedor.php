@@ -19,6 +19,12 @@ class Devedor extends Model
         'cpf_cnpj',
         'email',
         'telefone',
+        'rua',
+        'numero',
+        'bairro',
+        'cidade',
+        'estado',
+        'cep',
         'asaas_customer_id',
     ];
 

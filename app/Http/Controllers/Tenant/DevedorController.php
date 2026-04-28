@@ -29,6 +29,12 @@ class DevedorController extends Controller
             'cpf_cnpj' => 'required|string|max:20',
             'email' => 'nullable|email|max:255',
             'telefone' => 'nullable|string|max:20',
+            'rua' => 'nullable|string|max:255',
+            'numero' => 'nullable|string|max:20',
+            'bairro' => 'nullable|string|max:100',
+            'cidade' => 'nullable|string|max:100',
+            'estado' => 'nullable|string|max:2',
+            'cep' => 'nullable|string|max:9',
         ]);
 
         Devedor::create($validated);
@@ -56,6 +62,12 @@ class DevedorController extends Controller
             'cpf_cnpj' => 'required|string|max:20',
             'email' => 'nullable|email|max:255',
             'telefone' => 'nullable|string|max:20',
+            'rua' => 'nullable|string|max:255',
+            'numero' => 'nullable|string|max:20',
+            'bairro' => 'nullable|string|max:100',
+            'cidade' => 'nullable|string|max:100',
+            'estado' => 'nullable|string|max:2',
+            'cep' => 'nullable|string|max:9',
         ]);
 
         $devedor->update($validated);

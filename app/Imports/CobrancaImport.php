@@ -92,6 +92,9 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
                         'nome'       => $nome,
                         'telefone'   => $fone ?: null,
                         'email'      => $email ?: null,
+                        'rua'        => $rua ?: null,
+                        'numero'     => $numEnd ?: null,
+                        'cep'        => $cep ?: null,
                     ]
                 );
 

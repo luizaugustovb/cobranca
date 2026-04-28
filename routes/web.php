@@ -64,6 +64,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/importacoes/{importacao}', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'show'])->name('importacoes.show');
         Route::get('/importacoes/{importacao}/download', [\App\Http\Controllers\Tenant\ImportacaoController::class, 'download'])->name('importacoes.download');
 
+        // Importação Activesoft PDF
+        Route::get('/importacoes/activesoft/upload', [\App\Http\Controllers\Tenant\ImportacaoActivesoftController::class, 'create'])->name('importacoes.activesoft');
+        Route::post('/importacoes/activesoft/preview', [\App\Http\Controllers\Tenant\ImportacaoActivesoftController::class, 'preview'])->name('importacoes.activesoft.preview');
+        Route::post('/importacoes/activesoft/confirmar', [\App\Http\Controllers\Tenant\ImportacaoActivesoftController::class, 'confirmar'])->name('importacoes.activesoft.confirmar');
+
         Route::get('/relatorios', [\App\Http\Controllers\Tenant\RelatorioController::class, 'index'])->name('relatorios');
         Route::get('/relatorios/fluxo-caixa', [\App\Http\Controllers\Tenant\RelatorioController::class, 'fluxoCaixa'])->name('relatorios.fluxo-caixa');
         Route::get('/relatorios/eficiencia', [\App\Http\Controllers\Tenant\RelatorioController::class, 'eficiencia'])->name('relatorios.eficiencia');

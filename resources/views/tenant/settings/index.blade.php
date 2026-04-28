@@ -197,7 +197,7 @@
                             Salvar Configurações
                         </x-primary-button>
                     </div>
-            </form>
+                </form>
             </div>
 
             <script>
