@@ -21,7 +21,8 @@
             @endif
 
             <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <form action="{{ route('tenant.importacoes.activesoft.preview') }}" method="POST" enctype="multipart/form-data" id="form-activesoft">
+                <form action="{{ route('tenant.importacoes.activesoft.preview') }}" method="POST" enctype="multipart/form-data" id="form-activesoft"
+                    onsubmit="document.getElementById('btn-submit').disabled=true; document.getElementById('btn-submit').innerHTML='<svg class=\'animate-spin h-4 w-4 inline mr-2\' fill=\'none\' viewBox=\'0 0 24 24\'><circle class=\'opacity-25\' cx=\'12\' cy=\'12\' r=\'10\' stroke=\'currentColor\' stroke-width=\'4\'></circle><path class=\'opacity-75\' fill=\'currentColor\' d=\'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z\'></path></svg>Processando...';">
                     @csrf
 
                     <div class="mb-8">
@@ -51,8 +52,7 @@
                     <div class="flex justify-end gap-4">
                         <a href="{{ route('tenant.importacoes') }}" class="px-8 py-4 text-xs font-black uppercase tracking-widest text-gray-500 hover:text-gray-700">Cancelar</a>
                         <button type="submit" id="btn-submit"
-                            class="bg-red-600 hover:bg-red-700 text-white px-12 py-4 rounded-2xl shadow-xl text-sm font-black tracking-widest uppercase transition"
-                            onclick="document.getElementById('btn-submit').disabled=true; document.getElementById('btn-submit').textContent='Processando...';">
+                            class="bg-red-600 hover:bg-red-700 text-white px-12 py-4 rounded-2xl shadow-xl text-sm font-black tracking-widest uppercase transition">
                             Processar PDF
                         </button>
                     </div>
