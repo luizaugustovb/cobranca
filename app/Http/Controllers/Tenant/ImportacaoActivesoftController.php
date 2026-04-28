@@ -41,7 +41,8 @@ class ImportacaoActivesoftController extends Controller
      */
     public function preview(Request $request)
     {
-        set_time_limit(180); // 3 minutos para processar PDFs grandes
+        set_time_limit(300);
+        ini_set('max_execution_time', 300);
 
         $request->validate([
             'arquivo' => 'required|file|mimes:pdf|max:20480',

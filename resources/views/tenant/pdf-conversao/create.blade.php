@@ -10,11 +10,11 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
             @if ($errors->any())
-                <div class="bg-red-50 border border-red-200 rounded-2xl p-5">
-                    @foreach ($errors->all() as $error)
-                        <p class="text-sm text-red-600 font-bold">{{ $message }}</p>
-                    @endforeach
-                </div>
+            <div class="bg-red-50 border border-red-200 rounded-2xl p-5">
+                @foreach ($errors->all() as $error)
+                <p class="text-sm text-red-600 font-bold">{{ $error }}</p>
+                @endforeach
+            </div>
             @endif
 
             <div class="grid grid-cols-2 gap-4">
@@ -22,7 +22,7 @@
                     class="p-5 rounded-2xl border-2 border-blue-500 bg-blue-50 flex flex-col items-center gap-2 cursor-pointer transition">
                     <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
                         <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
                     </div>
                     <span class="text-[10px] font-black uppercase tracking-widest text-blue-700">Converter para XLSX</span>
@@ -32,7 +32,8 @@
                     class="p-5 rounded-2xl border-2 border-slate-200 bg-white flex flex-col items-center gap-2 cursor-pointer transition">
                     <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
                         <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                     </div>
                     <span class="text-[10px] font-black uppercase tracking-widest text-slate-600">Leitura Direta</span>
@@ -67,7 +68,7 @@
                     <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-3xl cursor-pointer bg-gray-50 hover:bg-red-50 transition-all duration-200">
                         <div class="flex flex-col items-center text-center px-4">
                             <svg class="w-10 h-10 mb-3 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                             </svg>
                             <p class="text-sm text-gray-500 font-semibold">
                                 <span class="text-red-500 font-black">Clique para selecionar</span> ou arraste o PDF
@@ -79,7 +80,7 @@
                             onchange="document.getElementById('file-name').textContent = this.files[0]?.name; document.getElementById('file-name').classList.remove('hidden');" />
                     </label>
                     @error('arquivo')
-                        <p class="mt-2 text-xs text-red-500 font-bold">{{ $message }}</p>
+                    <p class="mt-2 text-xs text-red-500 font-bold">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -97,7 +98,7 @@
                     <button type="button" id="btn-acao" onclick="submitForm()"
                         class="inline-flex items-center gap-2 px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg transition transform hover:scale-105 active:scale-95">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
                         <span id="btn-label">Converter e Baixar</span>
                     </button>
@@ -118,7 +119,7 @@
             <div class="bg-blue-50 border border-blue-200 rounded-3xl p-6 flex items-start gap-4">
                 <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
                     <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
                 <div>
@@ -140,13 +141,13 @@
             modoAtual = modo;
             const isConverter = modo === 'converter';
 
-            document.getElementById('btn-modo-converter').className = isConverter
-                ? 'p-5 rounded-2xl border-2 border-blue-500 bg-blue-50 flex flex-col items-center gap-2 cursor-pointer transition'
-                : 'p-5 rounded-2xl border-2 border-slate-200 bg-white flex flex-col items-center gap-2 cursor-pointer transition';
+            document.getElementById('btn-modo-converter').className = isConverter ?
+                'p-5 rounded-2xl border-2 border-blue-500 bg-blue-50 flex flex-col items-center gap-2 cursor-pointer transition' :
+                'p-5 rounded-2xl border-2 border-slate-200 bg-white flex flex-col items-center gap-2 cursor-pointer transition';
 
-            document.getElementById('btn-modo-leitura').className = !isConverter
-                ? 'p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 flex flex-col items-center gap-2 cursor-pointer transition'
-                : 'p-5 rounded-2xl border-2 border-slate-200 bg-white flex flex-col items-center gap-2 cursor-pointer transition';
+            document.getElementById('btn-modo-leitura').className = !isConverter ?
+                'p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 flex flex-col items-center gap-2 cursor-pointer transition' :
+                'p-5 rounded-2xl border-2 border-slate-200 bg-white flex flex-col items-center gap-2 cursor-pointer transition';
 
             document.getElementById('btn-label').textContent = isConverter ? 'Converter e Baixar' : 'Leitura Direta — Preview';
 
@@ -159,7 +160,7 @@
         }
 
         function submitForm() {
-            const fileInput   = document.getElementById('arquivo');
+            const fileInput = document.getElementById('arquivo');
             const engineValue = document.querySelector('input[name="engine_selector"]:checked')?.value || 'pdfplumber';
 
             if (!fileInput.files.length) {
@@ -189,7 +190,7 @@
         }
 
         document.querySelectorAll('input[name="engine_selector"]').forEach(radio => {
-            radio.addEventListener('change', function () {
+            radio.addEventListener('change', function() {
                 document.querySelectorAll('#engine-selector label').forEach(l => {
                     l.classList.remove('border-blue-400', 'bg-blue-50');
                     l.classList.add('border-slate-200', 'bg-white');

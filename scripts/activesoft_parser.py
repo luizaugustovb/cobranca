@@ -272,26 +272,47 @@ def parse_titulo_line(line):
     return {'numero': numero, 'situacao': situacao, 'vencimento': vencimento}
 
 
+# Padrão de número monetário brasileiro: 1.032,00 ou --
+_NUM_RE = re.compile(r'(?:\d{1,3}(?:\.\d{3})*,\d{2}|--)')
+
+
 def parse_parcela_line(line):
     """
     Extrai dados de uma linha de parcela/serviço.
-    Formato: PARCELA SERVICO ALUNO VAL VAL VAL VAL VAL VAL VAL
-    Colunas: valor_servico | desc_nc | desc_cond | desc_concedido | multa_juros | recebido | devolvido | valor_receber
+    Estratégia robusta: encontra os últimos 7 números no final da linha.
+    Colunas (último→primeiro): valor_receber | devolvido | recebido | multa_juros |
+                               desc_concedido | desc_nc | valor_servico
     """
-    m = RE_PARCELA.match(line)
-    if not m:
+    # Linha deve começar com NN/NN ou NN/NNN (parcela)
+    m_inicio = re.match(r'^(\d{2}/\d{2,3})\s+', line)
+    if not m_inicio:
         return None
 
-    parcela = m.group(1)
-    text_middle = m.group(2)  # "SERVICO ALUNO" concatenados
-    valor_servico = m.group(3)
-    # desc_nc = m.group(4)  — não usamos
-    # desc_cond = m.group(5)
-    # desc_concedido = m.group(6)
-    multa_juros = m.group(7)
-    # recebido = m.group(8)
-    # devolvido = m.group(9) — só 7 valores após parcela → índices 3..9
-    valor_receber = m.group(9)
+    parcela = m_inicio.group(1)
+    rest = line[m_inicio.end():]
+
+    # Encontra todas as ocorrências de NUM no restante da linha
+    all_nums = list(_NUM_RE.finditer(rest))
+
+    # Precisa de pelo menos 7 valores numéricos
+    if len(all_nums) < 7:
+        return None
+
+    # Os últimos 7 são as colunas do relatório
+    nums = all_nums[-7:]
+
+    # O texto do meio é tudo antes do início do primeiro dos últimos 7 NUMs
+    text_end_pos = nums[0].start()
+    text_middle = rest[:text_end_pos].strip()
+
+    if not text_middle:
+        return None
+
+    valor_servico = nums[0].group()   # coluna 1
+    # nums[1] = desc_nc, nums[2] = desc_cond, nums[3] = desc_concedido
+    multa_juros   = nums[4].group()   # coluna 5
+    # nums[5] = recebido
+    valor_receber = nums[6].group()   # coluna 7
 
     servico, aluno = split_service_aluno(text_middle)
 
@@ -318,6 +339,12 @@ def parse_lines(lines):
         resp_data = parse_responsavel_line(line)
         if resp_data:
             if current_resp is not None:
+                # Mesmo CPF = cabeçalho repetido de página de continuação
+                # Não empurra, não reseta current_titulo
+                if current_resp.get('cpf') == resp_data['cpf']:
+                    i += 1
+                    continue
+                # CPF diferente = responsável novo
                 responsaveis.append(current_resp)
             current_resp = {**resp_data,
                             'rua': '', 'numero': '', 'bairro': '',
@@ -330,7 +357,9 @@ def parse_lines(lines):
         # ---- Endereço ----
         if current_resp and line.lower().startswith('endere'):
             addr = parse_endereco_line(line)
-            current_resp.update(addr)
+            # Atualiza apenas se ainda não temos endereço (evita sobrescrever em pág. de continuação)
+            if not current_resp.get('rua'):
+                current_resp.update(addr)
             i += 1
             continue
 
