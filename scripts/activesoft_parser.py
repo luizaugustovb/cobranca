@@ -376,6 +376,7 @@ def parse_lines(lines):
 def main():
     parser = argparse.ArgumentParser(description='Parser Activesoft PDF')
     parser.add_argument('--pdf', required=True, help='Caminho do PDF')
+    parser.add_argument('--out', default=None, help='Arquivo de saída JSON (opcional; usa stdout se omitido)')
     args = parser.parse_args()
 
     try:
@@ -384,14 +385,28 @@ def main():
 
         total_itens = sum(len(r['itens']) for r in responsaveis)
 
-        print(json.dumps({
+        result = json.dumps({
             'success': True,
             'responsaveis': responsaveis,
             'total_itens': total_itens,
-        }, ensure_ascii=False))
+        }, ensure_ascii=False)
+
+        if args.out:
+            with open(args.out, 'w', encoding='utf-8') as f:
+                f.write(result)
+        else:
+            print(result)
 
     except Exception as exc:
-        print(json.dumps({'success': False, 'error': str(exc)}))
+        error_result = json.dumps({'success': False, 'error': str(exc)})
+        if args.out:
+            try:
+                with open(args.out, 'w', encoding='utf-8') as f:
+                    f.write(error_result)
+            except Exception:
+                pass
+        else:
+            print(error_result)
         sys.exit(1)
 
 

@@ -41,6 +41,8 @@ class ImportacaoActivesoftController extends Controller
      */
     public function preview(Request $request)
     {
+        set_time_limit(180); // 3 minutos para processar PDFs grandes
+
         $request->validate([
             'arquivo' => 'required|file|mimes:pdf|max:20480',
         ], [
@@ -52,23 +54,49 @@ class ImportacaoActivesoftController extends Controller
         $file    = $request->file('arquivo');
         $pdfPath = $file->getRealPath();
 
+        // Usa arquivos temporários para evitar problemas com pipes no Windows/Apache
+        $tmpDir  = storage_path('app/temp');
+        if (!is_dir($tmpDir)) {
+            mkdir($tmpDir, 0755, true);
+        }
+        $uid     = uniqid('as_', true);
+        $tmpPdf  = $tmpDir . DIRECTORY_SEPARATOR . $uid . '.pdf';
+        $tmpJson = $tmpDir . DIRECTORY_SEPARATOR . $uid . '.json';
+        copy($pdfPath, $tmpPdf);
+
         $cmd = sprintf(
-            '%s %s --pdf %s',
+            '%s %s --pdf %s --out %s',
             escapeshellarg($this->pythonBin),
             escapeshellarg($this->scriptPath),
-            escapeshellarg($pdfPath)
+            escapeshellarg($tmpPdf),
+            escapeshellarg($tmpJson)
         );
 
-        $output   = [];
-        $exitCode = 0;
-        exec($cmd . ' 2>&1', $output, $exitCode);
+        Log::info('Activesoft parser cmd: ' . $cmd);
 
-        $json   = implode('', $output);
-        $result = json_decode($json, true);
+        $cmdOutput = [];
+        $exitCode  = 0;
+        exec($cmd . ' 2>&1', $cmdOutput, $exitCode);
+
+        @unlink($tmpPdf);
+
+        Log::info("Activesoft parser exit={$exitCode} stdout=" . substr(implode(' ', $cmdOutput), 0, 500));
+
+        if (!file_exists($tmpJson)) {
+            $err = implode(' ', $cmdOutput);
+            Log::error('Activesoft: arquivo JSON não gerado. stdout: ' . $err);
+            return back()->withErrors(['arquivo' => 'Falha ao processar PDF: ' . substr($err ?: 'Parser não gerou saída.', 0, 300)]);
+        }
+
+        $jsonContent = file_get_contents($tmpJson);
+        @unlink($tmpJson);
+
+        $result = json_decode($jsonContent, true);
 
         if (!$result || !($result['success'] ?? false)) {
-            $error = $result['error'] ?? $json;
-            return back()->withErrors(['arquivo' => 'Falha ao processar PDF: ' . $error]);
+            $error = ($result['error'] ?? '') ?: $jsonContent;
+            Log::error('Activesoft parse error: ' . substr($error, 0, 1000));
+            return back()->withErrors(['arquivo' => 'Falha ao processar PDF: ' . substr($error, 0, 300)]);
         }
 
         $responsaveis = $result['responsaveis'] ?? [];

@@ -109,15 +109,15 @@
                                     </td>
                                     <td class="px-3 py-2">
                                         {{-- Campos editáveis ocultos para dados do responsável --}}
-                                        <input type="hidden" name="itens[{{ $idx }}][nome]"     value="{{ $resp['nome'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][cpf]"      value="{{ $resp['cpf'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][nome]" value="{{ $resp['nome'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][cpf]" value="{{ $resp['cpf'] }}">
                                         <input type="hidden" name="itens[{{ $idx }}][telefone]" value="{{ $resp['telefone'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][rua]"      value="{{ $resp['rua'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][numero]"   value="{{ $resp['numero'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][bairro]"   value="{{ $resp['bairro'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][cidade]"   value="{{ $resp['cidade'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][estado]"   value="{{ $resp['estado'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][cep]"      value="{{ $resp['cep'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][rua]" value="{{ $resp['rua'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][numero]" value="{{ $resp['numero'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][bairro]" value="{{ $resp['bairro'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][cidade]" value="{{ $resp['cidade'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][estado]" value="{{ $resp['estado'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][cep]" value="{{ $resp['cep'] }}">
 
                                         <div class="flex gap-1 items-center">
                                             <input type="text"

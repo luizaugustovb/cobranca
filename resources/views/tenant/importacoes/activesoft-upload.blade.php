@@ -14,7 +14,7 @@
                 <p class="font-bold mb-1">Erro ao processar o PDF:</p>
                 <ul class="list-disc list-inside text-sm space-y-1">
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                    <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
