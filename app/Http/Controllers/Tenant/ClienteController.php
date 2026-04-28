@@ -25,11 +25,14 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'documento' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'telefone' => 'nullable|string|max:20',
-            'endereco' => 'nullable|string|max:255',
+            'nome'                  => 'required|string|max:255',
+            'documento'             => 'required|string|max:20',
+            'email'                 => 'nullable|email|max:255',
+            'telefone'              => 'nullable|string|max:20',
+            'endereco'              => 'nullable|string|max:255',
+            'multa_percentual'      => 'nullable|numeric|min:0|max:100',
+            'juros_mensal'          => 'nullable|numeric|min:0|max:100',
+            'honorarios_percentual' => 'nullable|numeric|min:0|max:100',
         ]);
 
         Cliente::create($validated);
@@ -45,11 +48,14 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'documento' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'telefone' => 'nullable|string|max:20',
-            'endereco' => 'nullable|string|max:255',
+            'nome'                  => 'required|string|max:255',
+            'documento'             => 'required|string|max:20',
+            'email'                 => 'nullable|email|max:255',
+            'telefone'              => 'nullable|string|max:20',
+            'endereco'              => 'nullable|string|max:255',
+            'multa_percentual'      => 'nullable|numeric|min:0|max:100',
+            'juros_mensal'          => 'nullable|numeric|min:0|max:100',
+            'honorarios_percentual' => 'nullable|numeric|min:0|max:100',
         ]);
 
         $cliente->update($validated);

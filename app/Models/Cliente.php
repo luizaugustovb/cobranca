@@ -16,7 +16,16 @@ class Cliente extends Model
         'documento',
         'email',
         'telefone',
-        'endereco'
+        'endereco',
+        'multa_percentual',
+        'juros_mensal',
+        'honorarios_percentual',
+    ];
+
+    protected $casts = [
+        'multa_percentual'      => 'decimal:2',
+        'juros_mensal'          => 'decimal:2',
+        'honorarios_percentual' => 'decimal:2',
     ];
 
     /**
