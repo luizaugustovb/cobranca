@@ -32,15 +32,58 @@
                             {{-- Devedor --}}
                             <div>
                                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Devedor *</label>
-                                <select name="devedor_id" x-model="devedorId" @change="onDevedorChange()" required
-                                    class="w-full border border-slate-200 rounded-2xl py-3 px-4 text-sm font-medium text-slate-700 bg-slate-50 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition @error('devedor_id') border-red-400 @enderror">
-                                    <option value="">— Selecione o devedor —</option>
-                                    @foreach($devedores as $devedor)
-                                    <option value="{{ $devedor->id }}" {{ old('devedor_id') == $devedor->id ? 'selected' : '' }}>
-                                        {{ $devedor->nome }} — {{ $devedor->cpf_cnpj }}
-                                    </option>
-                                    @endforeach
-                                </select>
+
+                                {{-- Campo oculto que vai no form --}}
+                                <input type="hidden" name="devedor_id" x-model="devedorId" required>
+
+                                <div x-data="buscaDevedor()" class="relative" @click.away="fechado = true">
+
+                                    {{-- Input de busca --}}
+                                    <div @click="abrir()"
+                                        class="w-full border rounded-2xl py-3 px-4 flex items-center justify-between cursor-pointer bg-slate-50 transition"
+                                        :class="fechado ? 'border-slate-200' : 'border-emerald-500 ring-2 ring-emerald-200'">
+                                        <span class="text-sm font-medium text-slate-700 truncate"
+                                            x-text="devedorNome || '— Selecione o devedor —'"
+                                            :class="devedorNome ? 'text-slate-800' : 'text-slate-400'"></span>
+                                        <svg class="w-4 h-4 text-slate-400 shrink-0 ml-2 transition-transform" :class="!fechado ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </div>
+
+                                    {{-- Dropdown --}}
+                                    <div x-show="!fechado" x-transition
+                                        class="absolute z-50 w-full mt-2 bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden">
+
+                                        {{-- Campo busca --}}
+                                        <div class="p-3 border-b border-slate-100">
+                                            <div class="relative">
+                                                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                                </svg>
+                                                <input type="text" x-model="busca" x-ref="inputBusca" @keydown.escape="fechado = true"
+                                                    placeholder="Buscar por nome ou CPF/CNPJ..."
+                                                    style="padding-left: 2.2rem;"
+                                                    class="w-full pr-3 py-2 text-sm border border-slate-200 rounded-xl bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                                            </div>
+                                        </div>
+
+                                        {{-- Lista --}}
+                                        <ul class="max-h-56 overflow-y-auto py-1">
+                                            <template x-for="d in filtrados()" :key="d.id">
+                                                <li @click="selecionar(d)"
+                                                    class="px-4 py-2.5 text-sm cursor-pointer hover:bg-emerald-50 flex items-center justify-between"
+                                                    :class="devedorId == d.id ? 'bg-emerald-50 font-bold text-emerald-700' : 'text-slate-700'">
+                                                    <span x-text="d.nome"></span>
+                                                    <span class="text-xs text-slate-400 font-mono ml-2" x-text="d.cpf"></span>
+                                                </li>
+                                            </template>
+                                            <li x-show="filtrados().length === 0" class="px-4 py-4 text-sm text-slate-400 text-center">
+                                                Nenhum devedor encontrado
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
                                 @error('devedor_id')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
                                 <p x-show="taxas.cliente_nome" class="mt-1.5 text-xs text-blue-600 font-bold flex items-center gap-1">
                                     <span class="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block"></span>
@@ -218,6 +261,42 @@
     </div>
 
     <script>
+        const _devedoresLista = @json($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj]));
+
+        function buscaDevedor() {
+            return {
+                busca: '',
+                fechado: true,
+                filtrados() {
+                    if (!this.busca) return _devedoresLista;
+                    const t = this.busca.toLowerCase();
+                    return _devedoresLista.filter(d =>
+                        d.nome.toLowerCase().includes(t) || d.cpf.toLowerCase().includes(t)
+                    );
+                },
+                get devedorNome() {
+                    const pai = this.$el.closest('[x-data]');
+                    if (!pai || !pai._x_dataStack) return '';
+                    const id = pai._x_dataStack[0].devedorId;
+                    const d = _devedoresLista.find(x => x.id == id);
+                    return d ? d.nome + ' — ' + d.cpf : '';
+                },
+                selecionar(d) {
+                    const pai = this.$el.closest('[x-data]');
+                    if (pai && pai._x_dataStack) {
+                        pai._x_dataStack[0].devedorId = d.id;
+                        pai._x_dataStack[0].onDevedorChange();
+                    }
+                    this.fechado = true;
+                    this.busca = '';
+                },
+                abrir() {
+                    this.fechado = false;
+                    this.$nextTick(() => this.$refs.inputBusca && this.$refs.inputBusca.focus());
+                }
+            };
+        }
+
         function calculadoraTitulo() {
             return {
                 devedorId: '{{ old("devedor_id", "") }}',
