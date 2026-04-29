@@ -274,7 +274,7 @@
 
                     <!-- Histórico de Interações -->
                     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700"
-                         x-data="{ aberto: false }">
+                        x-data="{ aberto: false }">
                         <div class="p-8 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <h3 class="font-black text-lg text-slate-800 dark:text-white tracking-tighter uppercase">LINHA DO TEMPO</h3>
                             <button type="button"
@@ -344,7 +344,7 @@
                                     <div class="text-[10px] text-gray-400 font-semibold mb-1">
                                         {{ \Carbon\Carbon::parse($contato->created_at)->format('d/m/Y \à\s H:i') }}
                                         @if($contato->resultado)
-                                            &mdash; <span class="text-amber-500">{{ $contato->resultado }}</span>
+                                        &mdash; <span class="text-amber-500">{{ $contato->resultado }}</span>
                                         @endif
                                     </div>
                                     <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">{{ $contato->descricao }}</p>
