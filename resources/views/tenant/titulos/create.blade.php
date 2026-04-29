@@ -21,8 +21,8 @@
 
                 {{-- Formulário (2/3) --}}
                 <div class="lg:col-span-2">
-                    <div class="bg-white shadow-2xl rounded-3xl border border-slate-100 overflow-hidden">
-                        <div class="px-8 py-5 border-b border-slate-100 bg-slate-50/50">
+                    <div class="bg-white shadow-2xl rounded-3xl border border-slate-100">
+                        <div class="px-8 py-5 border-b border-slate-100 bg-slate-50/50 rounded-t-3xl">
                             <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Preencha os dados do título de cobrança</p>
                         </div>
 
@@ -283,7 +283,7 @@
                     );
                 },
                 selecionar(d) {
-                    this.devedorId = d.id;
+                    this.devedorId = String(d.id);
                     this.onDevedorChange();
                     this.fechado = true;
                     this.busca = '';
