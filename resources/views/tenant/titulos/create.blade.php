@@ -260,8 +260,10 @@
         </div>
     </div>
 
+    <div id="devedores-data" data-lista="{{ e(json_encode($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj])->values())) }}" style="display:none"></div>
+
     <script>
-        const _devedoresLista = @json($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj]));
+        const _devedoresLista = JSON.parse(document.getElementById('devedores-data').dataset.lista);
 
         function buscaDevedor() {
             return {
