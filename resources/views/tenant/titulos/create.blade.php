@@ -262,7 +262,7 @@
 
     <div id="form-data"
         data-lista="{{ e(json_encode($devedores->map(fn($d) => ['id'=>(string)$d->id,'nome'=>$d->nome,'cpf'=>$d->cpf_cnpj])->values())) }}"
-        data-taxas="{{ e(json_encode($taxasPorDevedor->mapKeys(fn($v,$k) => (string)$k))) }}"
+        data-taxas="{{ e(json_encode($taxasPorDevedor)) }}"
         data-old-devedor="{{ e(old('devedor_id','')) }}"
         data-old-valor="{{ (float) old('valor_original',0) }}"
         data-old-venc="{{ e(old('vencimento','')) }}"
@@ -273,76 +273,104 @@
         style="display:none"></div>
 
     <script>
-        document.addEventListener('alpine:init', function () {
-            var el      = document.getElementById('form-data');
-            var _lista  = JSON.parse(el.dataset.lista);
-            var _taxas  = JSON.parse(el.dataset.taxas);
+        document.addEventListener('alpine:init', function() {
+            var el = document.getElementById('form-data');
+            var _lista = JSON.parse(el.dataset.lista);
+            var _taxas = JSON.parse(el.dataset.taxas);
 
-            Alpine.data('calculadoraTitulo', function () {
+            Alpine.data('calculadoraTitulo', function() {
                 return {
-                    devedorId:    el.dataset.oldDevedor,
-                    busca:        '',
-                    fechado:      true,
-                    valorOriginal: parseFloat(el.dataset.oldValor)      || 0,
-                    vencimento:   el.dataset.oldVenc,
-                    juros:        parseFloat(el.dataset.oldJuros)       || 0,
-                    multa:        parseFloat(el.dataset.oldMulta)       || 0,
-                    honorarios:   parseFloat(el.dataset.oldHonorarios)  || 0,
-                    desconto:     parseFloat(el.dataset.oldDesconto)    || 0,
-                    taxas:        { multa_percentual:0, juros_mensal:0, honorarios_percentual:0, ipca_mensal:0, cliente_nome:'' },
+                    devedorId: el.dataset.oldDevedor,
+                    busca: '',
+                    fechado: true,
+                    valorOriginal: parseFloat(el.dataset.oldValor) || 0,
+                    vencimento: el.dataset.oldVenc,
+                    juros: parseFloat(el.dataset.oldJuros) || 0,
+                    multa: parseFloat(el.dataset.oldMulta) || 0,
+                    honorarios: parseFloat(el.dataset.oldHonorarios) || 0,
+                    desconto: parseFloat(el.dataset.oldDesconto) || 0,
+                    taxas: {
+                        multa_percentual: 0,
+                        juros_mensal: 0,
+                        honorarios_percentual: 0,
+                        ipca_mensal: 0,
+                        cliente_nome: ''
+                    },
                     taxasPorDevedor: _taxas,
-                    mesesAtraso:  0,
-                    vencido:      false,
+                    mesesAtraso: 0,
+                    vencido: false,
 
                     get devedorNome() {
-                        var d = _lista.find(function(x){ return x.id === String(this.devedorId); }.bind(this));
+                        var d = _lista.find(function(x) {
+                            return x.id === String(this.devedorId);
+                        }.bind(this));
                         return d ? d.nome + ' \u2014 ' + d.cpf : '';
                     },
 
                     filtrados: function() {
                         if (!this.busca) return _lista;
                         var t = this.busca.toLowerCase();
-                        return _lista.filter(function(d){
+                        return _lista.filter(function(d) {
                             return d.nome.toLowerCase().indexOf(t) >= 0 || d.cpf.toLowerCase().indexOf(t) >= 0;
                         });
                     },
 
                     selecionar: function(d) {
                         this.devedorId = String(d.id);
-                        this.fechado   = true;
-                        this.busca     = '';
+                        this.fechado = true;
+                        this.busca = '';
                         this.onDevedorChange();
                     },
 
                     abrir: function() {
                         this.fechado = false;
                         var ref = this.$refs.inputBusca;
-                        this.$nextTick(function(){ ref && ref.focus(); });
+                        this.$nextTick(function() {
+                            ref && ref.focus();
+                        });
                     },
 
                     get total() {
-                        return (parseFloat(this.valorOriginal)||0)
-                             + (parseFloat(this.juros)||0)
-                             + (parseFloat(this.multa)||0)
-                             + (parseFloat(this.honorarios)||0)
-                             - (parseFloat(this.desconto)||0);
+                        return (parseFloat(this.valorOriginal) || 0) +
+                            (parseFloat(this.juros) || 0) +
+                            (parseFloat(this.multa) || 0) +
+                            (parseFloat(this.honorarios) || 0) -
+                            (parseFloat(this.desconto) || 0);
                     },
 
                     onDevedorChange: function() {
                         var t = this.taxasPorDevedor[String(this.devedorId)];
-                        this.taxas = t || { multa_percentual:0, juros_mensal:0, honorarios_percentual:0, ipca_mensal:0, cliente_nome:'' };
+                        this.taxas = t || {
+                            multa_percentual: 0,
+                            juros_mensal: 0,
+                            honorarios_percentual: 0,
+                            ipca_mensal: 0,
+                            cliente_nome: ''
+                        };
                         this.calcular();
                     },
 
-                    onVencimentoChange: function() { this.calcularMeses(); this.calcular(); },
+                    onVencimentoChange: function() {
+                        this.calcularMeses();
+                        this.calcular();
+                    },
 
                     calcularMeses: function() {
-                        if (!this.vencimento) { this.mesesAtraso=0; this.vencido=false; return; }
-                        var hoje = new Date(); hoje.setHours(0,0,0,0);
-                        var venc = new Date(this.vencimento+'T00:00:00');
-                        if (venc >= hoje) { this.mesesAtraso=0; this.vencido=false; return; }
+                        if (!this.vencimento) {
+                            this.mesesAtraso = 0;
+                            this.vencido = false;
+                            return;
+                        }
+                        var hoje = new Date();
+                        hoje.setHours(0, 0, 0, 0);
+                        var venc = new Date(this.vencimento + 'T00:00:00');
+                        if (venc >= hoje) {
+                            this.mesesAtraso = 0;
+                            this.vencido = false;
+                            return;
+                        }
                         this.vencido = true;
-                        var m = (hoje.getFullYear()-venc.getFullYear())*12 + (hoje.getMonth()-venc.getMonth());
+                        var m = (hoje.getFullYear() - venc.getFullYear()) * 12 + (hoje.getMonth() - venc.getMonth());
                         if (hoje.getDate() < venc.getDate()) m--;
                         this.mesesAtraso = Math.max(0, m);
                     },
@@ -350,17 +378,20 @@
                     calcular: function() {
                         var v = parseFloat(this.valorOriginal) || 0;
                         if (!v) return;
-                        this.multa      = this.vencido ? parseFloat((v*(this.taxas.multa_percentual||0)/100).toFixed(2)) : 0;
-                        this.juros      = parseFloat((v*(this.taxas.juros_mensal||0)/100*this.mesesAtraso).toFixed(2));
-                        this.honorarios = parseFloat((v*(this.taxas.honorarios_percentual||0)/100).toFixed(2));
+                        this.multa = this.vencido ? parseFloat((v * (this.taxas.multa_percentual || 0) / 100).toFixed(2)) : 0;
+                        this.juros = parseFloat((v * (this.taxas.juros_mensal || 0) / 100 * this.mesesAtraso).toFixed(2));
+                        this.honorarios = parseFloat((v * (this.taxas.honorarios_percentual || 0) / 100).toFixed(2));
                     },
 
                     fmt: function(val) {
-                        return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(parseFloat(val)||0);
+                        return new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        }).format(parseFloat(val) || 0);
                     },
 
                     pct: function(val) {
-                        return parseFloat(val||0).toFixed(2).replace('.',',')+'%';
+                        return parseFloat(val || 0).toFixed(2).replace('.', ',') + '%';
                     }
                 };
             });
