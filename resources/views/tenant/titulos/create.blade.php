@@ -273,13 +273,11 @@
         style="display:none"></div>
 
     <script>
-        (function() {
+        window.calculadoraTituloInit = function() {
             var el = document.getElementById('form-data');
             var _lista = JSON.parse(el.dataset.lista);
             var _taxas = JSON.parse(el.dataset.taxas);
-
-            window.calculadoraTituloInit = function() {
-                return {
+            return {
                     devedorId: el.dataset.oldDevedor,
                     busca: '',
                     fechado: true,
@@ -394,7 +392,6 @@
                         return parseFloat(val || 0).toFixed(2).replace('.', ',') + '%';
                     }
                 };
-            };
-        })();
+        };
     </script>
 </x-app-layout>
