@@ -40,6 +40,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/titulos/{titulo}/edit', [\App\Http\Controllers\Tenant\TituloController::class, 'edit'])->name('titulos.edit');
         Route::put('/titulos/{titulo}', [\App\Http\Controllers\Tenant\TituloController::class, 'update'])->name('titulos.update');
         Route::post('/titulos/{titulo}/cancelar', [\App\Http\Controllers\Tenant\TituloController::class, 'cancel'])->name('titulos.cancel');
+        // Recalcular juros/multa/IPCA dos títulos em aberto de um devedor
+        Route::post('/devedores/{devedor}/recalcular-titulos', [\App\Http\Controllers\Tenant\RecalcularTitulosController::class, 'recalcular'])->name('titulos.recalcular');
         // Negociações (Acordos)
         Route::get('/acordos', [\App\Http\Controllers\Tenant\AcordoController::class, 'index'])->name('acordos');
         Route::get('/acordos/create', [\App\Http\Controllers\Tenant\AcordoController::class, 'create'])->name('acordos.create');

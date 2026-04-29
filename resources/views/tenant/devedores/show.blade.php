@@ -65,6 +65,19 @@
                     WhatsApp
                 </span>
                 @endif
+                <form method="POST" action="{{ route('tenant.titulos.recalcular', $devedor) }}"
+                    onsubmit="this.querySelector('button[type=submit]').disabled=true;">
+                    @csrf
+                    <button type="submit"
+                        class="inline-flex items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-sm uppercase transition shadow-sm"
+                        title="Recalcula juros, multa, IPCA e honorários dos títulos em aberto com base nas taxas do cliente">
+                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Recalcular Dívidas
+                    </button>
+                </form>
                 <a href="{{ route('tenant.devedores.edit', $devedor) }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold text-sm uppercase transition hover:bg-gray-50 shadow-sm">
                     Editar Perfil
                 </a>
@@ -74,6 +87,25 @@
 
     <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            @if(session('success'))
+            <div class="mb-6 flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 rounded-2xl px-6 py-4 shadow">
+                <svg class="w-5 h-5 shrink-0 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-sm font-bold">{{ session('success') }}</p>
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="mb-6 flex items-center gap-3 bg-red-50 border border-red-200 text-red-800 rounded-2xl px-6 py-4 shadow">
+                <svg class="w-5 h-5 shrink-0 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="text-sm font-bold">{{ session('error') }}</p>
+            </div>
+            @endif
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                 <!-- Coluna da Esquerda: Resumo e Títulos -->
@@ -99,28 +131,79 @@
                                     <tr>
                                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Nº Título</th>
                                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Vencimento</th>
-                                        <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Valor</th>
+                                        <th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Valor Atualizado</th>
                                         <th class="px-6 py-3 text-right text-xs font-bold text-gray-400 uppercase tracking-widest">Status</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-100 dark:divide-gray-700">
+                                <tbody class="bg-white dark:bg-gray-800">
                                     @forelse($devedor->titulos as $titulo)
-                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-700 dark:text-white uppercase">{{ $titulo->numero }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $titulo->vencimento->format('d/m/Y') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-slate-800 dark:text-white">R$ {{ number_format($titulo->valor_total, 2, ',', '.') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right">
-                                            <span class="px-3 py-1 text-xs font-black uppercase rounded-full {{ $titulo->status === 'aberto' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
-                                                {{ $titulo->status }}
-                                            </span>
-                                        </td>
-                                    </tr>
                                     @empty
                                     <tr>
                                         <td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">Nenhum título vinculado.</td>
                                     </tr>
                                     @endforelse
                                 </tbody>
+                                @foreach($devedor->titulos as $titulo)
+                                @php $det = $titulo->detalhamentoCorrigido; @endphp
+                                <tbody x-data="{ open: false }"
+                                    class="divide-y divide-gray-100 dark:divide-gray-700">
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer bg-white dark:bg-gray-800"
+                                        @click="open = !open">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-700 dark:text-white uppercase">
+                                            <span class="mr-1 text-gray-300 text-xs" x-text="open ? '▲' : '▼'"></span>
+                                            {{ $titulo->numero }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $titulo->vencimento->format('d/m/Y') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="text-sm font-black text-slate-800 dark:text-white">R$ {{ number_format($titulo->valor_total, 2, ',', '.') }}</span>
+                                            @if(round($titulo->valor_total, 2) != round($det['valor_original'], 2))
+                                            <span class="ml-1 text-xs text-gray-400 line-through">R$ {{ number_format($det['valor_original'], 2, ',', '.') }}</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right">
+                                            <span class="px-3 py-1 text-xs font-black uppercase rounded-full {{ $titulo->status === 'aberto' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
+                                                {{ $titulo->status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {{-- Linha de detalhamento expansível --}}
+                                    <tr x-show="open" class="bg-amber-50 dark:bg-amber-900/10">
+                                        <td colspan="4" class="px-8 py-4">
+                                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 text-center">
+                                                <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100">
+                                                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Original</p>
+                                                    <p class="text-sm font-black text-slate-700">R$ {{ number_format($det['valor_original'], 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100">
+                                                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Multa ({{ $det['multa_percentual'] }}%)</p>
+                                                    <p class="text-sm font-black text-orange-600">+ R$ {{ number_format($det['multa'], 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100">
+                                                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Juros ({{ $det['juros_mensal'] }}% × {{ $det['meses_atraso'] }}m)</p>
+                                                    <p class="text-sm font-black text-red-600">+ R$ {{ number_format($det['juros_acumulado'], 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100">
+                                                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">IPCA ({{ $det['ipca_mensal'] }}% × {{ $det['meses_atraso'] }}m)</p>
+                                                    <p class="text-sm font-black text-yellow-600">+ R$ {{ number_format($det['correcao_ipca'], 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100">
+                                                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">Honorários ({{ $det['hon_percentual'] }}%)</p>
+                                                    <p class="text-sm font-black text-purple-600">+ R$ {{ number_format($det['honorarios'], 2, ',', '.') }}</p>
+                                                </div>
+                                                <div class="bg-blue-600 rounded-xl p-3 shadow-sm">
+                                                    <p class="text-[10px] font-bold text-blue-100 uppercase mb-1">Total Corrigido</p>
+                                                    <p class="text-sm font-black text-white">R$ {{ number_format($det['total'], 2, ',', '.') }}</p>
+                                                </div>
+                                            </div>
+                                            @if($titulo->status === 'aberto' && round($det['total'], 2) != round($titulo->valor_total, 2))
+                                            <p class="mt-3 text-xs text-amber-700 font-bold text-center">
+                                                ⚠ Valor desatualizado. Clique em <strong>Recalcular Dívidas</strong> no topo para gravar os valores corrigidos.
+                                            </p>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                @endforeach
                             </table>
                         </div>
                         @if($devedor->titulos->where('status', 'aberto')->count() > 0)

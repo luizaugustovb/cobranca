@@ -20,12 +20,14 @@ class Cliente extends Model
         'multa_percentual',
         'juros_mensal',
         'honorarios_percentual',
+        'ipca_mensal',
     ];
 
     protected $casts = [
         'multa_percentual'      => 'decimal:2',
         'juros_mensal'          => 'decimal:2',
         'honorarios_percentual' => 'decimal:2',
+        'ipca_mensal'           => 'decimal:2',
     ];
 
     /**

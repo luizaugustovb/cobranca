@@ -33,6 +33,7 @@ class ClienteController extends Controller
             'multa_percentual'      => 'nullable|numeric|min:0|max:100',
             'juros_mensal'          => 'nullable|numeric|min:0|max:100',
             'honorarios_percentual' => 'nullable|numeric|min:0|max:100',
+            'ipca_mensal'           => 'nullable|numeric|min:0|max:100',
         ]);
 
         Cliente::create($validated);
@@ -56,6 +57,7 @@ class ClienteController extends Controller
             'multa_percentual'      => 'nullable|numeric|min:0|max:100',
             'juros_mensal'          => 'nullable|numeric|min:0|max:100',
             'honorarios_percentual' => 'nullable|numeric|min:0|max:100',
+            'ipca_mensal'           => 'nullable|numeric|min:0|max:100',
         ]);
 
         $cliente->update($validated);
