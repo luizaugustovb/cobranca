@@ -101,15 +101,16 @@
                             </div>
                         </div>
                     </div>
-                    <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl shadow-xl shadow-blue-500/20 font-extrabold uppercase tracking-widest">
-                        {{ isset($cliente) ? 'Salvar Alterações' : 'Cadastrar Cliente' }}
-                    </x-primary-button>
-                    <a href="{{ route('tenant.clientes') }}" class="inline-flex items-center px-8 py-4 bg-white border border-gray-300 rounded-xl font-extrabold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150">
-                        Voltar
-                    </a>
+                    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                        <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl shadow-xl shadow-blue-500/20 font-extrabold uppercase tracking-widest">
+                            {{ isset($cliente) ? 'Salvar Alterações' : 'Cadastrar Cliente' }}
+                        </x-primary-button>
+                        <a href="{{ route('tenant.clientes') }}" class="inline-flex items-center px-8 py-4 bg-white border border-gray-300 rounded-xl font-extrabold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            Voltar
+                        </a>
+                    </div>
+                </form>
             </div>
-            </form>
         </div>
-    </div>
     </div>
 </x-app-layout>

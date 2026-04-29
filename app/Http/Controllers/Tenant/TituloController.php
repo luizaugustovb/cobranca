@@ -48,8 +48,15 @@ class TituloController extends Controller
 
     public function create()
     {
-        $devedores = Devedor::all();
-        return view('tenant.titulos.create', compact('devedores'));
+        $devedores = Devedor::with('cliente')->get();
+        $taxasPorDevedor = $devedores->keyBy('id')->map(fn($d) => [
+            'multa_percentual'      => (float) ($d->cliente->multa_percentual ?? 0),
+            'juros_mensal'          => (float) ($d->cliente->juros_mensal ?? 0),
+            'honorarios_percentual' => (float) ($d->cliente->honorarios_percentual ?? 0),
+            'ipca_mensal'           => (float) ($d->cliente->ipca_mensal ?? 0),
+            'cliente_nome'          => $d->cliente->nome ?? '',
+        ]);
+        return view('tenant.titulos.create', compact('devedores', 'taxasPorDevedor'));
     }
 
     public function store(Request $request)
