@@ -260,44 +260,61 @@
         </div>
     </div>
 
-    <div id="devedores-data" data-lista="{{ e(json_encode($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj])->values())) }}" data-taxas="{{ e(json_encode($taxasPorDevedor)) }}" style="display:none"></div>
+    @php
+    $devedoresJson = json_encode($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj])->values());
+    $taxasJson = json_encode($taxasPorDevedor);
+    $oldDevedorId = json_encode(old('devedor_id', ''));
+    $oldValor = (float) old('valor_original', 0);
+    $oldVenc = json_encode(old('vencimento', ''));
+    $oldJuros = (float) old('juros', 0);
+    $oldMulta = (float) old('multa', 0);
+    $oldHonorarios = (float) old('honorarios', 0);
+    $oldDesconto = (float) old('desconto', 0);
+    @endphp
 
     <script>
-        const _devedoresLista = JSON.parse(document.getElementById('devedores-data').dataset.lista);
-        const _taxasPorDevedor = JSON.parse(document.getElementById('devedores-data').dataset.taxas);
+        document.addEventListener('alpine:init', () => {
+            const _lista = {
+                !!$devedoresJson!!
+            };
+            const _taxas = {
+                !!$taxasJson!!
+            };
 
-        function calculadoraTitulo() {
-            return {
-                devedorId: '{{ old("devedor_id", "") }}',
+            Alpine.data('calculadoraTitulo', () => ({
+                devedorId: {
+                    !!$oldDevedorId!!
+                },
                 busca: '',
                 fechado: true,
-                get devedorNome() {
-                    const d = _devedoresLista.find(x => x.id == this.devedorId);
-                    return d ? d.nome + ' — ' + d.cpf : '';
+                valorOriginal: {
+                    {
+                        $oldValor
+                    }
                 },
-                filtrados() {
-                    if (!this.busca) return _devedoresLista;
-                    const t = this.busca.toLowerCase();
-                    return _devedoresLista.filter(d =>
-                        d.nome.toLowerCase().includes(t) || d.cpf.toLowerCase().includes(t)
-                    );
+                vencimento: {
+                    !!$oldVenc!!
                 },
-                selecionar(d) {
-                    this.devedorId = String(d.id);
-                    this.onDevedorChange();
-                    this.fechado = true;
-                    this.busca = '';
+                juros: {
+                    {
+                        $oldJuros
+                    }
                 },
-                abrir() {
-                    this.fechado = false;
-                    this.$nextTick(() => this.$refs.inputBusca && this.$refs.inputBusca.focus());
+                multa: {
+                    {
+                        $oldMulta
+                    }
                 },
-                valorOriginal: parseFloat('{{ old("valor_original", 0) }}') || 0,
-                vencimento: '{{ old("vencimento", "") }}',
-                juros: parseFloat('{{ old("juros", 0) }}') || 0,
-                multa: parseFloat('{{ old("multa", 0) }}') || 0,
-                honorarios: parseFloat('{{ old("honorarios", 0) }}') || 0,
-                desconto: parseFloat('{{ old("desconto", 0) }}') || 0,
+                honorarios: {
+                    {
+                        $oldHonorarios
+                    }
+                },
+                desconto: {
+                    {
+                        $oldDesconto
+                    }
+                },
                 taxas: {
                     multa_percentual: 0,
                     juros_mensal: 0,
@@ -305,9 +322,34 @@
                     ipca_mensal: 0,
                     cliente_nome: ''
                 },
-                taxasPorDevedor: _taxasPorDevedor,
+                taxasPorDevedor: _taxas,
                 mesesAtraso: 0,
                 vencido: false,
+
+                get devedorNome() {
+                    const d = _lista.find(x => String(x.id) === String(this.devedorId));
+                    return d ? d.nome + ' \u2014 ' + d.cpf : '';
+                },
+
+                filtrados() {
+                    if (!this.busca) return _lista;
+                    const t = this.busca.toLowerCase();
+                    return _lista.filter(d =>
+                        d.nome.toLowerCase().includes(t) || d.cpf.toLowerCase().includes(t)
+                    );
+                },
+
+                selecionar(d) {
+                    this.devedorId = String(d.id);
+                    this.fechado = true;
+                    this.busca = '';
+                    this.onDevedorChange();
+                },
+
+                abrir() {
+                    this.fechado = false;
+                    this.$nextTick(() => this.$refs.inputBusca && this.$refs.inputBusca.focus());
+                },
 
                 get total() {
                     return (parseFloat(this.valorOriginal) || 0) +
@@ -372,7 +414,7 @@
                 pct(val) {
                     return parseFloat(val || 0).toFixed(2).replace('.', ',') + '%';
                 }
-            };
-        }
+            }));
+        });
     </script>
 </x-app-layout>
