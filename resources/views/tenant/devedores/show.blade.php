@@ -273,19 +273,80 @@
                     </div>
 
                     <!-- Histórico de Interações -->
-                    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700"
+                         x-data="{ aberto: false }">
                         <div class="p-8 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                             <h3 class="font-black text-lg text-slate-800 dark:text-white tracking-tighter uppercase">LINHA DO TEMPO</h3>
-                            <button class="p-2 bg-blue-50 text-blue-600 rounded-lg"><svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <button type="button"
+                                @click="aberto = !aberto"
+                                :class="aberto ? 'p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition' : 'p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition'"
+                                title="Adicionar registro">
+                                <svg x-show="!aberto" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg></button>
+                                </svg>
+                                <svg x-show="aberto" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
+
+                        {{-- Formulário de novo registro --}}
+                        <div x-show="aberto" x-transition class="border-b border-gray-100 dark:border-gray-700 bg-blue-50/60 dark:bg-gray-700/40 p-6">
+                            <form action="{{ route('tenant.devedores.contatos.store', $devedor) }}" method="POST" class="space-y-4">
+                                @csrf
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Tipo de contato</label>
+                                        <select name="tipo" required
+                                            class="w-full rounded-xl border-gray-200 focus:border-blue-400 focus:ring-blue-400 bg-white dark:bg-gray-700 text-sm font-medium py-2.5">
+                                            <option value="">Selecione...</option>
+                                            <option value="Ligação">Ligação</option>
+                                            <option value="WhatsApp">WhatsApp</option>
+                                            <option value="E-mail">E-mail</option>
+                                            <option value="Visita">Visita</option>
+                                            <option value="Tentativa de Acordo">Tentativa de Acordo</option>
+                                            <option value="Acordo Fechado">Acordo Fechado</option>
+                                            <option value="Promessa de Pagamento">Promessa de Pagamento</option>
+                                            <option value="Não Atendeu">Não Atendeu</option>
+                                            <option value="Outro">Outro</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Resultado (opcional)</label>
+                                        <input type="text" name="resultado" maxlength="255"
+                                            class="w-full rounded-xl border-gray-200 focus:border-blue-400 focus:ring-blue-400 bg-white dark:bg-gray-700 text-sm font-medium py-2.5"
+                                            placeholder="Ex: Não atendeu, promessou pagar dia 05..." />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Descrição / Observações</label>
+                                    <textarea name="descricao" required rows="3" maxlength="2000"
+                                        class="w-full rounded-xl border-gray-200 focus:border-blue-400 focus:ring-blue-400 bg-white dark:bg-gray-700 text-sm font-medium"
+                                        placeholder="Descreva o que foi tratado, o resultado da tentativa de contato..."></textarea>
+                                </div>
+                                <div class="flex justify-end gap-3">
+                                    <button type="button" @click="aberto = false"
+                                        class="px-4 py-2 rounded-xl text-sm font-bold text-gray-500 hover:bg-gray-100 transition">Cancelar</button>
+                                    <button type="submit"
+                                        class="px-5 py-2 rounded-xl bg-blue-600 text-white text-sm font-black uppercase tracking-wide hover:bg-blue-700 transition shadow">
+                                        Salvar Registro
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
                         <div class="p-8 overflow-y-auto max-h-[400px]">
                             <ul class="space-y-6">
-                                @forelse($devedor->contatos ?? [] as $contato)
+                                @forelse($devedor->contatos->sortByDesc('created_at') as $contato)
                                 <li class="relative pl-6 border-l-2 border-blue-100">
                                     <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
-                                    <div class="text-xs font-bold text-blue-600 uppercase mb-1">{{ $contato->tipo }} - {{ $contato->created_at->format('d/m/Y H:i') }}</div>
+                                    <div class="text-xs font-bold text-blue-600 uppercase mb-0.5">{{ $contato->tipo }}</div>
+                                    <div class="text-[10px] text-gray-400 font-semibold mb-1">
+                                        {{ \Carbon\Carbon::parse($contato->created_at)->format('d/m/Y \à\s H:i') }}
+                                        @if($contato->resultado)
+                                            &mdash; <span class="text-amber-500">{{ $contato->resultado }}</span>
+                                        @endif
+                                    </div>
                                     <p class="text-sm text-gray-600 dark:text-gray-400 font-medium">{{ $contato->descricao }}</p>
                                 </li>
                                 @empty

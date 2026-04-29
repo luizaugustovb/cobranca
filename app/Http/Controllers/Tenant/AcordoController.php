@@ -73,7 +73,7 @@ class AcordoController extends Controller
         $devedor = Devedor::with('cliente')->findOrFail($request->devedor_id);
 
         $maxParcelasCartao = (int) ($devedor->cliente->max_parcelas_cartao ?? 21);
-        $maxParcelas = match($request->forma_pagamento) {
+        $maxParcelas = match ($request->forma_pagamento) {
             'PIX'         => 1,
             'CREDIT_CARD' => min(21, $maxParcelasCartao),
             default       => 120,
@@ -237,7 +237,9 @@ class AcordoController extends Controller
         $numParcelas  = $acordo->parcelas;
         $valorParcela = 'R$ ' . number_format(
             ($acordo->valor_acordo - ($acordo->entrada ?? 0)) / max(1, $numParcelas),
-            2, ',', '.'
+            2,
+            ',',
+            '.'
         );
 
         $msg  = "Olá {$devedor->nome}!\n\n";

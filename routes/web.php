@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/devedores/{devedor}/edit', [\App\Http\Controllers\Tenant\DevedorController::class, 'edit'])->name('devedores.edit');
         Route::put('/devedores/{devedor}', [\App\Http\Controllers\Tenant\DevedorController::class, 'update'])->name('devedores.update');
         Route::delete('/devedores/{devedor}', [\App\Http\Controllers\Tenant\DevedorController::class, 'destroy'])->name('devedores.destroy');
+        Route::post('/devedores/{devedor}/contatos', [\App\Http\Controllers\Tenant\DevedorController::class, 'storeContato'])->name('devedores.contatos.store');
         // Títulos (Central de Cobrança)
         Route::get('/titulos', [\App\Http\Controllers\Tenant\TituloController::class, 'index'])->name('titulos');
         Route::get('/titulos/create', [\App\Http\Controllers\Tenant\TituloController::class, 'create'])->name('titulos.create');

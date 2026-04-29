@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Devedor;
 use App\Models\Cliente;
+use App\Models\HistoricoContato;
 use Illuminate\Http\Request;
 
 class DevedorController extends Controller
@@ -91,5 +92,21 @@ class DevedorController extends Controller
     {
         $devedor->delete();
         return redirect()->route('tenant.devedores')->with('success', 'Devedor excluído com sucesso!');
+    }
+
+    public function storeContato(Request $request, Devedor $devedor)
+    {
+        $validated = $request->validate([
+            'tipo'      => 'required|string|max:100',
+            'descricao' => 'required|string|max:2000',
+            'resultado' => 'nullable|string|max:255',
+        ]);
+
+        $devedor->contatos()->create(array_merge($validated, [
+            'tenant_id' => $devedor->tenant_id,
+        ]));
+
+        return redirect()->route('tenant.devedores.show', $devedor)
+            ->with('success', 'Registro adicionado à linha do tempo.');
     }
 }
