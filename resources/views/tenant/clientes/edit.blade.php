@@ -101,6 +101,30 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Configurações de Pagamento --}}
+                    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-blue-500 mb-6">Configurações de Pagamento</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <x-input-label for="pix_chave" :value="__('Chave PIX do Escritório')" class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2" />
+                                <x-text-input id="pix_chave" name="pix_chave" type="text"
+                                    class="mt-1 block w-full rounded-xl border-gray-200 focus:border-emerald-400 focus:ring-emerald-400 bg-gray-50 dark:bg-gray-700 py-3"
+                                    :value="old('pix_chave', $cliente->pix_chave ?? '')"
+                                    placeholder="CPF, CNPJ, e-mail, telefone ou chave aleatória" />
+                                <p class="mt-1 text-xs text-gray-400">Usada nos acordos fechados no PIX — será enviada ao devedor via WhatsApp.</p>
+                                <x-input-error :messages="$errors->get('pix_chave')" class="mt-2" />
+                            </div>
+                            <div>
+                                <x-input-label for="max_parcelas_cartao" :value="__('Máx. Parcelas no Cartão')" class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2" />
+                                <x-text-input id="max_parcelas_cartao" name="max_parcelas_cartao" type="number" step="1" min="1" max="21"
+                                    class="mt-1 block w-full rounded-xl border-gray-200 focus:border-blue-400 focus:ring-blue-400 bg-gray-50 dark:bg-gray-700 py-3"
+                                    :value="old('max_parcelas_cartao', $cliente->max_parcelas_cartao ?? 21)" />
+                                <p class="mt-1 text-xs text-gray-400">Limite máximo de parcelas no cartão de crédito (Asaas suporta até 21x).</p>
+                                <x-input-error :messages="$errors->get('max_parcelas_cartao')" class="mt-2" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700 flex items-center gap-4">
                         <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl shadow-xl shadow-blue-500/20 font-extrabold uppercase tracking-widest">
                             {{ isset($cliente) ? 'Salvar Alterações' : 'Cadastrar Cliente' }}

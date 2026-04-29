@@ -17,6 +17,8 @@ class Cliente extends Model
         'email',
         'telefone',
         'endereco',
+        'pix_chave',
+        'max_parcelas_cartao',
         'multa_percentual',
         'juros_mensal',
         'honorarios_percentual',
@@ -24,6 +26,7 @@ class Cliente extends Model
     ];
 
     protected $casts = [
+        'max_parcelas_cartao'   => 'integer',
         'multa_percentual'      => 'decimal:2',
         'juros_mensal'          => 'decimal:2',
         'honorarios_percentual' => 'decimal:2',

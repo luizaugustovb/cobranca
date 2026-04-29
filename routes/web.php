@@ -48,6 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/acordos', [\App\Http\Controllers\Tenant\AcordoController::class, 'store'])->name('acordos.store');
         Route::get('/acordos/{acordo}', [\App\Http\Controllers\Tenant\AcordoController::class, 'show'])->name('acordos.show');
         Route::post('/acordos/{acordo}/reabrir', [\App\Http\Controllers\Tenant\AcordoController::class, 'reabrir'])->name('acordos.reabrir');
+        Route::post('/acordos/{acordo}/whatsapp', [\App\Http\Controllers\Tenant\AcordoController::class, 'reenviarWhatsApp'])->name('acordos.whatsapp');
         // Pagamentos (Módulo Financeiro)
         Route::get('/pagamentos', [\App\Http\Controllers\Tenant\PagamentoController::class, 'index'])->name('pagamentos');
         Route::get('/pagamentos/create', [\App\Http\Controllers\Tenant\PagamentoController::class, 'create'])->name('pagamentos.create');

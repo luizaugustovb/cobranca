@@ -16,6 +16,13 @@
         entrada:        0,
         parcelas:       1,
         formaPagamento: 'UNDEFINED',
+        maxParcelasCartao: {{ (int) $maxParcelasCartao }},
+        get parcelasLimite() {
+            if (this.formaPagamento === 'PIX')         return 1;
+            if (this.formaPagamento === 'CREDIT_CARD') return Math.min(21, this.maxParcelasCartao);
+            if (this.formaPagamento === 'BOLETO')      return 120;
+            return 24;
+        },
         get descontoTotal() {
             return (this.jurosOrig - Math.min(Math.max(0, this.jurosNeg), this.jurosOrig))
                  + (this.multaOrig - Math.min(Math.max(0, this.multaNeg), this.multaOrig));
@@ -30,7 +37,13 @@
             return Math.max(0, this.valorAcordo - this.entrada) / this.parcelas;
         },
         fmt(v) { return v.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
-    }">
+    }" x-init="$watch('formaPagamento', v => {
+        if (v === 'PIX') {
+            parcelas = 1;
+        } else if (parcelas > parcelasLimite) {
+            parcelas = parcelasLimite;
+        }
+    })">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
@@ -128,9 +141,17 @@
                                     </div>
                                     <div>
                                         <x-input-label for="parcelas" :value="__('Quantidade de Parcelas')" class="text-xs font-bold uppercase tracking-widest text-slate-800 dark:text-gray-300 mb-2" />
-                                        <select id="parcelas" name="parcelas" x-model.number="parcelas" class="w-full text-xl font-bold rounded-2xl border-gray-100 dark:bg-gray-700 py-4 bg-gray-50">
-                                            @for($i=1; $i<=24; $i++) <option value="{{$i}}">{{$i}}x parcelas</option> @endfor
+                                        <select id="parcelas" name="parcelas" x-model.number="parcelas"
+                                            :disabled="formaPagamento === 'PIX'"
+                                            class="w-full text-xl font-bold rounded-2xl border-gray-100 dark:bg-gray-700 py-4 bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed">
+                                            <template x-for="i in parcelasLimite" :key="i">
+                                                <option :value="i" x-text="i + 'x parcelas'"></option>
+                                            </template>
                                         </select>
+                                        <p x-show="formaPagamento === 'PIX'" class="text-[10px] text-emerald-600 font-bold mt-1">PIX é sempre à vista (1x).</p>
+                                        <p x-show="formaPagamento === 'CREDIT_CARD'" class="text-[10px] text-blue-500 font-bold mt-1">
+                                            Cartão: máximo <span x-text="parcelasLimite"></span>x (limite Asaas + configuração do cliente).
+                                        </p>
                                     </div>
                                 </div>
 
@@ -195,7 +216,12 @@
                                     </div>
                                     <p class="text-[10px] text-gray-400 mt-2 font-medium">
                                         <span x-show="formaPagamento === 'UNDEFINED'">O devedor poderá escolher a forma ao pagar pelo link Asaas.</span>
-                                        <span x-show="formaPagamento !== 'UNDEFINED'" x-text="'As cobranças serão geradas no Asaas na modalidade: ' + formaPagamento"></span>
+                                        <span x-show="formaPagamento === 'PIX'" class="text-emerald-600 font-bold">
+                                            O devedor receberá a chave PIX do escritório para pagamento à vista.
+                                            @if($pixChave) Chave configurada: <strong>{{ $pixChave }}</strong> @else <em class="text-amber-600">Atenção: chave PIX não configurada no cadastro do cliente!</em> @endif
+                                        </span>
+                                        <span x-show="formaPagamento === 'BOLETO'">As cobranças serão geradas no Asaas como boleto bancário.</span>
+                                        <span x-show="formaPagamento === 'CREDIT_CARD'">As cobranças serão geradas no Asaas para pagamento por cartão de crédito.</span>
                                     </p>
                                 </div>
 
