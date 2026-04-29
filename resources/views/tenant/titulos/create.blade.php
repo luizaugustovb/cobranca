@@ -15,7 +15,7 @@
         </div>
     </x-slot>
 
-    <div class="py-6 sm:py-12" x-data="calculadoraTitulo">
+    <div class="py-6 sm:py-12" x-data="calculadoraTituloInit()">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -273,12 +273,12 @@
         style="display:none"></div>
 
     <script>
-        document.addEventListener('alpine:init', function() {
+        (function() {
             var el = document.getElementById('form-data');
             var _lista = JSON.parse(el.dataset.lista);
             var _taxas = JSON.parse(el.dataset.taxas);
 
-            Alpine.data('calculadoraTitulo', function() {
+            window.calculadoraTituloInit = function() {
                 return {
                     devedorId: el.dataset.oldDevedor,
                     busca: '',
@@ -394,7 +394,7 @@
                         return parseFloat(val || 0).toFixed(2).replace('.', ',') + '%';
                     }
                 };
-            });
-        });
+            };
+        })();
     </script>
 </x-app-layout>
