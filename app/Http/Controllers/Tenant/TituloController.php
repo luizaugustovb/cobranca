@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\Setting;
 use App\Models\Titulo;
 use App\Models\Devedor;
@@ -19,19 +20,30 @@ class TituloController extends Controller
             $status = 'aberto';
         }
 
-        $titulos = Titulo::with(['devedor', 'acordo'])
-            ->where('status', $status)
-            ->orderByDesc('created_at')
-            ->paginate(15);
+        $clientes  = Cliente::orderBy('nome')->get();
+        $clienteId = $request->get('cliente_id');
+        $busca     = trim($request->get('busca', ''));
 
-        // Contadores para as tabs
+        $titulos = Titulo::with(['devedor.cliente', 'acordo'])
+            ->where('status', $status)
+            ->when($clienteId, fn($q) => $q->whereHas('devedor', fn($dq) => $dq->where('cliente_id', $clienteId)))
+            ->when($busca, function ($q) use ($busca) {
+                $q->whereHas('devedor', fn($dq) => $dq->where('nome', 'like', "%{$busca}%"))
+                    ->orWhere('numero', 'like', "%{$busca}%");
+            })
+            ->orderByDesc('created_at')
+            ->paginate(15)
+            ->withQueryString();
+
+        // Contadores para as tabs (respeitam filtro de cliente)
         $counts = Titulo::selectRaw('status, count(*) as total')
+            ->when($clienteId, fn($q) => $q->whereHas('devedor', fn($dq) => $dq->where('cliente_id', $clienteId)))
             ->groupBy('status')
             ->pluck('total', 'status');
 
         $settings = Setting::all()->pluck('value', 'key');
 
-        return view('tenant.titulos.index', compact('titulos', 'status', 'counts', 'settings'));
+        return view('tenant.titulos.index', compact('titulos', 'status', 'counts', 'settings', 'clientes', 'clienteId', 'busca'));
     }
 
     public function create()

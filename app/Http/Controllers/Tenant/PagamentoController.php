@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\Pagamento;
 use App\Models\Acordo;
 use App\Models\AcordoParcela;
@@ -10,13 +11,20 @@ use Illuminate\Http\Request;
 
 class PagamentoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pagamentos = Pagamento::with(['acordo.devedor', 'parcela'])
+        $clientes  = Cliente::orderBy('nome')->get();
+        $clienteId = $request->get('cliente_id');
+        $busca     = trim($request->get('busca', ''));
+
+        $pagamentos = Pagamento::with(['acordo.devedor.cliente', 'parcela'])
+            ->when($clienteId, fn($q) => $q->whereHas('acordo.devedor', fn($dq) => $dq->where('cliente_id', $clienteId)))
+            ->when($busca, fn($q) => $q->whereHas('acordo.devedor', fn($dq) => $dq->where('nome', 'like', "%{$busca}%")))
             ->orderBy('data_pagamento', 'desc')
-            ->paginate(15);
-            
-        return view('tenant.pagamentos.index', compact('pagamentos'));
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('tenant.pagamentos.index', compact('pagamentos', 'clientes', 'clienteId', 'busca'));
     }
 
     public function create()

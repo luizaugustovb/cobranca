@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Integrations\AsaasService;
 use App\Models\Acordo;
 use App\Models\AcordoParcela;
+use App\Models\Cliente;
 use App\Models\Devedor;
 use App\Models\Setting;
 use App\Models\Titulo;
@@ -16,10 +17,20 @@ use Illuminate\Support\Facades\Log;
 
 class AcordoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $acordos = Acordo::with('devedor')->orderBy('created_at', 'desc')->paginate(10);
-        return view('tenant.acordos.index', compact('acordos'));
+        $clientes  = Cliente::orderBy('nome')->get();
+        $clienteId = $request->get('cliente_id');
+        $busca     = trim($request->get('busca', ''));
+
+        $acordos = Acordo::with('devedor.cliente')
+            ->when($clienteId, fn($q) => $q->whereHas('devedor', fn($dq) => $dq->where('cliente_id', $clienteId)))
+            ->when($busca, fn($q) => $q->whereHas('devedor', fn($dq) => $dq->where('nome', 'like', "%{$busca}%")))
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('tenant.acordos.index', compact('acordos', 'clientes', 'clienteId', 'busca'));
     }
 
     public function create(Request $request)

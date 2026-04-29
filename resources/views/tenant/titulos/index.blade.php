@@ -124,6 +124,38 @@
                 </div>
                 @endif
 
+                {{-- Filtro por cliente --}}
+                <form method="GET" action="{{ route('tenant.titulos') }}" class="mb-6 flex flex-col sm:flex-row gap-3">
+                    <input type="hidden" name="status" value="{{ $status }}">
+                    <div class="flex-1 relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </span>
+                        <input type="text" name="busca" value="{{ $busca }}"
+                            placeholder="Buscar por nº título ou devedor..."
+                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:text-white" />
+                    </div>
+                    <select name="cliente_id"
+                        class="sm:w-64 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-white py-2.5 px-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        onchange="this.form.submit()">
+                        <option value="">Todos os clientes</option>
+                        @foreach($clientes as $c)
+                        <option value="{{ $c->id }}" {{ $clienteId == $c->id ? 'selected' : '' }}>{{ $c->nome }}</option>
+                        @endforeach
+                    </select>
+                    @if($clienteId || $busca)
+                    <a href="{{ route('tenant.titulos', ['status' => $status]) }}"
+                        class="inline-flex items-center px-4 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-bold hover:bg-gray-200 transition whitespace-nowrap">
+                        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Limpar
+                    </a>
+                    @endif
+                </form>
+
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-2xl sm:rounded-3xl border border-gray-100 dark:border-gray-700">
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -158,6 +190,12 @@
                                             {{ $titulo->devedor->nome }}
                                         </a>
                                         <div class="text-[10px] text-gray-400 font-bold tracking-widest">{{ $titulo->devedor->cpf_cnpj }}</div>
+                                        @if($titulo->devedor->cliente)
+                                        <div class="mt-0.5 inline-flex items-center text-[10px] text-blue-600 font-bold">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1 shrink-0"></div>
+                                            {{ $titulo->devedor->cliente->nome }}
+                                        </div>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm {{ $titulo->vencimento->isPast() && $titulo->status === 'aberto' ? 'text-red-500 font-black' : 'text-gray-600 dark:text-gray-300' }}">

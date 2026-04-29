@@ -9,10 +9,22 @@ use Illuminate\Http\Request;
 
 class DevedorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $devedores = Devedor::with('cliente')->paginate(10);
-        return view('tenant.devedores.index', compact('devedores'));
+        $clientes  = Cliente::orderBy('nome')->get();
+        $clienteId = $request->get('cliente_id');
+        $busca     = trim($request->get('busca', ''));
+
+        $devedores = Devedor::with('cliente')
+            ->when($clienteId, fn($q) => $q->where('cliente_id', $clienteId))
+            ->when($busca, fn($q) => $q->where(function ($q) use ($busca) {
+                $q->where('nome', 'like', "%{$busca}%")
+                    ->orWhere('cpf_cnpj', 'like', "%{$busca}%");
+            }))
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('tenant.devedores.index', compact('devedores', 'clientes', 'clienteId', 'busca'));
     }
 
     public function create()

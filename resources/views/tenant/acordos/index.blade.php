@@ -4,7 +4,7 @@
             <h2 class="font-black text-xl sm:text-3xl text-slate-800 flex items-center tracking-tighter uppercase">
                 <div class="p-2 bg-blue-100 rounded-lg mr-3 shrink-0">
                     <svg class="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
                 Acordos Negociados
@@ -16,11 +16,42 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if(session('success'))
-                <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-xl shadow-sm">
-                    <p class="font-extrabold">Sucesso!</p>
-                    <p>{{ session('success') }}</p>
-                </div>
+            <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-r-xl shadow-sm">
+                <p class="font-extrabold">Sucesso!</p>
+                <p>{{ session('success') }}</p>
+            </div>
             @endif
+
+            {{-- Filtro por cliente --}}
+            <form method="GET" action="{{ route('tenant.acordos') }}" class="mb-6 flex flex-col sm:flex-row gap-3">
+                <div class="flex-1 relative">
+                    <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </span>
+                    <input type="text" name="busca" value="{{ $busca }}"
+                        placeholder="Buscar por nome do devedor..."
+                        class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+                </div>
+                <select name="cliente_id"
+                    class="sm:w-64 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 py-2.5 px-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    onchange="this.form.submit()">
+                    <option value="">Todos os clientes</option>
+                    @foreach($clientes as $c)
+                    <option value="{{ $c->id }}" {{ $clienteId == $c->id ? 'selected' : '' }}>{{ $c->nome }}</option>
+                    @endforeach
+                </select>
+                @if($clienteId || $busca)
+                <a href="{{ route('tenant.acordos') }}"
+                    class="inline-flex items-center px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-200 transition whitespace-nowrap">
+                    <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Limpar
+                </a>
+                @endif
+            </form>
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-3xl border border-slate-100">
                 <div class="overflow-x-auto">
@@ -38,63 +69,74 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-slate-100">
                             @forelse($acordos as $acordo)
-                                <tr class="hover:bg-slate-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-bold text-slate-800 uppercase tracking-tighter">{{ $acordo->devedor->nome ?? '-' }}</div>
-                                        <div class="text-xs text-slate-400">{{ $acordo->created_at->format('d/m/Y') }}</div>
-                                    </td>
-                                    <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-slate-600">
-                                        R$ {{ number_format($acordo->valor_original, 2, ',', '.') }}
-                                    </td>
-                                    <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-red-500 font-bold">
-                                        - R$ {{ number_format($acordo->desconto, 2, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-slate-900">
-                                        R$ {{ number_format($acordo->valor_acordo, 2, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 py-1 text-xs font-bold rounded-full bg-blue-50 text-blue-700">
-                                            {{ $acordo->parcelas }}x
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @php
-                                            $statusColor = match($acordo->status) {
-                                                'ativo'     => 'bg-emerald-50 text-emerald-700',
-                                                'quitado'   => 'bg-blue-50 text-blue-700',
-                                                'cancelado' => 'bg-red-50 text-red-700',
-                                                default     => 'bg-slate-100 text-slate-600',
-                                            };
-                                        @endphp
-                                        <span class="px-2 py-1 text-xs font-bold rounded-full uppercase {{ $statusColor }}">
-                                            {{ $acordo->status }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right">
-                                        <a href="{{ route('tenant.acordos.show', $acordo) }}" class="p-2 inline-flex bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white transition duration-200">
-                                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                        </a>
-                                    </td>
-                                </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-bold text-slate-800 uppercase tracking-tighter">{{ $acordo->devedor->nome ?? '-' }}</div>
+                                    <div class="text-xs text-slate-400">{{ $acordo->created_at->format('d/m/Y') }}</div>
+                                    @if($acordo->devedor?->cliente)
+                                    <div class="mt-0.5 inline-flex items-center text-[10px] text-blue-600 font-bold">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1 shrink-0"></div>
+                                        {{ $acordo->devedor->cliente->nome }}
+                                    </div>
+                                    @endif
+                                </td>
+                                <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                    R$ {{ number_format($acordo->valor_original, 2, ',', '.') }}
+                                </td>
+                                <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-red-500 font-bold">
+                                    - R$ {{ number_format($acordo->desconto, 2, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-black text-slate-900">
+                                    R$ {{ number_format($acordo->valor_acordo, 2, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-bold rounded-full bg-blue-50 text-blue-700">
+                                        {{ $acordo->parcelas }}x
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @php
+                                    $statusColor = match($acordo->status) {
+                                    'ativo' => 'bg-emerald-50 text-emerald-700',
+                                    'quitado' => 'bg-blue-50 text-blue-700',
+                                    'cancelado' => 'bg-red-50 text-red-700',
+                                    default => 'bg-slate-100 text-slate-600',
+                                    };
+                                    @endphp
+                                    <span class="px-2 py-1 text-xs font-bold rounded-full uppercase {{ $statusColor }}">
+                                        {{ $acordo->status }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right">
+                                    <a href="{{ route('tenant.acordos.show', $acordo) }}" class="p-2 inline-flex bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-500 hover:text-white transition duration-200">
+                                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="7" class="px-6 py-16 text-center">
-                                        <div class="flex flex-col items-center text-slate-400">
-                                            <svg class="w-12 h-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                            <p class="text-sm font-bold uppercase tracking-widest">Nenhum acordo registrado.</p>
-                                            <p class="text-xs mt-1">Para criar um acordo, acesse o perfil de um devedor.</p>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="7" class="px-6 py-16 text-center">
+                                    <div class="flex flex-col items-center text-slate-400">
+                                        <svg class="w-12 h-12 mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        <p class="text-sm font-bold uppercase tracking-widest">Nenhum acordo registrado.</p>
+                                        <p class="text-xs mt-1">Para criar um acordo, acesse o perfil de um devedor.</p>
+                                    </div>
+                                </td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
                 @if($acordos->hasPages())
-                    <div class="px-6 py-4 border-t border-slate-100">
-                        {{ $acordos->links() }}
-                    </div>
+                <div class="px-6 py-4 border-t border-slate-100">
+                    {{ $acordos->links() }}
+                </div>
                 @endif
             </div>
 
