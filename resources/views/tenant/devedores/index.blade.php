@@ -38,10 +38,12 @@
                     </span>
                     <input type="text" name="busca" value="{{ $busca }}"
                         placeholder="Buscar por nome ou CPF/CNPJ..."
-                        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white" />
+                        style="padding-left: 2.5rem;"
+                        class="w-full pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white" />
                 </div>
                 <select name="cliente_id"
-                    class="sm:w-80 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-white py-2.5 px-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    style="min-width: 18rem;"
+                    class="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-white py-2.5 px-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     onchange="this.form.submit()">
                     <option value="">Todos os clientes</option>
                     @foreach($clientes as $c)
