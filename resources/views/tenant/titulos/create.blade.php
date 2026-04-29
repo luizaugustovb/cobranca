@@ -36,7 +36,7 @@
                                 {{-- Campo oculto que vai no form --}}
                                 <input type="hidden" name="devedor_id" x-model="devedorId" required>
 
-                                <div x-data="buscaDevedor()" class="relative" @click.away="fechado = true">
+                                <div class="relative" @click.away="fechado = true">
 
                                     {{-- Input de busca --}}
                                     <div @click="abrir()"
@@ -260,15 +260,21 @@
         </div>
     </div>
 
-    <div id="devedores-data" data-lista="{{ e(json_encode($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj])->values())) }}" style="display:none"></div>
+    <div id="devedores-data" data-lista="{{ e(json_encode($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj])->values())) }}" data-taxas="{{ e(json_encode($taxasPorDevedor)) }}" style="display:none"></div>
 
     <script>
         const _devedoresLista = JSON.parse(document.getElementById('devedores-data').dataset.lista);
+        const _taxasPorDevedor = JSON.parse(document.getElementById('devedores-data').dataset.taxas);
 
-        function buscaDevedor() {
+        function calculadoraTitulo() {
             return {
+                devedorId: '{{ old("devedor_id", "") }}',
                 busca: '',
                 fechado: true,
+                get devedorNome() {
+                    const d = _devedoresLista.find(x => x.id == this.devedorId);
+                    return d ? d.nome + ' — ' + d.cpf : '';
+                },
                 filtrados() {
                     if (!this.busca) return _devedoresLista;
                     const t = this.busca.toLowerCase();
@@ -276,32 +282,16 @@
                         d.nome.toLowerCase().includes(t) || d.cpf.toLowerCase().includes(t)
                     );
                 },
-                get devedorNome() {
-                    const pai = this.$el.closest('[x-data]');
-                    if (!pai || !pai._x_dataStack) return '';
-                    const id = pai._x_dataStack[0].devedorId;
-                    const d = _devedoresLista.find(x => x.id == id);
-                    return d ? d.nome + ' — ' + d.cpf : '';
-                },
                 selecionar(d) {
-                    const pai = this.$el.closest('[x-data]');
-                    if (pai && pai._x_dataStack) {
-                        pai._x_dataStack[0].devedorId = d.id;
-                        pai._x_dataStack[0].onDevedorChange();
-                    }
+                    this.devedorId = d.id;
+                    this.onDevedorChange();
                     this.fechado = true;
                     this.busca = '';
                 },
                 abrir() {
                     this.fechado = false;
                     this.$nextTick(() => this.$refs.inputBusca && this.$refs.inputBusca.focus());
-                }
-            };
-        }
-
-        function calculadoraTitulo() {
-            return {
-                devedorId: '{{ old("devedor_id", "") }}',
+                },
                 valorOriginal: parseFloat('{{ old("valor_original", 0) }}') || 0,
                 vencimento: '{{ old("vencimento", "") }}',
                 juros: parseFloat('{{ old("juros", 0) }}') || 0,
@@ -315,7 +305,7 @@
                     ipca_mensal: 0,
                     cliente_nome: ''
                 },
-                taxasPorDevedor: @json($taxasPorDevedor),
+                taxasPorDevedor: _taxasPorDevedor,
                 mesesAtraso: 0,
                 vencido: false,
 
