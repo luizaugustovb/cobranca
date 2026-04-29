@@ -260,161 +260,110 @@
         </div>
     </div>
 
-    @php
-    $devedoresJson = json_encode($devedores->map(fn($d) => ['id' => $d->id, 'nome' => $d->nome, 'cpf' => $d->cpf_cnpj])->values());
-    $taxasJson = json_encode($taxasPorDevedor);
-    $oldDevedorId = json_encode(old('devedor_id', ''));
-    $oldValor = (float) old('valor_original', 0);
-    $oldVenc = json_encode(old('vencimento', ''));
-    $oldJuros = (float) old('juros', 0);
-    $oldMulta = (float) old('multa', 0);
-    $oldHonorarios = (float) old('honorarios', 0);
-    $oldDesconto = (float) old('desconto', 0);
-    @endphp
+    <div id="form-data"
+        data-lista="{{ e(json_encode($devedores->map(fn($d) => ['id'=>(string)$d->id,'nome'=>$d->nome,'cpf'=>$d->cpf_cnpj])->values())) }}"
+        data-taxas="{{ e(json_encode($taxasPorDevedor->mapKeys(fn($v,$k) => (string)$k))) }}"
+        data-old-devedor="{{ e(old('devedor_id','')) }}"
+        data-old-valor="{{ (float) old('valor_original',0) }}"
+        data-old-venc="{{ e(old('vencimento','')) }}"
+        data-old-juros="{{ (float) old('juros',0) }}"
+        data-old-multa="{{ (float) old('multa',0) }}"
+        data-old-honorarios="{{ (float) old('honorarios',0) }}"
+        data-old-desconto="{{ (float) old('desconto',0) }}"
+        style="display:none"></div>
 
     <script>
-        document.addEventListener('alpine:init', () => {
-            const _lista = {
-                !!$devedoresJson!!
-            };
-            const _taxas = {
-                !!$taxasJson!!
-            };
+        document.addEventListener('alpine:init', function () {
+            var el      = document.getElementById('form-data');
+            var _lista  = JSON.parse(el.dataset.lista);
+            var _taxas  = JSON.parse(el.dataset.taxas);
 
-            Alpine.data('calculadoraTitulo', () => ({
-                devedorId: {
-                    !!$oldDevedorId!!
-                },
-                busca: '',
-                fechado: true,
-                valorOriginal: {
-                    {
-                        $oldValor
+            Alpine.data('calculadoraTitulo', function () {
+                return {
+                    devedorId:    el.dataset.oldDevedor,
+                    busca:        '',
+                    fechado:      true,
+                    valorOriginal: parseFloat(el.dataset.oldValor)      || 0,
+                    vencimento:   el.dataset.oldVenc,
+                    juros:        parseFloat(el.dataset.oldJuros)       || 0,
+                    multa:        parseFloat(el.dataset.oldMulta)       || 0,
+                    honorarios:   parseFloat(el.dataset.oldHonorarios)  || 0,
+                    desconto:     parseFloat(el.dataset.oldDesconto)    || 0,
+                    taxas:        { multa_percentual:0, juros_mensal:0, honorarios_percentual:0, ipca_mensal:0, cliente_nome:'' },
+                    taxasPorDevedor: _taxas,
+                    mesesAtraso:  0,
+                    vencido:      false,
+
+                    get devedorNome() {
+                        var d = _lista.find(function(x){ return x.id === String(this.devedorId); }.bind(this));
+                        return d ? d.nome + ' \u2014 ' + d.cpf : '';
+                    },
+
+                    filtrados: function() {
+                        if (!this.busca) return _lista;
+                        var t = this.busca.toLowerCase();
+                        return _lista.filter(function(d){
+                            return d.nome.toLowerCase().indexOf(t) >= 0 || d.cpf.toLowerCase().indexOf(t) >= 0;
+                        });
+                    },
+
+                    selecionar: function(d) {
+                        this.devedorId = String(d.id);
+                        this.fechado   = true;
+                        this.busca     = '';
+                        this.onDevedorChange();
+                    },
+
+                    abrir: function() {
+                        this.fechado = false;
+                        var ref = this.$refs.inputBusca;
+                        this.$nextTick(function(){ ref && ref.focus(); });
+                    },
+
+                    get total() {
+                        return (parseFloat(this.valorOriginal)||0)
+                             + (parseFloat(this.juros)||0)
+                             + (parseFloat(this.multa)||0)
+                             + (parseFloat(this.honorarios)||0)
+                             - (parseFloat(this.desconto)||0);
+                    },
+
+                    onDevedorChange: function() {
+                        var t = this.taxasPorDevedor[String(this.devedorId)];
+                        this.taxas = t || { multa_percentual:0, juros_mensal:0, honorarios_percentual:0, ipca_mensal:0, cliente_nome:'' };
+                        this.calcular();
+                    },
+
+                    onVencimentoChange: function() { this.calcularMeses(); this.calcular(); },
+
+                    calcularMeses: function() {
+                        if (!this.vencimento) { this.mesesAtraso=0; this.vencido=false; return; }
+                        var hoje = new Date(); hoje.setHours(0,0,0,0);
+                        var venc = new Date(this.vencimento+'T00:00:00');
+                        if (venc >= hoje) { this.mesesAtraso=0; this.vencido=false; return; }
+                        this.vencido = true;
+                        var m = (hoje.getFullYear()-venc.getFullYear())*12 + (hoje.getMonth()-venc.getMonth());
+                        if (hoje.getDate() < venc.getDate()) m--;
+                        this.mesesAtraso = Math.max(0, m);
+                    },
+
+                    calcular: function() {
+                        var v = parseFloat(this.valorOriginal) || 0;
+                        if (!v) return;
+                        this.multa      = this.vencido ? parseFloat((v*(this.taxas.multa_percentual||0)/100).toFixed(2)) : 0;
+                        this.juros      = parseFloat((v*(this.taxas.juros_mensal||0)/100*this.mesesAtraso).toFixed(2));
+                        this.honorarios = parseFloat((v*(this.taxas.honorarios_percentual||0)/100).toFixed(2));
+                    },
+
+                    fmt: function(val) {
+                        return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(parseFloat(val)||0);
+                    },
+
+                    pct: function(val) {
+                        return parseFloat(val||0).toFixed(2).replace('.',',')+'%';
                     }
-                },
-                vencimento: {
-                    !!$oldVenc!!
-                },
-                juros: {
-                    {
-                        $oldJuros
-                    }
-                },
-                multa: {
-                    {
-                        $oldMulta
-                    }
-                },
-                honorarios: {
-                    {
-                        $oldHonorarios
-                    }
-                },
-                desconto: {
-                    {
-                        $oldDesconto
-                    }
-                },
-                taxas: {
-                    multa_percentual: 0,
-                    juros_mensal: 0,
-                    honorarios_percentual: 0,
-                    ipca_mensal: 0,
-                    cliente_nome: ''
-                },
-                taxasPorDevedor: _taxas,
-                mesesAtraso: 0,
-                vencido: false,
-
-                get devedorNome() {
-                    const d = _lista.find(x => String(x.id) === String(this.devedorId));
-                    return d ? d.nome + ' \u2014 ' + d.cpf : '';
-                },
-
-                filtrados() {
-                    if (!this.busca) return _lista;
-                    const t = this.busca.toLowerCase();
-                    return _lista.filter(d =>
-                        d.nome.toLowerCase().includes(t) || d.cpf.toLowerCase().includes(t)
-                    );
-                },
-
-                selecionar(d) {
-                    this.devedorId = String(d.id);
-                    this.fechado = true;
-                    this.busca = '';
-                    this.onDevedorChange();
-                },
-
-                abrir() {
-                    this.fechado = false;
-                    this.$nextTick(() => this.$refs.inputBusca && this.$refs.inputBusca.focus());
-                },
-
-                get total() {
-                    return (parseFloat(this.valorOriginal) || 0) +
-                        (parseFloat(this.juros) || 0) +
-                        (parseFloat(this.multa) || 0) +
-                        (parseFloat(this.honorarios) || 0) -
-                        (parseFloat(this.desconto) || 0);
-                },
-
-                onDevedorChange() {
-                    const t = this.taxasPorDevedor[this.devedorId];
-                    this.taxas = t || {
-                        multa_percentual: 0,
-                        juros_mensal: 0,
-                        honorarios_percentual: 0,
-                        ipca_mensal: 0,
-                        cliente_nome: ''
-                    };
-                    this.calcular();
-                },
-
-                onVencimentoChange() {
-                    this.calcularMeses();
-                    this.calcular();
-                },
-
-                calcularMeses() {
-                    if (!this.vencimento) {
-                        this.mesesAtraso = 0;
-                        this.vencido = false;
-                        return;
-                    }
-                    const hoje = new Date();
-                    hoje.setHours(0, 0, 0, 0);
-                    const venc = new Date(this.vencimento + 'T00:00:00');
-                    if (venc >= hoje) {
-                        this.mesesAtraso = 0;
-                        this.vencido = false;
-                        return;
-                    }
-                    this.vencido = true;
-                    let m = (hoje.getFullYear() - venc.getFullYear()) * 12 + (hoje.getMonth() - venc.getMonth());
-                    if (hoje.getDate() < venc.getDate()) m--;
-                    this.mesesAtraso = Math.max(0, m);
-                },
-
-                calcular() {
-                    const v = parseFloat(this.valorOriginal) || 0;
-                    if (!v) return;
-                    this.multa = this.vencido ? parseFloat((v * (this.taxas.multa_percentual || 0) / 100).toFixed(2)) : 0;
-                    this.juros = parseFloat((v * (this.taxas.juros_mensal || 0) / 100 * this.mesesAtraso).toFixed(2));
-                    this.honorarios = parseFloat((v * (this.taxas.honorarios_percentual || 0) / 100).toFixed(2));
-                },
-
-                fmt(val) {
-                    return new Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                    }).format(parseFloat(val) || 0);
-                },
-
-                pct(val) {
-                    return parseFloat(val || 0).toFixed(2).replace('.', ',') + '%';
-                }
-            }));
+                };
+            });
         });
     </script>
 </x-app-layout>
