@@ -190,9 +190,63 @@
                             <div class="ml-11">
                                 <textarea id="whatsapp_autoatendimento_texto" name="whatsapp_autoatendimento_texto" rows="4"
                                     class="w-full rounded-xl border-gray-200 dark:bg-gray-700 bg-gray-50 py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-200 resize-none"
-                                    placeholder="Ola {nome}, identificamos {qtd} titulo(s) em aberto totalizando R$ {total}. Entre em contato para negociar suas dividas.">{{ $settings['whatsapp_autoatendimento_texto'] ?? '' }}</textarea>
+                                    placeholder="Olá {nome}, identificamos débito(s) em seu cadastro em nosso sistema. Entre em contato conosco para regularizar sua situação e negociar as condições de pagamento.">{{ $settings['whatsapp_autoatendimento_texto'] ?? '' }}</textarea>
                             </div>
                         </div>
+                        {{-- Disparo Mensal Automático --}}
+                        <div class="pt-8 border-t border-gray-100 dark:border-gray-700">
+                            <h3 class="text-lg font-black text-slate-800 dark:text-gray-200 uppercase tracking-tighter mb-2 flex items-center">
+                                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                Disparo Mensal Automático
+                            </h3>
+                            <p class="text-xs text-gray-400 mb-6 ml-11">
+                                Quando ativado, o sistema envia automaticamente uma mensagem WhatsApp todo mês
+                                no dia escolhido para todos os devedores com títulos em aberto.<br>
+                                <span class="font-bold text-gray-500">Variáveis:</span>
+                                <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">{nome}</code> primeiro nome,
+                                <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">{qtd}</code> quantidade de títulos em aberto.
+                            </p>
+                            <div class="ml-11 space-y-5">
+                                {{-- Toggle ativo --}}
+                                <label class="flex items-center gap-4 cursor-pointer select-none"
+                                    x-data="{ ativo: {{ ($settings['disparo_mensal_ativo'] ?? '0') === '1' ? 'true' : 'false' }} }">
+                                    <input type="hidden" name="disparo_mensal_ativo" value="0">
+                                    <input type="checkbox" name="disparo_mensal_ativo" value="1" class="sr-only peer"
+                                        x-model="ativo">
+                                    <div class="relative w-12 h-6 rounded-full transition-colors duration-200 shrink-0 cursor-pointer"
+                                        :class="ativo ? 'bg-emerald-100' : 'bg-red-100'"
+                                        @click="ativo = !ativo">
+                                        <div class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full shadow transition-all duration-200"
+                                            :class="ativo ? 'translate-x-6 bg-emerald-500' : 'translate-x-0 bg-red-500'"></div>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-black" :class="ativo ? 'text-emerald-700' : 'text-slate-400'"
+                                            x-text="ativo ? 'Disparo mensal habilitado' : 'Disparo mensal desabilitado'"></p>
+                                        <p class="text-[10px] text-gray-400 font-medium mt-0.5">Ativa o envio automático todo mês.</p>
+                                    </div>
+                                </label>
+
+                                {{-- Dia do mês --}}
+                                <div class="flex items-center gap-3">
+                                    <label class="text-xs font-black text-gray-500 uppercase tracking-widest w-36">Dia do mês</label>
+                                    <input type="number" name="disparo_mensal_dia"
+                                        value="{{ $settings['disparo_mensal_dia'] ?? 5 }}"
+                                        min="1" max="28"
+                                        class="w-20 rounded-xl border-gray-200 bg-gray-50 dark:bg-gray-700 py-2 px-3 text-sm font-mono focus:ring-blue-500 focus:border-blue-500">
+                                    <span class="text-xs text-gray-400">de cada mês (1–28)</span>
+                                </div>
+
+                                {{-- Texto da mensagem mensal --}}
+                                <textarea name="whatsapp_mensal_texto" rows="4"
+                                    class="w-full rounded-xl border-gray-200 dark:bg-gray-700 bg-gray-50 py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-200 resize-none"
+                                    placeholder="Olá {nome}, identificamos {qtd} débito(s) em seu cadastro. Entre em contato conosco para regularizar sua situação e negociar as condições de pagamento.">{{ $settings['whatsapp_mensal_texto'] ?? '' }}</textarea>
+                            </div>
+                        </div>
+
                         <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-10 py-4 font-black rounded-2xl shadow-xl shadow-blue-500/20 uppercase tracking-widest">
                             Salvar Configurações
                         </x-primary-button>

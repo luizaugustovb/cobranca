@@ -32,7 +32,7 @@
                 $qtdAbertos = $titulosAbertos->count();
                 $primeiroNome = explode(' ', $devedor->nome)[0];
                 $settingsWa = \App\Models\Setting::all()->pluck('value', 'key');
-                $templateAuto = $settingsWa['whatsapp_autoatendimento_texto'] ?? 'Ola {nome}, identificamos {qtd} titulo(s) em aberto totalizando R$ {total}. Entre em contato para negociar suas dividas.';
+                $templateAuto = $settingsWa['whatsapp_autoatendimento_texto'] ?? 'Olá {nome}, identificamos débito(s) em seu cadastro em nosso sistema. Entre em contato conosco para regularizar sua situação e negociar as condições de pagamento.';
                 $msgCobranca = str_replace(
                 ['{nome}', '{qtd}', '{total}'],
                 [$primeiroNome, $qtdAbertos, number_format($totalAberto, 2, ',', '.')],

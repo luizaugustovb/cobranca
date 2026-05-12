@@ -50,7 +50,7 @@ class Titulo extends Model
     /**
      * Retorna o detalhamento de correção monetária calculado dinamicamente.
      * Fórmula:
-     *   correcao_ipca  = valor_original × ipca_mensal% × meses
+     *   correcao_ipca  = valor_original × ipca_acumulado%  (real via API BCB)
      *   multa          = valor_original × multa%    (uma vez, se vencido)
      *   juros          = valor_original × juros%    × meses
      *   honorarios     = valor_original × hon%
@@ -63,7 +63,6 @@ class Titulo extends Model
         $multaPerc   = $cliente ? (float) $cliente->multa_percentual      : 0;
         $jurosMensal = $cliente ? (float) $cliente->juros_mensal           : 0;
         $honPerc     = $cliente ? (float) $cliente->honorarios_percentual  : 0;
-        $ipcaMensal  = $cliente ? (float) $cliente->ipca_mensal            : 0;
 
         $original = (float) $this->valor_original;
         $desconto = (float) $this->desconto;
@@ -76,10 +75,20 @@ class Titulo extends Model
             }
         }
 
+        // IPCA acumulado real via API do Banco Central
+        $ipcaAcumulado = 0.0;
+        if ($meses > 0 && $this->vencimento) {
+            try {
+                $ipcaAcumulado = (new \App\Services\IpcaService())->acumuladoDesde($this->vencimento);
+            } catch (\Throwable) {
+                $ipcaAcumulado = 0.0;
+            }
+        }
+
         $vencido        = $meses > 0;
         $multa          = $vencido ? round($original * $multaPerc   / 100, 2) : 0;
         $jurosAcumulado = round($original * $jurosMensal / 100 * $meses, 2);
-        $correcaoIpca   = round($original * $ipcaMensal  / 100 * $meses, 2);
+        $correcaoIpca   = round($original * $ipcaAcumulado / 100, 2);
         $honorarios     = round($original * $honPerc     / 100, 2);
 
         $total = $original + $correcaoIpca + $multa + $jurosAcumulado + $honorarios - $desconto;
@@ -87,7 +96,7 @@ class Titulo extends Model
         return [
             'valor_original'   => $original,
             'correcao_ipca'    => $correcaoIpca,
-            'ipca_mensal'      => $ipcaMensal,
+            'ipca_acumulado'   => $ipcaAcumulado,   // % acumulado real
             'multa'            => $multa,
             'multa_percentual' => $multaPerc,
             'juros_acumulado'  => $jurosAcumulado,

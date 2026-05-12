@@ -25,6 +25,9 @@ class SettingController extends Controller
             'honorarios_valor'               => 'nullable|numeric|min:0',
             'whatsapp_cobranca_texto'       => 'nullable|string|max:1000',
             'whatsapp_autoatendimento_texto' => 'nullable|string|max:1000',
+            'disparo_mensal_ativo'          => 'nullable|in:0,1',
+            'disparo_mensal_dia'            => 'nullable|integer|min:1|max:28',
+            'whatsapp_mensal_texto'         => 'nullable|string|max:1000',
         ]);
 
         foreach ($validated as $key => $value) {
@@ -35,6 +38,14 @@ class SettingController extends Controller
             Setting::updateOrCreate(
                 ['key' => $key, 'tenant_id' => auth()->user()->tenant_id],
                 ['value' => $value]
+            );
+        }
+
+        // Garante que disparo_mensal_ativo seja salvo mesmo quando checkbox desmarcado (não vem no POST)
+        if (!$request->has('disparo_mensal_ativo')) {
+            Setting::updateOrCreate(
+                ['key' => 'disparo_mensal_ativo', 'tenant_id' => auth()->user()->tenant_id],
+                ['value' => '0']
             );
         }
 

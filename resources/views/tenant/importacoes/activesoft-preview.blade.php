@@ -53,15 +53,23 @@
                 @foreach($responsaveis as $ri => $resp)
                 @if(!empty($resp['itens']))
 
-                {{-- Card do Responsável --}}
-                <div class="mb-8 bg-white dark:bg-gray-800 rounded-3xl shadow border border-gray-100 dark:border-gray-700 overflow-hidden">
+                {{-- Card do Responsável (telefone reativo via Alpine) --}}
+                <div class="mb-8 bg-white dark:bg-gray-800 rounded-3xl shadow border border-gray-100 dark:border-gray-700 overflow-hidden"
+                    x-data="{ tel: '{{ addslashes($resp['telefone']) }}' }">
                     {{-- Cabeçalho do responsável (editável) --}}
                     <div class="bg-slate-50 dark:bg-slate-800 px-6 py-4 border-b border-gray-100 dark:border-gray-700">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="md:col-span-2">
                                 <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Responsável</p>
                                 <p class="font-black text-slate-800 dark:text-white text-lg leading-none">{{ $resp['nome'] }}</p>
-                                <p class="text-sm text-gray-500 mt-1 font-mono">{{ $resp['cpf'] }} &nbsp;·&nbsp; {{ $resp['telefone'] }}</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-xs text-gray-400 font-mono">{{ $resp['cpf'] }}</span>
+                                    <span class="text-gray-300">·</span>
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Tel.</label>
+                                    <input type="text" x-model="tel"
+                                        class="rounded border border-gray-200 bg-white text-xs font-mono py-0.5 px-2 focus:outline-none focus:ring-1 focus:ring-blue-400 w-36"
+                                        placeholder="DDD + número">
+                                </div>
                                 <p class="text-xs text-gray-400 mt-1">
                                     {{ implode(', ', array_filter([$resp['rua'], $resp['numero'], $resp['bairro'], $resp['cidade'], $resp['estado'], $resp['cep']])) }}
                                 </p>
@@ -111,7 +119,7 @@
                                         {{-- Campos editáveis ocultos para dados do responsável --}}
                                         <input type="hidden" name="itens[{{ $idx }}][nome]" value="{{ $resp['nome'] }}">
                                         <input type="hidden" name="itens[{{ $idx }}][cpf]" value="{{ $resp['cpf'] }}">
-                                        <input type="hidden" name="itens[{{ $idx }}][telefone]" value="{{ $resp['telefone'] }}">
+                                        <input type="hidden" name="itens[{{ $idx }}][telefone]" :value="tel">
                                         <input type="hidden" name="itens[{{ $idx }}][rua]" value="{{ $resp['rua'] }}">
                                         <input type="hidden" name="itens[{{ $idx }}][numero]" value="{{ $resp['numero'] }}">
                                         <input type="hidden" name="itens[{{ $idx }}][bairro]" value="{{ $resp['bairro'] }}">
