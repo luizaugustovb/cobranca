@@ -60,12 +60,27 @@ def is_caps_word(token):
     return bool(re.match(r'^[A-ZÁÉÍÓÚÀÂÊÎÔÛÃÕÇ]+$', token, re.UNICODE))
 
 
+# Algarismos romanos comuns em nomes de fundos/cursos — não fazem parte do nome do aluno
+_ROMAN_NUMERALS = re.compile(
+    r'^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$',
+    re.IGNORECASE
+)
+
+
+def _is_name_token(token):
+    """Token válido para compor nome de aluno: all-caps e não é algarismo romano."""
+    return is_caps_word(token) and not _ROMAN_NUMERALS.match(token)
+
+
 def split_service_aluno(text):
     """
     Divide 'SERVICO ALUNO_NOME' separando o serviço do nome do aluno.
-    O nome do aluno é o último grupo contíguo de 2+ tokens ALL-CAPS.
+    O nome do aluno é o último grupo contíguo de 2+ tokens ALL-CAPS
+    que não sejam algarismos romanos (I, II, III, IV, V...).
     Ex: 'Mens. EF 1 ao 5 ano - Manha VINICIUS NAOEI GUERRA SUZUKI'
         → ('Mens. EF 1 ao 5 ano - Manha', 'VINICIUS NAOEI GUERRA SUZUKI')
+    Ex: 'Anuidade - Formacao Crista - Fund I VINICIUS NAOEI GUERRA SUZUKI'
+        → ('Anuidade - Formacao Crista - Fund I', 'VINICIUS NAOEI GUERRA SUZUKI')
     """
     tokens = text.split()
     n = len(tokens)
@@ -73,10 +88,10 @@ def split_service_aluno(text):
 
     i = n - 1
     while i >= 0:
-        if is_caps_word(tokens[i]):
-            # Procura sequência contígua de caps a partir de i para esquerda
+        if _is_name_token(tokens[i]):
+            # Procura sequência contígua de tokens de nome a partir de i para esquerda
             j = i
-            while j >= 0 and is_caps_word(tokens[j]):
+            while j >= 0 and _is_name_token(tokens[j]):
                 j -= 1
             run_length = i - j
             if run_length >= 2:

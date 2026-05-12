@@ -134,11 +134,18 @@
                                         </div>
                                     </td>
                                     <td class="px-3 py-2">
-                                        <select name="itens[{{ $idx }}][situacao]"
-                                            class="rounded border-gray-200 bg-gray-50 dark:bg-gray-700 text-xs py-1 px-2 focus:ring-blue-500">
-                                            <option value="Em aberto" {{ strtolower($item['situacao']) === 'em aberto' ? 'selected' : '' }}>Em aberto</option>
-                                            <option value="Pago" {{ strtolower($item['situacao']) !== 'em aberto' ? 'selected' : '' }}>Pago</option>
-                                        </select>
+                                        <div class="relative inline-block">
+                                            <select name="itens[{{ $idx }}][situacao]"
+                                                class="appearance-none rounded border border-gray-200 bg-gray-50 dark:bg-gray-700 text-xs py-1 pl-2 pr-6 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+                                                <option value="Em aberto" {{ strtolower($item['situacao']) === 'em aberto' ? 'selected' : '' }}>Em aberto</option>
+                                                <option value="Pago" {{ strtolower($item['situacao']) !== 'em aberto' ? 'selected' : '' }}>Pago</option>
+                                            </select>
+                                            <div class="pointer-events-none absolute inset-y-0 right-1.5 flex items-center">
+                                                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="px-3 py-2">
                                         <input type="text"
