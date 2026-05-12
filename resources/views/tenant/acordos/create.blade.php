@@ -10,9 +10,10 @@
         principal:      {{ (float) $totalPrincipal }},
         jurosOrig:      {{ (float) $totalJuros }},
         multaOrig:      {{ (float) $totalMulta }},
-        honorarios:     {{ (float) $totalHonorarios }},
+        honorariosOrig: {{ (float) $totalHonorarios }},
         jurosNeg:       {{ (float) $totalJuros }},
         multaNeg:       {{ (float) $totalMulta }},
+        honorariosNeg:  {{ (float) $totalHonorarios }},
         entrada:        0,
         parcelas:       1,
         formaPagamento: 'UNDEFINED',
@@ -24,14 +25,15 @@
             return 24;
         },
         get descontoTotal() {
-            return (this.jurosOrig - Math.min(Math.max(0, this.jurosNeg), this.jurosOrig))
-                 + (this.multaOrig - Math.min(Math.max(0, this.multaNeg), this.multaOrig));
+            return Math.max(0, this.jurosOrig       - Math.max(0, this.jurosNeg))
+                 + Math.max(0, this.multaOrig       - Math.max(0, this.multaNeg))
+                 + Math.max(0, this.honorariosOrig  - Math.max(0, this.honorariosNeg));
         },
         get valorAcordo() {
             return this.principal
-                 + Math.min(Math.max(0, this.jurosNeg), this.jurosOrig)
-                 + Math.min(Math.max(0, this.multaNeg), this.multaOrig)
-                 + this.honorarios;
+                 + Math.max(0, this.jurosNeg)
+                 + Math.max(0, this.multaNeg)
+                 + Math.max(0, this.honorariosNeg);
         },
         get valorParcela() {
             return Math.max(0, this.valorAcordo - this.entrada) / this.parcelas;
@@ -53,7 +55,7 @@
                         <form action="{{ route('tenant.acordos.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="devedor_id" value="{{ $devedor->id }}">
-                            <input type="hidden" name="valor_original" :value="principal + jurosOrig + multaOrig + honorarios">
+                            <input type="hidden" name="valor_original" :value="principal + jurosOrig + multaOrig + honorariosOrig">
                             <input type="hidden" name="desconto" :value="descontoTotal">
                             <input type="hidden" name="valor_acordo" :value="valorAcordo">
                             <input type="hidden" name="forma_pagamento" :value="formaPagamento">
@@ -107,13 +109,16 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="bg-amber-50 dark:bg-amber-900/20">
-                                                    <td class="px-5 py-4 font-bold text-amber-700 dark:text-amber-400">
-                                                        Honorários
-                                                        <span class="ml-2 text-[9px] bg-amber-100 text-amber-600 dark:bg-amber-900 dark:text-amber-300 font-black uppercase px-2 py-0.5 rounded-full tracking-widest">Fixo</span>
-                                                    </td>
+                                                    <td class="px-5 py-4 font-bold text-amber-700 dark:text-amber-400">Honorários</td>
                                                     <td class="px-5 py-4 text-right font-black text-amber-700 dark:text-amber-400">R$ {{ number_format($totalHonorarios, 2, ',', '.') }}</td>
                                                     <td class="px-5 py-4 text-right">
-                                                        <span class="text-sm font-black text-amber-600 dark:text-amber-400">R$ {{ number_format($totalHonorarios, 2, ',', '.') }}</span>
+                                                        @if($totalHonorarios > 0)
+                                                        <input type="number" step="0.01" min="0"
+                                                            x-model.number="honorariosNeg"
+                                                            class="w-32 text-right text-sm font-black rounded-xl border border-gray-200 dark:bg-gray-700 dark:border-gray-600 py-2 px-3 focus:ring-blue-500 focus:border-blue-500" />
+                                                        @else
+                                                        <span class="text-sm text-gray-400">R$ 0,00</span>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 <tr class="bg-blue-50 dark:bg-blue-900/20">
@@ -271,7 +276,6 @@
                     <div class="bg-white dark:bg-gray-800 rounded-3xl p-5 sm:p-8 shadow-xl border border-gray-100 dark:border-gray-700">
                         <h3 class="text-xs font-black uppercase tracking-widest text-blue-500 mb-4">Informação importante</h3>
                         <p class="text-sm text-gray-500 font-medium">Ao confirmar este acordo, todos os títulos listados acima serão cancelados e substituídos pelas novas parcelas geradas aqui.</p>
-                        <p class="text-[10px] text-amber-600 font-bold mt-3">? Honorários não podem ser reduzidos na negociação.</p>
                     </div>
                 </div>
 
