@@ -79,6 +79,25 @@
                             </div>
                         </div>
 
+                        <!-- Envio de WhatsApp -->
+                        <div class="pt-6 border-t border-gray-50">
+                            <x-input-label :value="__('Notificações via WhatsApp')" class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3" />
+                            <label class="flex items-center gap-4 cursor-pointer select-none group" x-data="{ ativo: true }">
+                                <input type="hidden" name="whatsapp_ativo" value="0">
+                                <input type="checkbox" name="whatsapp_ativo" value="1" x-model="ativo"
+                                    class="sr-only peer" checked>
+                                <div class="relative w-12 h-6 bg-gray-200 peer-checked:bg-emerald-500 rounded-full transition-colors duration-200 peer-focus:ring-2 peer-focus:ring-emerald-300 shrink-0"
+                                     @click="ativo = !ativo">
+                                    <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
+                                         :class="ativo ? 'translate-x-6' : 'translate-x-0'"></div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-black text-gray-700" x-text="ativo ? 'Ativo — WhatsApp habilitado' : 'Desativado — sem disparos'"></p>
+                                    <p class="text-[10px] text-gray-400 font-medium mt-0.5">Quando desativado, nenhuma mensagem automática será enviada a este escritório.</p>
+                                </div>
+                            </label>
+                        </div>
+
                         <div class="pt-8 flex justify-end">
                             <a href="{{ route('admin.tenants') }}" class="mr-4 px-8 py-4 bg-gray-50 text-gray-500 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-gray-100 transition">Cancelar</a>
                             <x-primary-button class="bg-blue-600 hover:bg-blue-700 px-10 py-5 rounded-3xl shadow-2xl shadow-blue-500/20 font-black uppercase tracking-widest text-sm leading-none">

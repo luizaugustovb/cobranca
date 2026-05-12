@@ -21,10 +21,12 @@ class Tenant extends Model
         'settings',
         'viicio_token',
         'viicio_company_id',
+        'whatsapp_ativo',
     ];
 
     protected $casts = [
-        'settings' => 'array',
+        'settings'       => 'array',
+        'whatsapp_ativo' => 'boolean',
     ];
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Models\Tenant;
 use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,18 @@ class WhatsAppController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        $tenantToken = Setting::where('tenant_id', auth()->user()->tenant_id)
+        $tenantId = auth()->user()->tenant_id;
+
+        // Verifica se o WhatsApp está habilitado para este escritório
+        $tenant = Tenant::find($tenantId);
+        if (!$tenant || !$tenant->whatsapp_ativo) {
+            return response()->json([
+                'success' => false,
+                'error'   => 'Envio de WhatsApp desativado para este escritório. Contate o administrador.',
+            ], 403);
+        }
+
+        $tenantToken = Setting::where('tenant_id', $tenantId)
             ->where('key', 'viicio_token')
             ->value('value');
 

@@ -101,6 +101,26 @@
                                 <x-text-input id="viicio_token" name="viicio_token" type="text" class="w-full bg-white border-slate-200 rounded-2xl py-4" :value="old('viicio_token', $tenant->viicio_token)" placeholder="Token Bearer da API Viicio" />
                                 <p class="text-[9px] text-slate-400 font-medium italic mt-1">* Se vazio, usará o Token Master do sistema para disparos.</p>
                             </div>
+                            <div class="space-y-2 flex flex-col justify-center">
+                                <x-input-label value="Envio de WhatsApp" class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1" />
+                                <label class="flex items-center gap-4 cursor-pointer select-none"
+                                    x-data="{ ativo: {{ $tenant->whatsapp_ativo ? 'true' : 'false' }} }">
+                                    <input type="hidden" name="whatsapp_ativo" value="0">
+                                    <input type="checkbox" name="whatsapp_ativo" value="1" class="sr-only peer"
+                                        x-model="ativo">
+                                    <div class="relative w-12 h-6 rounded-full transition-colors duration-200 peer-focus:ring-2 peer-focus:ring-emerald-300 shrink-0 cursor-pointer"
+                                         :class="ativo ? 'bg-emerald-500' : 'bg-gray-300'"
+                                         @click="ativo = !ativo">
+                                        <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"
+                                             :class="ativo ? 'translate-x-6' : 'translate-x-0'"></div>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-black" :class="ativo ? 'text-emerald-700' : 'text-slate-400'"
+                                           x-text="ativo ? 'Habilitado' : 'Desabilitado'"></p>
+                                        <p class="text-[9px] text-slate-400 font-medium mt-0.5">Controla todos os disparos automáticos do escritório.</p>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
 

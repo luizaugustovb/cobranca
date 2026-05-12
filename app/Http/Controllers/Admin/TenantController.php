@@ -25,16 +25,18 @@ class TenantController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:tenants,slug|max:255',
+            'name'     => 'required|string|max:255',
+            'slug'     => 'required|string|unique:tenants,slug|max:255',
             'document' => 'required|string|unique:tenants,document|max:255',
-            'email' => 'required|email|unique:tenants,email|max:255|unique:users,email',
-            'phone' => 'required|string|max:20',
-            'status' => 'required|string|in:active,inactive,suspended',
-            'plan' => 'required|string',
+            'email'    => 'required|email|unique:tenants,email|max:255|unique:users,email',
+            'phone'    => 'required|string|max:20',
+            'status'   => 'required|string|in:active,inactive,suspended',
+            'plan'     => 'required|string',
         ], [
             'email.unique' => 'Este e-mail já está em uso por outro escritório ou usuário. Use um e-mail diferente.',
         ]);
+
+        $validated['whatsapp_ativo'] = $request->boolean('whatsapp_ativo', true);
 
         $tenant = Tenant::create($validated);
 
@@ -78,7 +80,7 @@ class TenantController extends Controller
             'valor' => $valorPlano,
             'vencimento' => now()->addDays(7),
             'status' => 'pendente',
-            'asaas_id' => 'sim_'.uniqid(), // Simulando ID do Asaas para o sistema do admin
+            'asaas_id' => 'sim_' . uniqid(), // Simulando ID do Asaas para o sistema do admin
         ]);
 
         // Criar o usuário administrador do escritório com senha padrão
@@ -122,7 +124,8 @@ class TenantController extends Controller
             ? ' ✅ WhatsApp de boas-vindas enviado ao escritório.'
             : ' ⚠️ WhatsApp NÃO enviado (verifique o Token Viicio nas Configurações).';
 
-        return redirect()->route('admin.tenants')->with('success',
+        return redirect()->route('admin.tenants')->with(
+            'success',
             "Escritório '{$tenant->name}' criado! Login: {$tenant->email} | Senha padrão: {$password} |{$whatsappStatus}"
         );
     }
@@ -186,7 +189,8 @@ class TenantController extends Controller
             ? ' ✅ WhatsApp com nova senha enviado ao escritório.'
             : ' ⚠️ WhatsApp NÃO enviado (verifique o Token Viicio).';
 
-        return redirect()->back()->with('success',
+        return redirect()->back()->with(
+            'success',
             "Senha de '{$tenant->name}' redefinida! Login: {$loginEmail} | Senha: {$newPassword} |{$whatsappStatus}"
         );
     }
@@ -200,19 +204,19 @@ class TenantController extends Controller
     public function update(Request $request, Tenant $tenant)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:tenants,slug,' . $tenant->id,
-            'document' => 'required|string|unique:tenants,document,' . $tenant->id,
-            'email' => 'required|email|unique:tenants,email,' . $tenant->id,
-            'phone' => 'required|string|max:20',
-            'status' => 'required|string|in:active,inactive,suspended',
-            'plan' => 'required|string',
-            'viicio_token' => 'nullable|string|max:255',
+            'name'          => 'required|string|max:255',
+            'slug'          => 'required|string|unique:tenants,slug,' . $tenant->id,
+            'document'      => 'required|string|unique:tenants,document,' . $tenant->id,
+            'email'         => 'required|email|unique:tenants,email,' . $tenant->id,
+            'phone'         => 'required|string|max:20',
+            'status'        => 'required|string|in:active,inactive,suspended',
+            'plan'          => 'required|string',
+            'viicio_token'  => 'nullable|string|max:255',
         ]);
 
         $tenant->fill($validated);
-        // viicio_token pode ser enviado em branco (limpar) ou preenchido
-        $tenant->viicio_token = $request->input('viicio_token') ?: null;
+        $tenant->viicio_token  = $request->input('viicio_token') ?: null;
+        $tenant->whatsapp_ativo = $request->boolean('whatsapp_ativo', false);
         $tenant->save();
 
         return redirect()->route('admin.tenants')->with('success', 'Escritório atualizado com sucesso!');

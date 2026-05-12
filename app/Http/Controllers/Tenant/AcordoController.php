@@ -9,6 +9,7 @@ use App\Models\AcordoParcela;
 use App\Models\Cliente;
 use App\Models\Devedor;
 use App\Models\Setting;
+use App\Models\Tenant;
 use App\Models\Titulo;
 use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
@@ -222,6 +223,12 @@ class AcordoController extends Controller
     private function enviarWhatsAppAcordo(Devedor $devedor, Acordo $acordo, ?string $asaasLink, ?string $pixChave): bool
     {
         if (!$devedor->telefone) {
+            return false;
+        }
+
+        // Verifica se WhatsApp está habilitado para este escritório
+        $tenant = Tenant::find(auth()->user()->tenant_id);
+        if (!$tenant || !$tenant->whatsapp_ativo) {
             return false;
         }
 
