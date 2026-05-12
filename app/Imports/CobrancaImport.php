@@ -30,6 +30,7 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
     public int $importados = 0;
     public int $erros = 0;
     public array $erroDetalhe = [];
+    public array $devedorIds = [];
 
     private string $honorariosTipo;
     private float $honorariosValor;
@@ -118,6 +119,8 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
                         ? round($valor * $this->honorariosValor / 100, 2)
                         : $this->honorariosValor;
                 }
+
+                $this->devedorIds[] = $devedor->id;
 
                 Titulo::updateOrCreate(
                     ['tenant_id' => $this->tenantId, 'numero' => $numeroTitulo],

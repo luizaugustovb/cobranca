@@ -5,11 +5,19 @@ namespace App\Services;
 use App\Models\Importacao;
 use App\Models\ImportacaoItem;
 use App\Imports\CobrancaImport;
+use App\Services\RecalcularService;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 class ImportacaoService
 {
+    private RecalcularService $recalcular;
+
+    public function __construct(RecalcularService $recalcular)
+    {
+        $this->recalcular = $recalcular;
+    }
+
     /**
      * Processar um arquivo importado
      *
@@ -23,6 +31,9 @@ class ImportacaoService
             $importer = new CobrancaImport($importacao->tenant_id, $importacao->user_id, (int) $importacao->cliente_id);
 
             Excel::import($importer, storage_path('app/' . $importacao->arquivo));
+
+            // Recalcula débitos de todos os devedores importados automaticamente
+            $this->recalcular->recalcularPorIds($importer->devedorIds);
 
             $importacao->update([
                 'status'       => $importer->erros > 0 && $importer->importados === 0 ? 'erro' : 'concluido',

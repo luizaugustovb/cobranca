@@ -8,6 +8,7 @@ use App\Models\Devedor;
 use App\Models\Aluno;
 use App\Models\Titulo;
 use App\Models\Setting;
+use App\Services\RecalcularService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -17,9 +18,12 @@ class ImportacaoActivesoftController extends Controller
 {
     private string $pythonBin;
     private string $scriptPath;
+    private RecalcularService $recalcular;
 
-    public function __construct()
+    public function __construct(RecalcularService $recalcular)
     {
+        $this->recalcular = $recalcular;
+
         $venvBin = PHP_OS_FAMILY === 'Windows'
             ? base_path('.venv/Scripts/python.exe')
             : base_path('.venv/bin/python3');
@@ -161,6 +165,7 @@ class ImportacaoActivesoftController extends Controller
         $importados = 0;
         $erros      = 0;
         $erroDetalhe = [];
+        $devedorIds  = [];
 
         foreach ($itens as $idx => $item) {
             // Chave de seleção: se o checkbox não veio, skip
@@ -192,6 +197,7 @@ class ImportacaoActivesoftController extends Controller
                         'cep'        => preg_replace('/[^0-9]/', '', $item['cep'] ?? '') ?: null,
                     ]
                 );
+                $devedorIds[] = $devedor->id;
 
                 // Aluno
                 $nomeAluno = trim($item['aluno'] ?? '');
@@ -250,6 +256,9 @@ class ImportacaoActivesoftController extends Controller
                 Log::error("Activesoft import item #{$idx}: " . $e->getMessage());
             }
         }
+
+        // Recalcula débitos de todos os devedores importados automaticamente
+        $this->recalcular->recalcularPorIds($devedorIds);
 
         $msg = "Importação Activesoft concluída: {$importados} título(s) importado(s)";
         if ($erros) {
