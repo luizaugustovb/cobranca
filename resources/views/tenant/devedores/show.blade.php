@@ -183,7 +183,7 @@
                                                     <p class="text-sm font-black text-red-600">+ R$ {{ number_format($det['juros_acumulado'], 2, ',', '.') }}</p>
                                                 </div>
                                                 <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100">
-                                                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">IPCA ({{ $det['ipca_mensal'] }}% × {{ $det['meses_atraso'] }}m)</p>
+                                                    <p class="text-[10px] font-bold text-gray-400 uppercase mb-1">IPCA ({{ number_format($det['ipca_acumulado'], 2, ',', '.') }}% acum.)</p>
                                                     <p class="text-sm font-black text-yellow-600">+ R$ {{ number_format($det['correcao_ipca'], 2, ',', '.') }}</p>
                                                 </div>
                                                 <div class="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100">

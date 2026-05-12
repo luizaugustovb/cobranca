@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\Importacao;
 use App\Services\ImportacaoService;
 use Illuminate\Http\Request;
@@ -25,22 +26,25 @@ class ImportacaoController extends Controller
 
     public function create()
     {
-        return view('tenant.importacoes.create');
+        $clientes = Cliente::orderBy('nome')->get(['id', 'nome']);
+        return view('tenant.importacoes.create', compact('clientes'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'arquivo' => 'required|file|mimes:xlsx,xls,csv|max:10240',
+            'arquivo'    => 'required|file|mimes:xlsx,xls,csv|max:10240',
+            'cliente_id' => 'required|exists:clientes,id',
         ]);
 
         $path = $request->file('arquivo')->store('imports');
 
         $importacao = $this->importService->create([
-            'tenant_id' => auth()->user()->tenant_id,
-            'user_id'   => auth()->id(),
-            'arquivo'   => $path,
-            'tipo'      => 'cobrancas',
+            'tenant_id'  => auth()->user()->tenant_id,
+            'user_id'    => auth()->id(),
+            'cliente_id' => $request->input('cliente_id'),
+            'arquivo'    => $path,
+            'tipo'       => 'cobrancas',
         ]);
 
         [$importados, $erros, $erroDetalhe] = $this->importService->process($importacao);
@@ -56,17 +60,41 @@ class ImportacaoController extends Controller
     public function template()
     {
         $headers = [
-            'responsavel', 'cpf', 'contato', 'email',
-            'rua', 'numero_end', 'cep',
-            'aluno', 'matricula', 'servico',
-            'numero_titulo', 'vencimento', 'valor', 'multa', 'juros', 'honorarios',
+            'responsavel',
+            'cpf',
+            'contato',
+            'email',
+            'rua',
+            'numero_end',
+            'cep',
+            'aluno',
+            'matricula',
+            'servico',
+            'numero_titulo',
+            'vencimento',
+            'valor',
+            'multa',
+            'juros',
+            'honorarios',
         ];
 
         $exemplo = [
-            'João da Silva', '123.456.789-09', '(11) 91234-5678', 'joao@email.com',
-            'Rua das Flores', '123', '01310-100',
-            'Maria da Silva', 'MAT001', 'Mensalidade Escolar',
-            'TIT-2024-001', '31/12/2024', '1500,00', '2,00', '1,00', '10,00',
+            'João da Silva',
+            '123.456.789-09',
+            '(11) 91234-5678',
+            'joao@email.com',
+            'Rua das Flores',
+            '123',
+            '01310-100',
+            'Maria da Silva',
+            'MAT001',
+            'Mensalidade Escolar',
+            'TIT-2024-001',
+            '31/12/2024',
+            '1500,00',
+            '2,00',
+            '1,00',
+            '10,00',
         ];
 
         $csv = implode(';', $headers) . "\n" . implode(';', $exemplo) . "\n";

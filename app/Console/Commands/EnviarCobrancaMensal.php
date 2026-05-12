@@ -12,12 +12,17 @@ use Illuminate\Support\Facades\Log;
 
 class EnviarCobrancaMensal extends Command
 {
-    protected $signature   = 'cobranca:disparo-mensal {--tenant= : ID de um tenant específico (opcional)}';
+    protected $signature   = 'cobranca:disparo-mensal
+        {--tenant= : ID de um tenant específico (opcional)}
+        {--force : Ignora a verificação do dia do mês configurado}
+        {--dry-run : Simula o disparo sem enviar nenhuma mensagem}';
     protected $description = 'Envia WhatsApp de cobrança mensal para todos os devedores com títulos em aberto';
 
     public function handle(): int
     {
         $tenantId = $this->option('tenant');
+        $force    = $this->option('force');
+        $dryRun   = $this->option('dry-run');
 
         $tenants = Tenant::query()
             ->where('whatsapp_ativo', true)
@@ -37,9 +42,10 @@ class EnviarCobrancaMensal extends Command
                 continue;
             }
 
-            // Verifica se hoje é o dia configurado
+            // Verifica se hoje é o dia configurado (a menos que --force)
             $diaCofigurado = (int) ($settings['disparo_mensal_dia'] ?? 1);
-            if (Carbon::today()->day !== $diaCofigurado) {
+            if (!$force && Carbon::today()->day !== $diaCofigurado) {
+                $this->line("Tenant '{$tenant->name}': hoje é dia " . Carbon::today()->day . ", configurado para dia {$diaCofigurado}. Pulando (use --force para ignorar).");
                 continue;
             }
 
@@ -74,7 +80,11 @@ class EnviarCobrancaMensal extends Command
                         $templateTexto
                     );
 
-                    $ok = $service->sendMessage('55' . $tel, $mensagem);
+                    $ok = $dryRun ? true : $service->sendMessage('55' . $tel, $mensagem);
+
+                    if ($dryRun) {
+                        $this->line("  [DRY-RUN] Devedor: {$devedor->nome} | Tel: {$tel} | Msg: {$mensagem}");
+                    }
 
                     if ($ok) {
                         $totalEnviados++;
@@ -91,7 +101,7 @@ class EnviarCobrancaMensal extends Command
             $this->info("Tenant '{$tenant->name}': {$devedores->count()} devedor(es) processado(s).");
         }
 
-        $this->info("Disparo mensal concluído: {$totalEnviados} enviado(s), {$totalErros} erro(s).");
+        $this->info("Disparo mensal concluído" . ($dryRun ? ' [DRY-RUN — nenhuma mensagem enviada]' : '') . ": {$totalEnviados} enviado(s), {$totalErros} erro(s).");
 
         return self::SUCCESS;
     }

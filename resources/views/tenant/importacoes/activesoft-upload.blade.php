@@ -25,6 +25,22 @@
                     onsubmit="document.getElementById('btn-submit').disabled=true; document.getElementById('btn-submit').innerHTML='<svg class=\'animate-spin h-4 w-4 inline mr-2\' fill=\'none\' viewBox=\'0 0 24 24\'><circle class=\'opacity-25\' cx=\'12\' cy=\'12\' r=\'10\' stroke=\'currentColor\' stroke-width=\'4\'></circle><path class=\'opacity-75\' fill=\'currentColor\' d=\'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z\'></path></svg>Processando...';">
                     @csrf
 
+                    {{-- Seleção do Cliente --}}
+                    <div class="mb-6">
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-800 dark:text-gray-300 mb-2">
+                            Cliente (Contratante) <span class="text-red-500">*</span>
+                        </label>
+                        <select name="cliente_id" required
+                            class="w-full rounded-2xl border-gray-200 bg-gray-50 dark:bg-gray-700 py-3 px-4 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">— Selecione para qual cliente é este PDF —</option>
+                            @foreach($clientes as $c)
+                            <option value="{{ $c->id }}" {{ old('cliente_id') == $c->id ? 'selected' : '' }}>{{ $c->nome }}</option>
+                            @endforeach
+                        </select>
+                        <x-input-error :messages="$errors->get('cliente_id')" class="mt-2" />
+                        <p class="text-xs text-gray-400 mt-1">Os devedores importados serão vinculados ao cliente selecionado.</p>
+                    </div>
+
                     <div class="mb-8">
                         <label class="flex flex-col items-center justify-center w-full h-52 border-2 border-dashed border-red-300 dark:border-red-700 rounded-3xl cursor-pointer bg-red-50 dark:bg-red-900/10 hover:bg-red-100 dark:hover:bg-red-900/20 transition-all duration-200" id="drop-zone">
                             <div class="flex flex-col items-center justify-center text-center px-4">

@@ -20,7 +20,7 @@ class ImportacaoService
         try {
             $importacao->update(['status' => 'processando']);
 
-            $importer = new CobrancaImport($importacao->tenant_id, $importacao->user_id);
+            $importer = new CobrancaImport($importacao->tenant_id, $importacao->user_id, (int) $importacao->cliente_id);
 
             Excel::import($importer, storage_path('app/' . $importacao->arquivo));
 
@@ -30,7 +30,6 @@ class ImportacaoService
             ]);
 
             return [$importer->importados, $importer->erros, $importer->erroDetalhe];
-
         } catch (\Exception $e) {
             $importacao->update(['status' => 'erro']);
             \Log::error("Erro na importacao [ID: {$importacao->id}]: " . $e->getMessage());
@@ -44,11 +43,12 @@ class ImportacaoService
     public function create(array $data)
     {
         return Importacao::create([
-            'tenant_id' => $data['tenant_id'],
-            'user_id' => $data['user_id'],
-            'arquivo' => $data['arquivo'],
-            'tipo' => $data['tipo'],
-            'status' => 'pendente'
+            'tenant_id'  => $data['tenant_id'],
+            'user_id'    => $data['user_id'],
+            'cliente_id' => $data['cliente_id'] ?? null,
+            'arquivo'    => $data['arquivo'],
+            'tipo'       => $data['tipo'],
+            'status'     => 'pendente'
         ]);
     }
 }

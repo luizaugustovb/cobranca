@@ -15,6 +15,7 @@ class Importacao extends Model
     protected $fillable = [
         'tenant_id',
         'user_id',
+        'cliente_id',
         'arquivo',
         'tipo',
         'status',

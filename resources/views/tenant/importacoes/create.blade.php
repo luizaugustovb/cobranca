@@ -9,6 +9,7 @@
                 <form id="form-xlsx" action="{{ route('tenant.importacoes.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="arquivo" id="arquivo-xlsx" accept=".xlsx,.xls,.csv" class="hidden">
+                    <input type="hidden" name="cliente_id" id="xlsx-cliente-id">
                 </form>
 
                 {{-- Form PDF: leitura direta --}}
@@ -19,6 +20,23 @@
                 </form>
 
                 <div class="space-y-6">
+                    {{-- Seleção do Cliente --}}
+                    <div>
+                        <label class="block text-sm font-black uppercase tracking-widest text-slate-800 dark:text-gray-300 mb-2">
+                            Cliente (Contratante) <span class="text-red-500">*</span>
+                        </label>
+                        <select id="select-cliente"
+                            class="w-full rounded-2xl border-gray-200 bg-gray-50 dark:bg-gray-700 py-3 px-4 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500"
+                            onchange="document.getElementById('xlsx-cliente-id').value = this.value">
+                            <option value="">— Selecione para qual cliente é esta planilha —</option>
+                            @foreach($clientes as $c)
+                            <option value="{{ $c->id }}">{{ $c->nome }}</option>
+                            @endforeach
+                        </select>
+                        <x-input-error :messages="$errors->get('cliente_id')" class="mt-2" />
+                        <p class="text-xs text-gray-400 mt-1">Os devedores importados serão vinculados ao cliente selecionado.</p>
+                    </div>
+
                     <div class="space-y-4">
                         <label id="upload-label" class="block text-sm font-black uppercase tracking-widest text-slate-800 dark:text-gray-300">Arquivo XLSX, CSV ou PDF</label>
                         <label class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-3xl cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 transition-all duration-200" id="drop-zone">
@@ -88,6 +106,12 @@
                         const fileInput = document.getElementById('arquivo');
                         if (!fileInput.files.length) {
                             alert('Selecione um arquivo.');
+                            return;
+                        }
+
+                        const clienteId = document.getElementById('select-cliente').value;
+                        if (!isPdf && !clienteId) {
+                            alert('Selecione o cliente para o qual esta planilha pertence.');
                             return;
                         }
 

@@ -33,7 +33,8 @@ class ImportacaoActivesoftController extends Controller
      */
     public function create()
     {
-        return view('tenant.importacoes.activesoft-upload');
+        $clientes = Cliente::orderBy('nome')->get(['id', 'nome']);
+        return view('tenant.importacoes.activesoft-upload', compact('clientes'));
     }
 
     /**
@@ -45,11 +46,14 @@ class ImportacaoActivesoftController extends Controller
         ini_set('max_execution_time', 300);
 
         $request->validate([
-            'arquivo' => 'required|file|mimes:pdf|max:20480',
+            'arquivo'    => 'required|file|mimes:pdf|max:20480',
+            'cliente_id' => 'required|exists:clientes,id',
         ], [
-            'arquivo.required' => 'Selecione um arquivo PDF.',
-            'arquivo.mimes'    => 'Somente arquivos PDF são aceitos.',
-            'arquivo.max'      => 'O arquivo não pode ultrapassar 20 MB.',
+            'arquivo.required'    => 'Selecione um arquivo PDF.',
+            'arquivo.mimes'       => 'Somente arquivos PDF são aceitos.',
+            'arquivo.max'         => 'O arquivo não pode ultrapassar 20 MB.',
+            'cliente_id.required' => 'Selecione o cliente ao qual este PDF pertence.',
+            'cliente_id.exists'   => 'Cliente inválido.',
         ]);
 
         $file    = $request->file('arquivo');
@@ -110,7 +114,9 @@ class ImportacaoActivesoftController extends Controller
         $key = 'activesoft_' . auth()->id() . '_' . time();
         Storage::put("temp/{$key}.json", json_encode($responsaveis));
 
-        return view('tenant.importacoes.activesoft-preview', compact('responsaveis', 'key'));
+        $clienteId = (int) $request->input('cliente_id');
+
+        return view('tenant.importacoes.activesoft-preview', compact('responsaveis', 'key', 'clienteId'));
     }
 
     /**
@@ -128,6 +134,16 @@ class ImportacaoActivesoftController extends Controller
         }
 
         Storage::delete($path);
+
+        // Valida o cliente selecionado
+        $clienteId = (int) $request->input('cliente_id');
+        $clienteExiste = \App\Models\Cliente::where('id', $clienteId)
+            ->where('tenant_id', auth()->user()->tenant_id)
+            ->exists();
+
+        if (!$clienteExiste) {
+            return back()->withErrors(['cliente_id' => 'Cliente inválido ou não pertence ao seu escritório.']);
+        }
 
         // Dados enviados pelo formulário de preview (editáveis)
         $itens = $request->input('itens', []);
@@ -153,36 +169,19 @@ class ImportacaoActivesoftController extends Controller
             }
 
             try {
-                $cpf     = preg_replace('/[^0-9]/', '', $item['cpf'] ?? '');
-                $nome    = trim($item['nome'] ?? '');
+                $cpf      = preg_replace('/[^0-9]/', '', $item['cpf'] ?? '');
+                $nome     = trim($item['nome'] ?? '');
                 $telefone = trim($item['telefone'] ?? '');
 
                 if (empty($cpf) || empty($nome)) {
                     throw new \Exception("CPF ou nome do responsável vazio.");
                 }
 
-                // Upsert Cliente
-                $cliente = Cliente::updateOrCreate(
-                    ['tenant_id' => $tenantId, 'documento' => $cpf],
-                    [
-                        'nome'     => $nome,
-                        'telefone' => $telefone ?: null,
-                        'email'    => null,
-                        'endereco' => implode(', ', array_filter([
-                            trim($item['rua'] ?? ''),
-                            trim($item['numero'] ?? ''),
-                            trim($item['bairro'] ?? ''),
-                            trim($item['cidade'] ?? ''),
-                            trim($item['estado'] ?? ''),
-                        ])),
-                    ]
-                );
-
-                // Upsert Devedor
+                // Upsert Devedor — vinculado ao Cliente selecionado
                 $devedor = Devedor::updateOrCreate(
                     ['tenant_id' => $tenantId, 'cpf_cnpj' => $cpf],
                     [
-                        'cliente_id' => $cliente->id,
+                        'cliente_id' => $clienteId,
                         'nome'       => $nome,
                         'telefone'   => $telefone ?: null,
                         'rua'        => trim($item['rua'] ?? '') ?: null,

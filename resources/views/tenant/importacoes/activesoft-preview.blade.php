@@ -22,10 +22,7 @@
                 onsubmit="this.querySelector('[type=submit]').disabled=true; this.querySelector('[type=submit]').textContent='Importando...';">
                 @csrf
                 <input type="hidden" name="key" value="{{ $key }}">
-
-                {{-- Barra de ação fixa --}}
-                <div class="sticky top-0 z-20 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between mb-6 rounded-2xl shadow-sm">
-                    <div class="flex items-center gap-4">
+                    <input type="hidden" name="cliente_id" value="{{ $clienteId }}">
                         <button type="button" onclick="toggleAll(true)"
                             class="text-xs font-black uppercase tracking-widest text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-200 rounded-lg">
                             Marcar todos

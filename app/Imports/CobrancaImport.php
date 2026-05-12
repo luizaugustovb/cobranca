@@ -6,7 +6,6 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use App\Models\Cliente;
 use App\Models\Devedor;
 use App\Models\Aluno;
 use App\Models\Titulo;
@@ -27,6 +26,7 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
 {
     private int $tenantId;
     private int $userId;
+    private int $clienteId;
     public int $importados = 0;
     public int $erros = 0;
     public array $erroDetalhe = [];
@@ -34,10 +34,11 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
     private string $honorariosTipo;
     private float $honorariosValor;
 
-    public function __construct(int $tenantId, int $userId)
+    public function __construct(int $tenantId, int $userId, int $clienteId)
     {
-        $this->tenantId = $tenantId;
-        $this->userId   = $userId;
+        $this->tenantId  = $tenantId;
+        $this->userId    = $userId;
+        $this->clienteId = $clienteId;
 
         // Carrega regra de honorários configurada pelo tenant
         $this->honorariosTipo  = Setting::where('tenant_id', $tenantId)->where('key', 'honorarios_tipo')->value('value') ?? 'fixo';
@@ -60,35 +61,17 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
                     continue;
                 }
 
-                $fone = $this->sanitize($row['contato'] ?? $row['telefone'] ?? null);
+                $fone   = $this->sanitize($row['contato'] ?? $row['telefone'] ?? null);
+                $email  = trim($row['email'] ?? '');
+                $rua    = trim($row['rua'] ?? $row['endereco'] ?? '');
+                $numEnd = trim($row['numero_end'] ?? $row['num'] ?? '');
+                $cep    = $this->sanitize($row['cep'] ?? null);
 
-                if (empty($fone)) {
-                    $this->erros++;
-                    $this->erroDetalhe[] = "Linha " . ($index + 2) . ": Contato (telefone/WhatsApp) é obrigatório.";
-                    continue;
-                }
-                $email    = trim($row['email'] ?? '');
-                $rua      = trim($row['rua'] ?? $row['endereco'] ?? '');
-                $numEnd   = trim($row['numero_end'] ?? $row['num'] ?? '');
-                $cep      = $this->sanitize($row['cep'] ?? null);
-                $endereco = implode(', ', array_filter([$rua, $numEnd, $cep ? 'CEP: ' . $cep : null]));
-
-                // Upsert Cliente
-                $cliente = Cliente::updateOrCreate(
-                    ['tenant_id' => $this->tenantId, 'documento' => $cpf],
-                    [
-                        'nome'     => $nome,
-                        'telefone' => $fone ?: null,
-                        'email'    => $email ?: null,
-                        'endereco' => $endereco ?: null,
-                    ]
-                );
-
-                // Upsert Devedor
+                // Upsert Devedor — vinculado ao Cliente selecionado pelo usuário
                 $devedor = Devedor::updateOrCreate(
                     ['tenant_id' => $this->tenantId, 'cpf_cnpj' => $cpf],
                     [
-                        'cliente_id' => $cliente->id,
+                        'cliente_id' => $this->clienteId,
                         'nome'       => $nome,
                         'telefone'   => $fone ?: null,
                         'email'      => $email ?: null,
