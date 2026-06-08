@@ -8,10 +8,15 @@ use App\Models\Titulo;
 use App\Models\Acordo;
 use App\Models\Pagamento;
 use App\Models\Devedor;
+use App\Services\ServerMonitoringService;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    public function __construct(private ServerMonitoringService $serverMonitoring)
+    {
+    }
+
     public function index()
     {
         $user = auth()->user();
@@ -56,7 +61,8 @@ class DashboardController extends Controller
         ];
 
         $recentTenants = Tenant::latest()->take(10)->get();
+        $serverMetrics = $this->serverMonitoring->collect();
 
-        return view('admin.dashboard', compact('stats', 'recentTenants'));
+        return view('admin.dashboard', compact('stats', 'recentTenants', 'serverMetrics'));
     }
 }

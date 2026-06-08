@@ -14,6 +14,50 @@
     <div class="py-6 sm:py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
+            <div class="mb-12">
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Infraestrutura</p>
+                        <h3 class="font-black text-xl text-slate-800 tracking-tighter uppercase leading-none">Monitoramento do Servidor</h3>
+                    </div>
+                    <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                        {{ $serverMetrics['hostname'] }}
+                        <span class="mx-2 text-slate-200">|</span>
+                        uptime {{ $serverMetrics['uptime_human'] }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white rounded-[2rem] p-6 shadow-xl border border-slate-100">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">CPU</p>
+                        <p class="text-3xl font-black text-slate-900 tracking-tighter">{{ $serverMetrics['cpu']['usage_percent'] !== null ? number_format($serverMetrics['cpu']['usage_percent'], 1, ',', '.') . '%' : 'N/D' }}</p>
+                        <p class="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Load 1m: {{ $serverMetrics['cpu']['load_1m'] !== null ? number_format($serverMetrics['cpu']['load_1m'], 2, ',', '.') : 'N/D' }}</p>
+                        <p class="mt-1 text-[10px] text-slate-300 font-black uppercase tracking-widest">{{ $serverMetrics['cpu']['cores'] }} core(s)</p>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] p-6 shadow-xl border border-slate-100">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Memória</p>
+                        <p class="text-3xl font-black text-slate-900 tracking-tighter">{{ $serverMetrics['memory']['usage_percent'] !== null ? number_format($serverMetrics['memory']['usage_percent'], 1, ',', '.') . '%' : 'N/D' }}</p>
+                        <p class="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Usado: {{ $serverMetrics['memory']['used_label'] }}</p>
+                        <p class="mt-1 text-[10px] text-slate-300 font-black uppercase tracking-widest">Total: {{ $serverMetrics['memory']['total_label'] }}</p>
+                    </div>
+
+                    <div class="bg-white rounded-[2rem] p-6 shadow-xl border border-slate-100">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Armazenamento</p>
+                        <p class="text-3xl font-black text-slate-900 tracking-tighter">{{ $serverMetrics['disk']['usage_percent'] !== null ? number_format($serverMetrics['disk']['usage_percent'], 1, ',', '.') . '%' : 'N/D' }}</p>
+                        <p class="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Usado: {{ $serverMetrics['disk']['used_label'] }}</p>
+                        <p class="mt-1 text-[10px] text-slate-300 font-black uppercase tracking-widest">Livre: {{ $serverMetrics['disk']['free_label'] }}</p>
+                    </div>
+
+                    <div class="bg-slate-900 rounded-[2rem] p-6 shadow-2xl shadow-blue-900/20 border border-slate-800">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Ambiente</p>
+                        <p class="text-lg font-black text-white tracking-tighter">{{ $serverMetrics['php_version'] }}</p>
+                        <p class="mt-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ $serverMetrics['os'] }}</p>
+                        <p class="mt-1 text-[10px] text-blue-400 font-black uppercase tracking-widest">Path: {{ $serverMetrics['disk']['path'] }}</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Grid de Estatísticas (Unificado Premium) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 
