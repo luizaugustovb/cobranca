@@ -71,6 +71,12 @@ $SUDO chown -R "$APP_USER":"$APP_GROUP" storage bootstrap/cache
 find storage bootstrap/cache -type d -exec chmod 775 {} \;
 find storage bootstrap/cache -type f -exec chmod 664 {} \;
 
+# Permite salvar configurações no painel admin (SettingController grava no .env)
+if [ -f ".env" ]; then
+    $SUDO chown "$APP_USER":"$APP_GROUP" .env
+    chmod 664 .env
+fi
+
 # Ajusta permissões do SQLite quando em uso
 if [ -f "database/database.sqlite" ]; then
     $SUDO chown "$APP_USER":"$APP_GROUP" database database/database.sqlite

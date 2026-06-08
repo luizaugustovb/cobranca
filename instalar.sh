@@ -4,6 +4,8 @@ set -Eeuo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export DEBIAN_FRONTEND=noninteractive
+APP_USER="${SUDO_USER:-$USER}"
+APP_GROUP="www-data"
 
 if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
   SUDO=""
@@ -38,6 +40,10 @@ detect_os() {
   if [[ "$OS_ID" != "ubuntu" && "$OS_ID" != "debian" ]]; then
     echo "Erro: sistema não suportado ($OS_ID). Use Ubuntu ou Debian." >&2
     exit 1
+  fi
+
+  if ! getent group "$APP_GROUP" >/dev/null 2>&1; then
+    APP_GROUP="$(id -gn "$APP_USER")"
   fi
 }
 
@@ -188,8 +194,20 @@ prepare_application() {
   php artisan optimize || true
 
   if [[ -d storage && -d bootstrap/cache ]]; then
-    $SUDO chown -R www-data:www-data storage bootstrap/cache || true
-    $SUDO chmod -R 775 storage bootstrap/cache || true
+    $SUDO chown -R "$APP_USER":"$APP_GROUP" storage bootstrap/cache || true
+    find storage bootstrap/cache -type d -exec chmod 775 {} \; || true
+    find storage bootstrap/cache -type f -exec chmod 664 {} \; || true
+  fi
+
+  if [[ -f .env ]]; then
+    $SUDO chown "$APP_USER":"$APP_GROUP" .env || true
+    chmod 664 .env || true
+  fi
+
+  if [[ -f database/database.sqlite ]]; then
+    $SUDO chown "$APP_USER":"$APP_GROUP" database database/database.sqlite || true
+    chmod 775 database || true
+    chmod 664 database/database.sqlite || true
   fi
 }
 

@@ -157,6 +157,15 @@ sudo find storage bootstrap/cache -type d -exec chmod 775 {} \;
 sudo find storage bootstrap/cache -type f -exec chmod 664 {} \;
 sudo touch storage/logs/laravel.log
 sudo chown ${USER_DEPLOY}:www-data storage/logs/laravel.log
+
+# Necessário para salvar em Admin > Configurações (grava no .env)
+sudo chown ${USER_DEPLOY}:www-data .env
+sudo chmod 664 .env
+
+# Se usar SQLite
+sudo chown ${USER_DEPLOY}:www-data database database/database.sqlite
+sudo chmod 775 database
+sudo chmod 664 database/database.sqlite
 ```
 
 ### 2.7 Python — venv e pacotes
@@ -276,6 +285,13 @@ sudo find storage bootstrap/cache -type d -exec chmod 775 {} \;
 sudo find storage bootstrap/cache -type f -exec chmod 664 {} \;
 sudo touch storage/logs/laravel.log
 sudo chown ${USER_DEPLOY}:www-data storage/logs/laravel.log
+sudo chown ${USER_DEPLOY}:www-data .env
+sudo chmod 664 .env
+
+# Se usar SQLite
+sudo chown ${USER_DEPLOY}:www-data database database/database.sqlite
+sudo chmod 775 database
+sudo chmod 664 database/database.sqlite
 
 # Reinicia PHP-FPM para limpar opcache
 sudo systemctl restart php8.2-fpm  # ou php8.3-fpm / php8.1-fpm
@@ -303,6 +319,12 @@ Também ajusta permissões de `database/database.sqlite` (quando existir), evita
 
 ```text
 SQLSTATE[HY000]: General error: 8 attempt to write a readonly database
+```
+
+E aplica permissão de escrita no `.env` para evitar erro ao salvar em **Admin > Configurações**:
+
+```text
+file_put_contents(/var/www/cobranca/.env): Failed to open stream: Permission denied
 ```
 
 ---
