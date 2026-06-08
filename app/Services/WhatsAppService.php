@@ -46,11 +46,18 @@ class WhatsAppService
 
             $responseData = $response->json();
 
-            if ($response->successful() && ($responseData['success'] ?? false)) {
+            $status = strtoupper((string) ($responseData['status'] ?? ''));
+            $success = $responseData['success'] ?? null;
+
+            if ($response->successful() && ($success === true || $status === 'SUCCESS' || $status === 'SENT')) {
                 return true;
             }
 
-            Log::error("Falha na API Viicio: " . $response->body());
+            Log::error('Falha na API Viicio', [
+                'http_status' => $response->status(),
+                'response' => $responseData ?: $response->body(),
+                'phone' => $phoneClean,
+            ]);
             return false;
         } catch (\Exception $e) {
             Log::error("Erro técnico ao disparar WhatsApp (Viicio): " . $e->getMessage());
