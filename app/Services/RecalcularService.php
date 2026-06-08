@@ -42,7 +42,7 @@ class RecalcularService
             $titulo->update([
                 'multa'      => round($original * $multaPerc   / 100, 2),
                 'juros'      => round($original * $jurosMensal / 100 * $meses, 2)
-                              + round($original * $ipcaMensal  / 100 * $meses, 2),
+                    + round($original * $ipcaMensal  / 100 * $meses, 2),
                 'honorarios' => round($original * $honPerc     / 100, 2),
             ]);
 
