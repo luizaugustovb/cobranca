@@ -23,6 +23,7 @@
                 @csrf
                 <input type="hidden" name="key" value="{{ $key }}">
                 <input type="hidden" name="cliente_id" value="{{ $clienteId }}">
+                <div class="mb-4 flex flex-wrap items-center gap-2">
                 <button type="button" onclick="toggleAll(true)"
                     class="text-xs font-black uppercase tracking-widest text-blue-600 hover:text-blue-800 px-3 py-1 border border-blue-200 rounded-lg">
                     Marcar todos
@@ -32,18 +33,7 @@
                     Desmarcar todos
                 </button>
                 <span id="count-badge" class="text-xs font-bold text-gray-500 bg-gray-100 px-3 py-1 rounded-full"></span>
-        </div>
-        <div class="flex gap-3">
-            <a href="{{ route('tenant.importacoes.activesoft') }}"
-                class="px-6 py-2 text-xs font-black uppercase tracking-widest text-gray-500 hover:text-gray-700 border border-gray-200 rounded-xl">
-                Cancelar
-            </a>
-            <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-xl shadow text-xs font-black tracking-widest uppercase transition">
-                Confirmar Importação
-            </button>
-        </div>
-    </div>
+                </div>
 
     @php $itemGlobal = 0; @endphp
 
@@ -206,6 +196,7 @@
             Cancelar
         </a>
         <button type="submit"
+            form="form-confirmar"
             class="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-2xl shadow-xl text-sm font-black tracking-widest uppercase transition"
             onclick="this.disabled=true; this.textContent='Importando...';">
             Confirmar Importação
