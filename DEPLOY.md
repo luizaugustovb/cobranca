@@ -25,9 +25,38 @@
 ```bash
 sudo apt update && sudo apt upgrade -y
 
-# PHP 8.2 + extensões
-sudo apt install -y php8.2 php8.2-cli php8.2-fpm php8.2-mbstring \
-    php8.2-xml php8.2-curl php8.2-zip php8.2-gd php8.2-sqlite3
+# Dependências básicas
+sudo apt install -y software-properties-common ca-certificates lsb-release apt-transport-https curl gnupg
+
+# Repositório PHP (Ubuntu: Ondrej, Debian: Sury)
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    if [ "$ID" = "ubuntu" ]; then
+        sudo add-apt-repository -y ppa:ondrej/php
+    elif [ "$ID" = "debian" ]; then
+        curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-php.gpg
+        echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+    fi
+fi
+
+sudo apt update
+
+# PHP + extensões (tenta 8.2; se não existir, usa 8.3 ou 8.1)
+PHPV="8.2"
+if ! apt-cache show php${PHPV}-fpm >/dev/null 2>&1; then
+    if apt-cache show php8.3-fpm >/dev/null 2>&1; then
+        PHPV="8.3"
+    elif apt-cache show php8.1-fpm >/dev/null 2>&1; then
+        PHPV="8.1"
+    else
+        echo "Nenhuma versão php8.x (fpm) encontrada nos repositórios." >&2
+        exit 1
+    fi
+fi
+
+echo "Instalando PHP ${PHPV}..."
+sudo apt install -y php${PHPV} php${PHPV}-cli php${PHPV}-fpm php${PHPV}-mbstring \
+        php${PHPV}-xml php${PHPV}-curl php${PHPV}-zip php${PHPV}-gd php${PHPV}-sqlite3
 
 # Composer
 curl -sS https://getcomposer.org/installer | php
@@ -151,6 +180,7 @@ server {
     }
 
     location ~ \.php$ {
+        # Ajuste a versão conforme o PHP instalado (ex.: 8.3, 8.2, 8.1)
         fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
@@ -213,7 +243,7 @@ npm ci && npm run build
 sudo chown -R www-data:www-data storage bootstrap/cache
 
 # Reinicia PHP-FPM para limpar opcache
-sudo systemctl restart php8.2-fpm
+sudo systemctl restart php8.2-fpm  # ou php8.3-fpm / php8.1-fpm
 ```
 
 > **NÃO rode** `php artisan migrate` em atualizações normais.

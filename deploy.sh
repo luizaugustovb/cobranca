@@ -51,14 +51,17 @@ sudo chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || \
 
 # 6. Reinicia PHP-FPM (opcache)
 echo -e "\n${YELLOW}[6/6] Reiniciando PHP-FPM...${RESET}"
-if systemctl is-active --quiet php8.2-fpm; then
-    sudo systemctl restart php8.2-fpm
-    echo "    php8.2-fpm reiniciado."
-elif systemctl is-active --quiet php8.1-fpm; then
-    sudo systemctl restart php8.1-fpm
-    echo "    php8.1-fpm reiniciado."
+PHP_FPM_SERVICE=$(systemctl list-unit-files --type=service --no-legend 2>/dev/null | awk '/^php[0-9]+\.[0-9]+-fpm\.service/ {print $1}' | sort -V | tail -n 1)
+
+if [ -n "$PHP_FPM_SERVICE" ]; then
+    if systemctl is-active --quiet "$PHP_FPM_SERVICE"; then
+        sudo systemctl restart "$PHP_FPM_SERVICE"
+        echo "    ${PHP_FPM_SERVICE%.service} reiniciado."
+    else
+        echo "    ${PHP_FPM_SERVICE%.service} está instalado, mas não está ativo — pulando restart."
+    fi
 else
-    echo "    PHP-FPM não encontrado ou não está rodando — pulando."
+    echo "    Nenhum serviço phpX.Y-fpm encontrado — pulando."
 fi
 
 echo -e "\n${GREEN}${BOLD}Deploy concluído com sucesso!${RESET}"
