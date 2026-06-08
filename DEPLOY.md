@@ -39,6 +39,8 @@ O script `instalar.sh` automatiza:
 - `composer install`, `npm run build`, criação/atualização da `.venv`
 - ajustes de permissões e reinício de serviços
 
+No setup atual, as pastas `storage/` e `bootstrap/cache` ficam com usuário de deploy e grupo web (`www-data`) para evitar erro de escrita no `artisan package:discover`.
+
 > Mesmo com automação, revise o `.env` e a configuração final do Nginx (`server_name`, SSL, domínio).
 
 ### 2.1 Pacotes do sistema
@@ -144,10 +146,17 @@ php artisan db:seed --force   # apenas se quiser dados iniciais
 ### 2.6 Permissões
 
 ```bash
-sudo chown -R www-data:www-data /var/www/cobranca/storage
-sudo chown -R www-data:www-data /var/www/cobranca/bootstrap/cache
-sudo chmod -R 775 /var/www/cobranca/storage
-sudo chmod -R 775 /var/www/cobranca/bootstrap/cache
+cd /var/www/cobranca
+
+# Ajuste USER_DEPLOY para o usuário que executa o deploy (ex.: cobrancapro, ubuntu, deploy)
+USER_DEPLOY="cobrancapro"
+
+sudo mkdir -p storage/logs bootstrap/cache
+sudo chown -R ${USER_DEPLOY}:www-data storage bootstrap/cache
+sudo find storage bootstrap/cache -type d -exec chmod 775 {} \;
+sudo find storage bootstrap/cache -type f -exec chmod 664 {} \;
+sudo touch storage/logs/laravel.log
+sudo chown ${USER_DEPLOY}:www-data storage/logs/laravel.log
 ```
 
 ### 2.7 Python — venv e pacotes
@@ -261,7 +270,12 @@ deactivate
 npm ci && npm run build
 
 # Ajusta permissões
-sudo chown -R www-data:www-data storage bootstrap/cache
+USER_DEPLOY="cobrancapro"
+sudo chown -R ${USER_DEPLOY}:www-data storage bootstrap/cache
+sudo find storage bootstrap/cache -type d -exec chmod 775 {} \;
+sudo find storage bootstrap/cache -type f -exec chmod 664 {} \;
+sudo touch storage/logs/laravel.log
+sudo chown ${USER_DEPLOY}:www-data storage/logs/laravel.log
 
 # Reinicia PHP-FPM para limpar opcache
 sudo systemctl restart php8.2-fpm  # ou php8.3-fpm / php8.1-fpm
@@ -277,6 +291,12 @@ O arquivo `deploy.sh` na raiz do projeto automatiza a etapa 3:
 
 ```bash
 bash deploy.sh
+```
+
+O script já prepara permissões **antes** do `composer install`, evitando o erro:
+
+```text
+The stream or file "storage/logs/laravel.log" could not be opened in append mode
 ```
 
 ---
