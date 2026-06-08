@@ -71,6 +71,13 @@ $SUDO chown -R "$APP_USER":"$APP_GROUP" storage bootstrap/cache
 find storage bootstrap/cache -type d -exec chmod 775 {} \;
 find storage bootstrap/cache -type f -exec chmod 664 {} \;
 
+# Ajusta permissões do SQLite quando em uso
+if [ -f "database/database.sqlite" ]; then
+    $SUDO chown "$APP_USER":"$APP_GROUP" database database/database.sqlite
+    chmod 775 database
+    chmod 664 database/database.sqlite
+fi
+
 # 7. Reinicia PHP-FPM (opcache)
 echo -e "\n${YELLOW}[7/7] Reiniciando PHP-FPM...${RESET}"
 PHP_FPM_SERVICE=$(systemctl list-unit-files --type=service --no-legend 2>/dev/null | awk '/^php[0-9]+\.[0-9]+-fpm\.service/ {print $1}' | sort -V | tail -n 1)

@@ -299,6 +299,12 @@ O script já prepara permissões **antes** do `composer install`, evitando o err
 The stream or file "storage/logs/laravel.log" could not be opened in append mode
 ```
 
+Também ajusta permissões de `database/database.sqlite` (quando existir), evitando erro 500 com:
+
+```text
+SQLSTATE[HY000]: General error: 8 attempt to write a readonly database
+```
+
 ---
 
 ## 5. Arquivos que NUNCA devem ser sobrescritos
