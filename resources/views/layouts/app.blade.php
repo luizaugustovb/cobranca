@@ -37,14 +37,19 @@
         <!-- Main Content Area -->
         <div class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden">
             <!-- Impersonation Banner -->
-            @if(session()->has('impersonating_tenant_id'))
+            @php
+                $impersonatingTenant = session()->has('impersonating_tenant_id')
+                    ? \App\Models\Tenant::find(session('impersonating_tenant_id'))
+                    : null;
+            @endphp
+            @if(session()->has('impersonating_tenant_id') && $impersonatingTenant)
             <div class="bg-blue-600 px-4 py-2 text-white text-center text-xs font-black uppercase tracking-widest flex flex-wrap justify-between items-center gap-2 shadow-lg sticky top-0 z-50">
                 <span class="flex items-center">
                     <svg class="w-4 h-4 mr-2 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
-                    VISUALIZANDO COMO: {{ \App\Models\Tenant::find(session('impersonating_tenant_id'))->name }}
+                    VISUALIZANDO COMO: {{ $impersonatingTenant->name }}
                 </span>
                 <form action="{{ route('admin.stop-impersonation') }}" method="POST">
                     @csrf
