@@ -20,6 +20,27 @@
 
 ## 2. Primeiro deploy (servidor zerado)
 
+### 2.0 Instalação automática (recomendado)
+
+Após clonar o repositório, execute:
+
+```bash
+cd /var/www/cobranca
+bash instalar.sh
+```
+
+O script `instalar.sh` automatiza:
+- `apt update` e `apt upgrade`
+- instalação de dependências base (git, nginx, python, java etc.)
+- configuração do repositório do PHP (Ubuntu/Debian)
+- instalação do PHP e extensões necessárias
+- instalação do Composer
+- instalação do Node.js (quando necessário)
+- `composer install`, `npm run build`, criação/atualização da `.venv`
+- ajustes de permissões e reinício de serviços
+
+> Mesmo com automação, revise o `.env` e a configuração final do Nginx (`server_name`, SSL, domínio).
+
 ### 2.1 Pacotes do sistema
 
 ```bash
