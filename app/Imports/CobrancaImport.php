@@ -95,7 +95,7 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
                 }
 
                 // --- Título ---
-                $numeroTitulo = trim($row['numero_titulo'] ?? $row['titulo'] ?? $row['numero'] ?? '');
+                $numeroTitulo = $this->normalizeNumeroTitulo($row['numero_titulo'] ?? $row['titulo'] ?? $row['numero'] ?? '');
                 $valorRaw     = $row['valor'] ?? $row['valor_servico'] ?? null;
                 $valor        = $this->parseValor($valorRaw);
 
@@ -178,5 +178,12 @@ class CobrancaImport implements ToCollection, WithHeadingRow, WithProgressBar, S
         } catch (\Exception $e) {
         }
         return null;
+    }
+
+    private function normalizeNumeroTitulo($value): string
+    {
+        $numero = trim((string) $value);
+        $numero = preg_replace('/\s+/', ' ', $numero);
+        return mb_strtoupper($numero, 'UTF-8');
     }
 }

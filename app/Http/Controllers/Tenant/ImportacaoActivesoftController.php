@@ -209,8 +209,8 @@ class ImportacaoActivesoftController extends Controller
                 }
 
                 // Título
-                $numeroTitulo = trim($item['numero_titulo'] ?? '');
-                $parcela      = trim($item['parcela'] ?? '');
+                $numeroTitulo = $this->normalizeNumeroTitulo($item['numero_titulo'] ?? '');
+                $parcela      = $this->normalizeNumeroTitulo($item['parcela'] ?? '');
                 $numeroFinal  = $parcela ? "{$numeroTitulo}/{$parcela}" : $numeroTitulo;
 
                 $valor = $this->parseValor($item['valor_servico'] ?? '0');
@@ -290,5 +290,12 @@ class ImportacaoActivesoftController extends Controller
             // fall through
         }
         return null;
+    }
+
+    private function normalizeNumeroTitulo($value): string
+    {
+        $numero = trim((string) $value);
+        $numero = preg_replace('/\s+/', ' ', $numero);
+        return mb_strtoupper($numero, 'UTF-8');
     }
 }
